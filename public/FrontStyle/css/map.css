@@ -1,0 +1,21 @@
+.map-out-cls {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    margin: 10px;
+}
+.map-result {
+    padding: 10px;
+    border: 1px solid #ced4da;
+     margin-top: 10px;
+        margin-bottom: 10px;
+}
+.filter-input{
+    padding: 10px;
+}
+/* collapse */
+ .map-container{
+    min-height: auto;
+        border: 1px solid #2222;
+        border-radius: 2px;
+        background-color: #fff;
+ }
