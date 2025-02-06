@@ -1,0 +1,269 @@
+<?php
+
+namespace App\Http\Controllers\dalil;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
+use App\Models\Sites;
+use App\Models\Adds;
+use App\Models\sitting;
+use App\Models\Countries;
+
+use App\Models\PinnedPages;
+
+class ProductController extends Controller
+{
+
+    public function index($site_id)
+    {
+        $adds = Adds::first();
+        $all_pinned_page = PinnedPages::all();
+        $DataSittings = sitting::where("id", 1)->first();
+        $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
+        $user_id = Auth::check() ? Auth::user()->id : null;
+        $site = Sites::find($site_id);
+        $products = null;
+        if ($user_id) {
+            $products = Product::where('site_id', $site_id)->where('user_id', $user_id)->get();
+        }
+        return view('dalil.product.all', compact(
+            'country_names',
+            'DataSittings',
+            'all_pinned_page',
+            'adds',
+            'products',
+            'site_id',
+            'site',
+        ));
+
+    }
+
+
+    public function create($site_id)
+    {
+        $adds = Adds::first();
+        $all_pinned_page = PinnedPages::all();
+        $DataSittings = sitting::where("id", 1)->first();
+        $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
+        $site = Sites::select('id', 'site_name', 'title', 'user_id')->find($site_id);
+
+        return view('dalil.product.create', compact(
+            'country_names',
+            'DataSittings',
+            'all_pinned_page',
+            'adds',
+            'site'
+        ));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+
+    public function store(Request $request)
+    {
+        /*
+'name',
+        'type',
+        'description',
+        'image',
+        'price',
+        'unit',
+        'status',
+        'sequence',
+        'tag',
+        'site_id',
+        'user_id',
+        'category_p_id',
+*/
+        $formdata = $request->all();
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'type' => 'required|not_in:0|in:p,s',
+
+                'price' => 'nullable|numeric',
+                'sequence' => 'nullable|integer',
+            ],
+            [
+                'type.*' => 'هذا الحقل مطلوب',
+                'name.*' => 'هذا الحقل مطلوب',
+            ]
+        );
+
+        if ($validator->fails()) {
+
+            return response()->json(['errors' => $validator->errors()], 422);
+        } else {
+            // $d =explode(',' ,$request->countries);
+
+
+            $newObj = new Product();
+            $newObj->name = $formdata['name'];
+            $newObj->type = $formdata['type'];
+            $newObj->description = $formdata['description'];
+
+            $newObj->price = $formdata['price'];
+            $newObj->currency = $formdata['currency'];
+            $newObj->unit = $formdata['unit'];
+            $newObj->status = 'wait';
+            $newObj->sequence = $formdata['sequence'];
+            // $newObj->tag = $formdata['tag'];
+            $newObj->site_id = $formdata['site_id'];
+            $newObj->user_id = Auth::check() ? Auth::user()->id : null;
+            //  $newObj->category_p_id = $formdata['category_p_id'];
+
+            $newObj->save();
+
+            if ($request->hasFile('image')) {
+                $time = $newObj->id . time() . '.webp';
+                // $ext = $request->file('image')->getClientOriginalExtension();
+                Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
+                // $newImageName = time(). '.' . $request->photo->extension();
+                $newObj->image = $time;
+                $newObj->update();
+            }
+
+            return response()->json("ok");
+
+        }
+
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+
+    public function edit($id)
+    {
+        $adds = Adds::first();
+        $all_pinned_page = PinnedPages::all();
+        $DataSittings = sitting::where("id", 1)->first();
+        $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
+
+        $product = Product::find($id);
+        $site = Sites::select('id', 'site_name', 'title', 'user_id')->find($product->site_id);
+        return view('dalil.product.edit', compact(
+            'country_names',
+            'DataSittings',
+            'all_pinned_page',
+            'adds',
+            'site',
+            'product',
+        ));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $formdata = $request->all();
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'type' => 'required|not_in:0|in:p,s',
+
+                'price' => 'nullable|numeric',
+                'sequence' => 'nullable|integer',
+            ],
+            [
+                'type.*' => 'هذا الحقل مطلوب',
+                'name.*' => 'هذا الحقل مطلوب',
+            ]
+        );
+
+        if ($validator->fails()) {
+
+            return response()->json(['errors' => $validator->errors()], 422);
+        } else {
+            // $d =explode(',' ,$request->countries);
+
+
+            $newObj = Product::find($id);
+            $newObj->name = $formdata['name'];
+            $newObj->type = $formdata['type'];
+            $newObj->description = $formdata['description'];
+
+            $newObj->price = $formdata['price'];
+            $newObj->currency = $formdata['currency'];
+            $newObj->unit = $formdata['unit'];
+            $newObj->status = 'wait';
+            $newObj->sequence = $formdata['sequence'];
+            // $newObj->tag = $formdata['tag'];
+            $newObj->site_id = $formdata['site_id'];
+            $newObj->user_id = Auth::check() ? Auth::user()->id : null;
+            //  $newObj->category_p_id = $formdata['category_p_id'];
+
+            $newObj->save();
+
+            if ($request->hasFile('image')) {
+
+                $pathImg = str_replace('\\', '/', public_path('picProduct/')) . $newObj->image;
+
+                if (File::exists($pathImg)) {
+                    File::delete($pathImg);
+                }
+
+                $time = $newObj->id . time() . '.webp';
+                // $ext = $request->file('image')->getClientOriginalExtension();
+                Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
+                // $newImageName = time(). '.' . $request->photo->extension();
+                $newObj->image = $time;
+                $newObj->update();
+            }
+
+            return response()->json("ok");
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+
+        $object = Product::find($id);
+
+        if (!($object === null)) {
+            $pathImg = str_replace('\\', '/', public_path('picProduct/')) . $object->image;
+
+            if (File::exists($pathImg)) {
+                File::delete($pathImg);
+            }
+            Product::find($id)->delete();
+
+        }
+        return redirect()->back();
+        // return  $this->index();
+        //   return redirect()->route('users.index');
+
+    }
+}
