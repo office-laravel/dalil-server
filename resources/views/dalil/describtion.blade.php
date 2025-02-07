@@ -24,7 +24,7 @@
                     </div>
                     <div class="title-company sizee">
                         <h3> {{ $articaleSites->site_name }}</h3>
-                        @isset($getNameSubCategory, $getNameCategory, $is_SetCountry)
+                        @isset($getNameSubCategory, $getNameCategory, $is_SetCountry)@isset(d)
                             <div class="category-company mb-3">
                                 <a href="{{ route('showSubCat', [$is_SetCountry->href, $getNameCategory->href]) }}"
                                     class="span-one delLink"><i title="تصنيف"

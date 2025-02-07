@@ -6,24 +6,7 @@
     <div class="content-all" style="width: 100%; height:auto;">
         <div class="section-search">
             <div class="container mt-3 mb-2 d">
-                <div class="search_mainIndex">
-                    <form id="searchthis" action="{{ route('search') }}" style="display:inline;" method="get">
 
-
-                        <input id="namanyay-search-box-mainIndex" name="q" type="text"
-                            placeholder="ما الذي تبحث عنه؟" required />
-                        <button id="namanyay-search-btn-mainIndex" aria-label="بحث" type="submit"><i
-                                class="fa-solid fa-magnifying-glass"></i></button>
-
-                        <br>
-
-                        <!-- {{-- <button class="navbar-search_button">
-                    <i class="fa fa-search"></i>
-                </button> --}} -->
-
-                    </form>
-
-                </div>
             </div>
         </div>
         <!---------------------------->
@@ -31,8 +14,8 @@
 
             <div class="container mt-3 mb-2 d" style="text-align: -webkit-center;">
 
-                <form method="POST" action="{{ url('searchmap') }}" name="search_map" id="search_map">
-                    <div class="row map-container  text-center " style="padding:15px;">
+                <form method="POST" action="{{ url('searchmap') }}" style="width:100%" name="search_map" id="search_map">
+                    <div class="row map-container  text-center " style="padding:15px; margin:0;">
 
 
                         <div style="text-align: -webkit-center;">
@@ -355,6 +338,7 @@
             var mainurl = "{{ url('PicCate/icon/') }}";
             var token = '{{ csrf_token() }}';
             var subcityurl = "{{ url('subcity/ItemId') }}";
+            var companyurl = "{{ url('company/get') }}"
         </script>
         <script src="{{ url('js/map.js') }}"></script>
     @endsection

@@ -151,7 +151,7 @@ $(document).ready(function () {
 						})
 					}).addTo(companyMarkers)
 						.bindPopup(
-							`<b>${company.title}</b><br>${cat_title}`
+							`<a href="` + companyurl + '/' + `${company.id}"><b>${company.title}</b></a><br>${cat_title}`
 						);
 					//  companyMarkers.addLayer(marker);
 					marker.on("click", function () {
@@ -162,11 +162,11 @@ $(document).ready(function () {
 							distance = distance.toFixed(
 								2); // تقريب الرقم إلى منزلتين عشريتين
 
-							marker.setPopupContent(`
-                    <b>${company.title}</b>
+							marker.setPopupContent(`<div style="text-align:center;">
+                  <a href="` + companyurl + '/' + `${company.id}">  <b>${company.title}</b></a>
 					<br>${cat_title}
 					<br>
-                    🛣️ المسافة: <b>${distance} كم</b><br>`);
+                    🛣️ المسافة: <b>${distance} كم</b><br></div>`);
 						}
 
 						selectedCompany = company;
