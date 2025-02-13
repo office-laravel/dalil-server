@@ -45,10 +45,10 @@
         <meta property="og:url" content="{{ $Settings->socialMidiaTelegram }}" />
     @endisset
     @isset($Settings->favicon)
-        <link rel="icon" type="image/x-icon" href="{{ url('/publicuploading/' . $Settings->favicon) }}">
+        <link rel="icon" type="image/x-icon" href="{{ url('/public/uploading/' . $Settings->favicon) }}">
     @endisset
     @isset($Settings->favicon)
-        <meta property="og:image" content="{{ url('/publicuploading/' . $Settings->favicon) }}">
+        <meta property="og:image" content="{{ url('/public/uploading/' . $Settings->favicon) }}">
     @endisset
     <!-- Bootstrap CSS -->
     <link rel=dns-prefetch>
@@ -201,7 +201,7 @@
                     // echo $Y . '/' . $M . '/' . $D . '-';
                     // $ss = Hijri::DateIndicDigits('l - j F - Y');
                     echo '<p style="margin:0;text-align: end;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                margin-left: 7px;">' .
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    margin-left: 7px;">' .
                         $mydate .
                         '</p>';
                     ?>
