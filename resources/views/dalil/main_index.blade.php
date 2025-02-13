@@ -177,7 +177,7 @@
                         @foreach ($news as $item)
                             @php
                                 $imageArray = explode(',', $item->image);
-                                $imageUrl = isset($imageArray[1]) ? url('smallNewsImage/' . $imageArray[1]) : '';
+                                $imageUrl = isset($imageArray[1]) ? url('public/smallNewsImage/' . $imageArray[1]) : '';
                             @endphp
                             <a href="{{ route('news.descr', $item->id) }}" class="NewsBox text-decoration-none">
                                 <img src="{{ $imageUrl }}" alt="{{ $item->title }}">
