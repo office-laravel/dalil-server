@@ -62,6 +62,7 @@ Route::get('/send', function () {
 });
 
 Route::get('/cli', function () {
+    Artisan::call('route:cach');
     Artisan::call('route:clear');
     return "route cleared";
 });
