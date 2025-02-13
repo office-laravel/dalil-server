@@ -45,10 +45,10 @@
         <meta property="og:url" content="{{ $Settings->socialMidiaTelegram }}" />
     @endisset
     @isset($Settings->favicon)
-        <link rel="icon" type="image/x-icon" href="{{ url('uploading/' . $Settings->favicon) }}">
+        <link rel="icon" type="image/x-icon" href="{{ url('/publicuploading/' . $Settings->favicon) }}">
     @endisset
     @isset($Settings->favicon)
-        <meta property="og:image" content="{{ url('uploading/' . $Settings->favicon) }}">
+        <meta property="og:image" content="{{ url('/publicuploading/' . $Settings->favicon) }}">
     @endisset
     <!-- Bootstrap CSS -->
     <link rel=dns-prefetch>
@@ -57,19 +57,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{{ url('/FrontStyle/css/all.css') }}" />
-    <script defer src="{{ url('/FrontStyle/css/js/all.js') }}"></script> <!--load all styles -->
-    <link rel="stylesheet" href="{{ url('/FrontStyle/css/styleNew.css') }}">
-    <link rel="stylesheet" href="{{ url('/FrontStyle/css/bootstrap.rtl.min.css') }}">
-    <link rel="stylesheet" href="{{ url('/FrontStyle/css/styleMainIndex.css') }}">
-    <link rel="stylesheet" href="{{ url('/FrontStyle/css/dalil_style.css') }}">
+    <link rel="stylesheet" href="{{ url('/public/FrontStyle/css/all.css') }}" />
+    <script defer src="{{ url('/public/FrontStyle/css/js/all.js') }}"></script> <!--load all styles -->
+    <link rel="stylesheet" href="{{ url('/public/FrontStyle/css/styleNew.css') }}">
+    <link rel="stylesheet" href="{{ url('/public/FrontStyle/css/bootstrap.rtl.min.css') }}">
+    <link rel="stylesheet" href="{{ url('/public/FrontStyle/css/styleMainIndex.css') }}">
+    <link rel="stylesheet" href="{{ url('/public/FrontStyle/css/dalil_style.css') }}">
 
     <!-- Map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
 
-    <link rel="stylesheet" href="{{ url('/FrontStyle/css/map.css') }}">
-    <link rel="stylesheet" href="{{ url('/FrontStyle/css/style_product.css') }}" />
+    <link rel="stylesheet" href="{{ url('/public/FrontStyle/css/map.css') }}">
+    <link rel="stylesheet" href="{{ url('/public/FrontStyle/css/style_product.css') }}" />
     <!-- Map End -->
     <title>
         @if (isset($Settings) &&
@@ -115,7 +115,7 @@
 </head>
 
 <body>
-    <img class="bar-img" src="{{ url('/upload/bgnav.png') }}" alt="صورة " loading="lazy">
+    <img class="bar-img" src="{{ url('/public/upload/bgnav.png') }}" alt="صورة " loading="lazy">
     <div class="bar-top"><i class="fa-solid fa-house bar-title"></i><span class="bar-title">عزيزي المستخدم </span>
         <span class="bar-text">لجعل تصفح الانترنت أسهل وأكثر أمانا ، اجعل وصلات .. الانترنت في صفحة واحدة صفحتك الرئيسية
             !</span>
@@ -123,9 +123,9 @@
 
     <nav class="navbar navbar-expand-sm navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
+            <a class="navbar-brand" href="{{ url('/public/') }}">
                 {{-- <h1 class="logo">دليل</h1> --}}
-                <img src="{{ url('/upload/logo_waslat.png') }}" alt="لوغو"
+                <img src="{{ url('/public/upload/logo_waslat.png') }}" alt="لوغو"
                     style="margin-right: 4rem;width:150px;height:50px;">
             </a>
             <button class="navbar-toggler" type="button" aria-label="button menu" data-bs-toggle="collapse"
@@ -145,12 +145,12 @@
                             data-bs-toggle="dropdown" aria-expanded="false">
 
                             @if (isset($is_SetCountry))
-                                <img src="{{ url('uploading/' . $is_SetCountry->country_flag) }}"
+                                <img src="{{ url('public/uploading/' . $is_SetCountry->country_flag) }}"
                                     alt="{{ $is_SetCountry->country_name }}"
                                     style="margin-left:5px;width:16px;height:11px;" loading="lazy">
                                 {{ $is_SetCountry->country_name }}
                             @elseif (isset($selectCountry->country))
-                                <img src="{{ url('uploading/' . $selectCountry->country->country_flag) }}"
+                                <img src="{{ url('public/uploading/' . $selectCountry->country->country_flag) }}"
                                     alt="{{ $selectCountry->country->country_name }}"
                                     style="margin-left:5px;width:16px;height:11px;" loading="lazy">
                                 {{ $selectCountry->country->country_name }}
@@ -164,7 +164,7 @@
                             <ul class="list" id="drop_list">
                                 @foreach ($country_names as $get_country)
                                     <li id="eee">
-                                        <img src="{{ url('uploading/' . $get_country->country_flag) }}"
+                                        <img src="{{ url('public/uploading/' . $get_country->country_flag) }}"
                                             alt="{{ $get_country->country_name }}" style="margin-left:5px"
                                             loading="lazy">
                                         <a class="text-decoration-none text-dark mb-1"
@@ -201,7 +201,7 @@
                     // echo $Y . '/' . $M . '/' . $D . '-';
                     // $ss = Hijri::DateIndicDigits('l - j F - Y');
                     echo '<p style="margin:0;text-align: end;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            margin-left: 7px;">' .
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                margin-left: 7px;">' .
                         $mydate .
                         '</p>';
                     ?>
@@ -226,7 +226,8 @@
                         </span>
                         @if (Auth::check())
                             <div class="profile" id="clicked_pro" onclick="myFunction()">
-                                <img src="{{ url('/upload/icon-person.png') }}" width="20" alt="">
+                                <img src="{{ url('/public/upload/icon-person.png') }}" width="20"
+                                    alt="">
                             </div>
                         @else
                             <span class="icon-home">
@@ -306,7 +307,7 @@
 
 
     <!-- Map -->
-    <script src="{{ url('js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ url('/public/js/jquery-3.7.1.min.js') }}"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script> --}}
@@ -324,7 +325,7 @@
     <!-- Map end -->
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <script src="{{ url('/FrontStyle/css/js/script.js') }}"></script>
+    <script src="{{ url('/public/FrontStyle/css/js/script.js') }}"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous">
     </script>
@@ -337,7 +338,7 @@
     {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> --}}
     <!--<script src="https://code.jquery.com/jquery-3.6.0.js"></script>-->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="{{ url('../ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ url('/public/ckeditor/ckeditor.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 
 
