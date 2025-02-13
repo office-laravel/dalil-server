@@ -118,7 +118,7 @@
                                 <a href="{{ $item->link }}" target="_blank" class="text-decoration-none w-100">
 
                                     <div class="img_fixedSites">
-                                        <img src="{{ url('uploading/' . $item->img) }}" alt="{{ $item->name }}"
+                                        <img src="{{ url('public/uploading/' . $item->img) }}" alt="{{ $item->name }}"
                                             loading="lazy">
                                     </div>
                                     <div class="textFixedSites text-black">{{ $item->name }}</div>
@@ -159,7 +159,7 @@
                                     <div class="img-contry"
                                         style="display: flex;
                     align-items: center;">
-                                        <img src="{{ url('uploading/' . $item->country_flag) }}"
+                                        <img src="{{ url('public/uploading/' . $item->country_flag) }}"
                                             alt="{{ $item->country_name }}" style="width:16px;height:11px"
                                             loading="lazy">
                                     </div>
@@ -198,12 +198,12 @@
     @endsection
     @section('map-js')
         <script>
-            var mainurl = "{{ url('PicCate/icon/') }}";
+            var mainurl = "{{ url('public/PicCate/icon/') }}";
             var token = '{{ csrf_token() }}';
             var subcityurl = "{{ url('subcity/ItemId') }}";
             var companyurl = "{{ url('company/get') }}"
         </script>
-        <script src="{{ url('js/map.js') }}"></script>
+        <script src="{{ url('public/js/map.js') }}"></script>
     @endsection
     @section('script')
         <script type="text/javascript">
