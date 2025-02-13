@@ -31,6 +31,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
 use App\Http\Controllers\dalil\ProductController;
+use App\Http\Controllers\dashboard\PackageController;
+use App\Http\Controllers\dashboard\SubscribeController;
+
+
 
 
 /*
@@ -317,7 +321,33 @@ Route::prefix('admin')->group(function () {
     Route::get('update/sites-link/{id}', [App\Http\Controllers\dashboard\AlertController::class, 'updateSitesLink'])->name('update.site.link');
     ####################################################################نهاية قسم اشعار الموقع لا يعمل لوحة تحكم ##########################################################/
 
-
+    //المنتجات
+    Route::prefix('product')->group(function () {
+        Route::get('all/{site_id}', [ProductController::class, 'admin_index'])->name('admin.product');
+        Route::get('create/{site_id}', [ProductController::class, 'admin_create']);
+        Route::post('store', [ProductController::class, 'admin_store']);
+        Route::post('update/{id}', [ProductController::class, 'admin_update']);
+        Route::get('edit/{id}', [ProductController::class, 'admin_edit']);
+        Route::post('delete/{id}', [ProductController::class, 'admin_destroy']);
+    });
+    //الباقات
+    Route::prefix('package')->group(function () {
+        Route::get('all', [PackageController::class, 'index'])->name('admin.package');
+        Route::get('create', [PackageController::class, 'create']);
+        Route::post('store', [PackageController::class, 'store']);
+        Route::post('update/{id}', [PackageController::class, 'update']);
+        Route::get('edit/{id}', [PackageController::class, 'edit']);
+        Route::post('delete/{id}', [PackageController::class, 'destroy']);
+    });
+    //الاشتراكات
+    Route::prefix('subscribe')->group(function () {
+        Route::get('all', [SubscribeController::class, 'admin_index'])->name('admin.subscribe');
+        Route::get('create', [SubscribeController::class, 'admin_create']);
+        Route::post('store', [SubscribeController::class, 'admin_store']);
+        Route::post('update/{id}', [SubscribeController::class, 'admin_update']);
+        Route::get('edit/{id}', [SubscribeController::class, 'admin_edit']);
+        Route::post('delete/{id}', [SubscribeController::class, 'admin_destroy']);
+    });
 
 });
 
@@ -412,8 +442,15 @@ Route::post('/store-sites', [App\Http\Controllers\dalil\dalilController::class, 
 Route::get('/up-to-date/sites', [App\Http\Controllers\dalil\dalilController::class, 'newSites'])->name('new.site');
 // Map search
 Route::post('/searchmap', [App\Http\Controllers\dalil\SearchItemsController::class, 'query']);
+Route::post('/searchbyid', [App\Http\Controllers\dalil\SearchItemsController::class, 'querybyid']);
 Route::get('/subcity/{id}', [App\Http\Controllers\dalil\SearchItemsController::class, 'getsublist']);
+
+//subscribe
+Route::get('/subscribeyears/{id}', [SubscribeController::class, 'duration_byid']);
 // Map end
+//product
+Route::get('product/{id}', [App\Http\Controllers\dalil\ProductController::class, 'showby_id']);
+//
 
 #################################################################### نهاية صفحة الموقع الرئيسية  ##########################################################/
 

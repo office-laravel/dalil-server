@@ -6,7 +6,18 @@
     <div class="content-all" style="width: 100%; height:auto;">
         <div class="section-search">
             <div class="container mt-3 mb-2 d">
+                <div class="search_mainIndex">
+                    <form id="searchthis" action="{{ route('search') }}" style="display:inline;" method="get">
 
+                        <input id="namanyay-search-box-mainIndex" name="q" type="text"
+                            placeholder="ما الذي تبحث عنه؟" required />
+                        <button id="namanyay-search-btn-mainIndex" aria-label="بحث" type="submit"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                        <!-- {{-- <button class="navbar-search_button">
+                    <i class="fa fa-search"></i>
+                </button> --}} -->
+                    </form>
+                </div>
             </div>
         </div>
         <!---------------------------->
@@ -35,8 +46,8 @@
                                                 class="fa-solid fa-magnifying-glass"></i></button>
                                     </div>
                                     <input type="text" id="text-search-main" dir="rtl" style="padding: 15px"
-                                        class="form-control" aria-label="Input group example"
-                                        placeholder="ما الذي تبحث عنه؟" aria-describedby="btnGroupAddon">
+                                        class="form-control" aria-label="Input group example" placeholder="ابحث في الخريطة"
+                                        aria-describedby="btnGroupAddon">
                                 </div>
                             </div>
 
@@ -46,23 +57,25 @@
                             <div class="row ">
                                 <div class="col col-sm-12 col-md-3 filter-input">
                                     <h6>المحافظة</h6>
-                                    <select class="form-cdontrol " id="city_id" name="city_id">
-                                        <option value="0">الكل</option>
-                                        @foreach ($cities as $city)
-                                            <option data-lat="{{ $city->latitude }}" data-long="{{ $city->longitude }}"
-                                                value="{{ $city->id }}">{{ $city->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div>
+                                        <select class="form-control " id="city_id" name="city_id">
+                                            <option value="0">الكل</option>
+                                            @foreach ($cities as $city)
+                                                <option data-lat="{{ $city->latitude }}" data-long="{{ $city->longitude }}"
+                                                    value="{{ $city->id }}">{{ $city->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col col-sm-12 col-md-3 filter-input">
                                     <h6>المدينة</h6>
-                                    <select class="form-cdontrol " id="subcity" name="subcity">
+                                    <select class="form-control " id="subcity" name="subcity">
                                         <option value="0">الكل</option>
                                     </select>
                                 </div>
                                 <div class="col  col-md-3 filter-input">
                                     <h6>التصنيفات</h6>
-                                    <select class="form-cdontrol col col-md-6" id="category" name="category">
+                                    <select class="form-control col col-md-12" id="category" name="category">
                                         <option value="0">الكل</option>
                                         @foreach ($categories as $item)
                                             <option value="{{ $item->id }}">{{ $item->category_name }}</option>
@@ -71,7 +84,7 @@
                                 </div>
                                 <div class="col  col-md-3 filter-input">
                                     <h6>التصنيفات الفرعية</h6>
-                                    <select class="form-cdontrol  " name="subcategory" id="subcategory">
+                                    <select class="form-control  " name="subcategory" id="subcategory">
                                         <option value="0">الكل</option>
                                     </select>
                                 </div>
@@ -134,156 +147,6 @@
             @endisset
         </div>
         <div>
-            <div class="container">
-
-
-                <div class ="row product-row" style="display: flex;justify-content: center;flex-wrap: wrap">
-                    <div class="col-lg-6 col-md-6 product-col">
-                        <div class="single-product">
-                            <div class="product-img">
-                                <img class="img-fluid w-100" src="img/product/new-product/n1.jpg" alt="">
-                                <div class="p_icon">
-                                    <a href="#">
-                                        <i class="ti-eye"></i>
-                                    </a>
-                                    <a href="#">
-                                        <i class="ti-heart"></i>
-                                    </a>
-                                    <a href="#">
-                                        <i class="ti-shopping-cart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="product-btm">
-                                <a href="#" class="d-block">
-                                    <h4>T-shirt</h4>
-                                </a>
-                                <div class="mt-3">
-                                    <span class="mr-4">$25.00</span>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-md-6 product-col">
-                        <div class="single-product">
-                            <div class="product-img">
-                                <img class="img-fluid w-100" src="img/product/new-product/n1.jpg" alt="">
-                                <div class="p_icon">
-                                    <a href="#">
-                                        <i class="ti-eye"></i>
-                                    </a>
-                                    <a href="#">
-                                        <i class="ti-heart"></i>
-                                    </a>
-                                    <a href="#">
-                                        <i class="ti-shopping-cart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="product-btm">
-                                <a href="#" class="d-block">
-                                    <h4>T-shirt</h4>
-                                </a>
-                                <div class="mt-3">
-                                    <span class="mr-4">$25.00</span>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 product-col">
-                        <div class="single-product">
-                            <div class="product-img">
-                                <img class="img-fluid w-100" src="img/product/new-product/n1.jpg" alt="">
-                                <div class="p_icon">
-                                    <a href="#">
-                                        <i class="ti-eye"></i>
-                                    </a>
-                                    <a href="#">
-                                        <i class="ti-heart"></i>
-                                    </a>
-                                    <a href="#">
-                                        <i class="ti-shopping-cart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="product-btm">
-                                <a href="#" class="d-block">
-                                    <h4>T-shirt</h4>
-                                </a>
-                                <div class="mt-3">
-                                    <span class="mr-4">$25.00</span>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 product-col">
-                        <div class="single-product">
-                            <div class="product-img">
-                                <img class="img-fluid w-100" src="img/product/new-product/n1.jpg" alt="">
-                                <div class="p_icon">
-                                    <a href="#">
-                                        <i class="ti-eye"></i>
-                                    </a>
-                                    <a href="#">
-                                        <i class="ti-heart"></i>
-                                    </a>
-                                    <a href="#">
-                                        <i class="ti-shopping-cart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="product-btm">
-                                <a href="#" class="d-block">
-                                    <h4>T-shirt</h4>
-                                </a>
-                                <div class="mt-3">
-                                    <span class="mr-4">$25.00</span>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 product-col">
-                        <div class="single-product">
-                            <div class="product-img">
-                                <img class="img-fluid w-100" src="img/product/new-product/n1.jpg" alt="">
-                                <div class="p_icon">
-                                    <a href="#">
-                                        <i class="ti-eye"></i>
-                                    </a>
-                                    <a href="#">
-                                        <i class="ti-heart"></i>
-                                    </a>
-                                    <a href="#">
-                                        <i class="ti-shopping-cart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="product-btm">
-                                <a href="#" class="d-block">
-                                    <h4>T-shirt</h4>
-                                </a>
-                                <div class="mt-3">
-                                    <span class="mr-4">$25.00</span>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-            </div>
-
-
-
-
-
 
             <div class="part-country">
                 <div class="container">

@@ -10,8 +10,9 @@
             <div class="container-fluid py-1 px-3">
                 <nav aria-label="breadcrumb">
 
-                    <h6 class="font-weight-bolder mb-0"><a href="{{ route('sites.main') }}">الاشتراكات</a>
-
+                    <h6 class="font-weight-bolder mb-0"><a href="{{ route('sites.main') }}">الشركات</a>
+                        /
+                        <a href="{{ route('sites.edit', $site->id) }}">{{ $site->site_name }}</a>
                     </h6>
                 </nav>
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 px-0" id="navbar">
@@ -59,18 +60,29 @@
 
         <div class="row backgroundW p-4 m-3">
             <div class="container">
+
+
                 <div class="form-group btn-create">
+
                     <br>
+
+
+
                 </div>
                 <br>
+
                 <div class="div-sites">
+
+
+
+
                     {{-- delete Modal Sites --}}
                     <div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true" style="z-index:999999;">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">حذف الاشتراك</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">حذف المنتج</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
@@ -93,10 +105,11 @@
                     <div class="contentEdit">
                         <!-- Button trigger modal -->
                         <div style="display: flex;justify-content: space-between; width:100%;">
-                            <a href="{{ url('admin/subscribe/create') }}" class="btn btn-success mb-3">
-                                اضافة اشتراك<i class="fa-solid fa-plus mx-1"></i>
+                            <a href="{{ url('admin/product/create', $site_id) }}" class="btn btn-success mb-3">
+                                اضافة منتج<i class="fa-solid fa-plus mx-1"></i>
                             </a>
-
+                            <h6 class="head-search-sitess">منتجات شركة:<a href="{{ route('sites.edit', $site->id) }}"><span>
+                                        {{ $site->site_name }}</span></a> </h6>
 
 
 
@@ -112,33 +125,31 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">الباقة</th>
-                                        <th scope="col">الرمز </th>
-                                        <th scope="col">العضو </th>
-                                        <th scope="col">تاريخ الانتهاء </th>
+                                        <th scope="col">الاسم</th>
+                                        <th scope="col">النوع </th>
+                                        <th scope="col">السعر</th>
                                         <th scope="col">تحكم</th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if ($packageusers)
-                                        @foreach ($packageusers as $package)
+                                    @if ($products)
+                                        @foreach ($products as $product)
                                             <tr>
-                                                <td>{{ $package->id }}</td>
-                                                <td>{{ $package->name }}</td>
-                                                <td>{{ $package->code }}</td>
-                                                <td>{{ $package->user->email }}</td>
-                                                <td>{{ $package->expire_date }}</td>
+                                                <td>{{ $product->id }}</td>
+                                                <td>{{ $product->name }}</td>
+                                                <td>{{ $product->type_conv }}</td>
+                                                <td>{{ $product->price }}</td>
                                                 <td class="editt">
-                                                    <a href="{{ url('admin/subscribe/edit', $package->id) }}"
+                                                    <a href="{{ url('admin/product/edit', $product->id) }}"
                                                         class=" btn btn-primary btn-sm">تعديل</a>
                                                 </td>
                                                 <td>
-                                                    <form action="{{ url('admin/subscribe/delete', $package->id) }}"
+                                                    <form action="{{ url('admin/product/delete', $product->id) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
 
-                                                        <button type="submit" id="del-{{ $package->id }}"
+                                                        <button type="submit" id="del-{{ $product->id }}"
                                                             class="btn btn-danger btn-sm delete" title="Delete">حذف</button>
                                                     </form>
                                                 </td>
@@ -160,6 +171,26 @@
         </div>
 
     </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @endsection
 
 @section('map-js')

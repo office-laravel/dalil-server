@@ -52,5 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Sites::class, 'user_id');
     }
+    public function packagesusers(): HasMany
+    {
+        return $this->hasMany(PackageUser::class, 'user_id');
+    }
 
 }

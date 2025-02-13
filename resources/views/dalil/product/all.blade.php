@@ -54,7 +54,7 @@
 
                 <div style="display: flex;justify-content: space-between; width:100%;">
                     <h4 class="head-search-sitess">منتجات شركة: <span> {{ $site->site_name }}</span></h4>
-                    <a href="{{ route('pageme.user', Auth::check() ? Auth::user()->en_name : '') }}"
+                    <a style="width: 80px" href="{{ route('pageme.user', Auth::check() ? Auth::user()->en_name : '') }}"
                         style="text-decoration: none;">
                         مواقعي<i class="fa-solid fa-arrow-left mx-1"></i>
                     </a>
@@ -78,7 +78,7 @@
                                     <tr>
                                         <td>{{ $product->id }}</td>
                                         <td>{{ $product->name }}</td>
-                                        <td>{{ $product->type }}</td>
+                                        <td>{{ $product->type_conv }}</td>
                                         <td>{{ $product->price }}</td>
                                         <td class="editt">
                                             <a href="{{ url('users/product/edit', $product->id) }}"

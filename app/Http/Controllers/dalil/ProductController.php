@@ -140,16 +140,49 @@ class ProductController extends Controller
 
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function showby_id($id)
     {
-        //
+        $adds = Adds::first();
+        $Settings = sitting::first();
+        //   $get_site_descr = Sites::with(['country', 'category', 'tags'])->where('id', $id)->where('confirmed', 1)->get();
+        // dd($get_site_descr);
+        $get_categoryTo_descr = Sites::with(['country', 'category', 'subcategory', 'city', 'subcity'])->select(
+            'id',
+            'category_id',
+            'countries_id',
+            'title',
+            'subcategories',
+            'city_id',
+            'subcity_id',
+            'user_id',
+        )->where('id', $id)->where('confirmed', 1)->first();
+
+        $addss = Adds::select('atTop', 'atRight', 'otherSite', 'atHead')->first();
+        $is_setTags = Sites::with('tags')->where('id', $id)->first();
+
+
+        $Sites = Sites::find($id);
+        //  $country_id = $Sites->country_id;
+        $is_SetCountry = Countries::select('id', 'country_name', 'href', 'country_flag')->where('href', 'Syria')->first();
+
+        $country_names = Countries::select('id', 'country_name', 'country_flag', 'href')->get();
+        $all_pinned_page = PinnedPages::get();
+
+        $product = Product::with('site')->find($id);
+        $related_products = Product::where('site_id', $product->site_id)->where('id', '!=', $product->id)->orderByDesc('sequence')->get();
+        // dd($ff);
+        return view('dalil.product.product-describtion', compact([
+            'adds',
+            'Settings',
+            'addss',
+            'country_names',
+            'all_pinned_page',
+            'is_SetCountry',
+            'product',
+            'related_products'
+        ]));
+        // return view('dalil.describtion' , compact([ 'scategories' ,'addss','get_site_descrr','country_namess','get_about_waslat','get_SupCategory','get_categoryTo_descr','title_descr','DataSittings' , 'country_names' , 'all_pinned_page' , 'get_site_descr']));
+
     }
 
 
@@ -172,13 +205,7 @@ class ProductController extends Controller
         ));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         $formdata = $request->all();
@@ -266,4 +293,280 @@ class ProductController extends Controller
         //   return redirect()->route('users.index');
 
     }
+
+    // Admin Methods //////////////////////////////////////////////////////////////////
+    public function admin_index($site_id)
+    {
+        $adds = Adds::first();
+        $all_pinned_page = PinnedPages::all();
+        $DataSittings = sitting::where("id", 1)->first();
+        $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
+
+        $site = Sites::find($site_id);
+
+
+        $products = Product::where('site_id', $site_id)->get();
+
+        return view('dash-board.product.all', compact(
+            'country_names',
+            'DataSittings',
+            'all_pinned_page',
+            'adds',
+            'products',
+            'site_id',
+            'site',
+        ));
+
+    }
+
+
+    public function admin_create($site_id)
+    {
+        $adds = Adds::first();
+        $all_pinned_page = PinnedPages::all();
+        $DataSittings = sitting::where("id", 1)->first();
+        $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
+        $site = Sites::select('id', 'site_name', 'title', 'user_id')->find($site_id);
+
+        return view('dash-board.product.create', compact(
+            'country_names',
+            'DataSittings',
+            'all_pinned_page',
+            'adds',
+            'site'
+        ));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+
+    public function admin_store(Request $request)
+    {
+        /*
+'name',
+        'type',
+        'description',
+        'image',
+        'price',
+        'unit',
+        'status',
+        'sequence',
+        'tag',
+        'site_id',
+        'user_id',
+        'category_p_id',
+*/
+        $formdata = $request->all();
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'type' => 'required|not_in:0|in:p,s',
+
+                'price' => 'nullable|numeric',
+                'sequence' => 'nullable|integer',
+            ],
+            [
+                'type.*' => 'هذا الحقل مطلوب',
+                'name.*' => 'هذا الحقل مطلوب',
+            ]
+        );
+
+        if ($validator->fails()) {
+
+            return response()->json(['errors' => $validator->errors()], 422);
+        } else {
+            // $d =explode(',' ,$request->countries);
+
+
+            $newObj = new Product();
+            $newObj->name = $formdata['name'];
+            $newObj->type = $formdata['type'];
+            $newObj->description = $formdata['description'];
+
+            $newObj->price = $formdata['price'];
+            $newObj->currency = $formdata['currency'];
+            $newObj->unit = $formdata['unit'];
+            $newObj->status = 'wait';
+            $newObj->sequence = $formdata['sequence'];
+            // $newObj->tag = $formdata['tag'];
+            $newObj->site_id = $formdata['site_id'];
+            $newObj->user_id = Auth::check() ? Auth::user()->id : null;
+            //  $newObj->category_p_id = $formdata['category_p_id'];
+
+            $newObj->save();
+
+            if ($request->hasFile('image')) {
+                $time = $newObj->id . time() . '.webp';
+                // $ext = $request->file('image')->getClientOriginalExtension();
+                Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
+                // $newImageName = time(). '.' . $request->photo->extension();
+                $newObj->image = $time;
+                $newObj->update();
+            }
+
+            return response()->json("ok");
+
+        }
+
+    }
+
+    public function admin_showby_id($id)
+    {
+        $adds = Adds::first();
+        $Settings = sitting::first();
+        //   $get_site_descr = Sites::with(['country', 'category', 'tags'])->where('id', $id)->where('confirmed', 1)->get();
+        // dd($get_site_descr);
+        $get_categoryTo_descr = Sites::with(['country', 'category', 'subcategory', 'city', 'subcity'])->select(
+            'id',
+            'category_id',
+            'countries_id',
+            'title',
+            'subcategories',
+            'city_id',
+            'subcity_id',
+            'user_id',
+        )->where('id', $id)->where('confirmed', 1)->first();
+
+        $addss = Adds::select('atTop', 'atRight', 'otherSite', 'atHead')->first();
+        $is_setTags = Sites::with('tags')->where('id', $id)->first();
+
+
+        $Sites = Sites::find($id);
+        //  $country_id = $Sites->country_id;
+        $is_SetCountry = Countries::select('id', 'country_name', 'href', 'country_flag')->where('href', 'Syria')->first();
+
+        $country_names = Countries::select('id', 'country_name', 'country_flag', 'href')->get();
+        $all_pinned_page = PinnedPages::get();
+
+        $product = Product::with('site')->find($id);
+        $related_products = Product::where('site_id', $product->site_id)->where('id', '!=', $product->id)->orderByDesc('sequence')->get();
+        // dd($ff);
+        return view('dash-board.product.product-describtion', compact([
+            'adds',
+            'Settings',
+            'addss',
+            'country_names',
+            'all_pinned_page',
+            'is_SetCountry',
+            'product',
+            'related_products'
+        ]));
+        // return view('dalil.describtion' , compact([ 'scategories' ,'addss','get_site_descrr','country_namess','get_about_waslat','get_SupCategory','get_categoryTo_descr','title_descr','DataSittings' , 'country_names' , 'all_pinned_page' , 'get_site_descr']));
+
+    }
+
+
+    public function admin_edit($id)
+    {
+        $adds = Adds::first();
+        $all_pinned_page = PinnedPages::all();
+        $DataSittings = sitting::where("id", 1)->first();
+        $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
+
+        $product = Product::find($id);
+        $site = Sites::select('id', 'site_name', 'title', 'user_id')->find($product->site_id);
+        return view('dash-board.product.edit', compact(
+            'country_names',
+            'DataSittings',
+            'all_pinned_page',
+            'adds',
+            'site',
+            'product',
+        ));
+    }
+
+
+    public function admin_update(Request $request, $id)
+    {
+        $formdata = $request->all();
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'type' => 'required|not_in:0|in:p,s',
+
+                'price' => 'nullable|numeric',
+                'sequence' => 'nullable|integer',
+            ],
+            [
+                'type.*' => 'هذا الحقل مطلوب',
+                'name.*' => 'هذا الحقل مطلوب',
+            ]
+        );
+
+        if ($validator->fails()) {
+
+            return response()->json(['errors' => $validator->errors()], 422);
+        } else {
+            // $d =explode(',' ,$request->countries);
+
+
+            $newObj = Product::find($id);
+            $newObj->name = $formdata['name'];
+            $newObj->type = $formdata['type'];
+            $newObj->description = $formdata['description'];
+
+            $newObj->price = $formdata['price'];
+            $newObj->currency = $formdata['currency'];
+            $newObj->unit = $formdata['unit'];
+            $newObj->status = 'wait';
+            $newObj->sequence = $formdata['sequence'];
+            // $newObj->tag = $formdata['tag'];
+            $newObj->site_id = $formdata['site_id'];
+            $newObj->user_id = Auth::check() ? Auth::user()->id : null;
+            //  $newObj->category_p_id = $formdata['category_p_id'];
+
+            $newObj->save();
+
+            if ($request->hasFile('image')) {
+
+                $pathImg = str_replace('\\', '/', public_path('picProduct/')) . $newObj->image;
+
+                if (File::exists($pathImg)) {
+                    File::delete($pathImg);
+                }
+
+                $time = $newObj->id . time() . '.webp';
+                // $ext = $request->file('image')->getClientOriginalExtension();
+                Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
+                // $newImageName = time(). '.' . $request->photo->extension();
+                $newObj->image = $time;
+                $newObj->update();
+            }
+
+            return response()->json("ok");
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function admin_destroy($id)
+    {
+
+        $object = Product::find($id);
+
+        if (!($object === null)) {
+            $pathImg = str_replace('\\', '/', public_path('picProduct/')) . $object->image;
+
+            if (File::exists($pathImg)) {
+                File::delete($pathImg);
+            }
+            Product::find($id)->delete();
+
+        }
+        return redirect()->back();
+        // return  $this->index();
+        //   return redirect()->route('users.index');
+
+    }
+
 }

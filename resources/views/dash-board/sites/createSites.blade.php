@@ -65,6 +65,14 @@
             <form action="{{ route('sites.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
+                <label>العضو</label>
+                <select style="width: 200px" class="form-cdontrol mb-2" id="user_id" name="user_id">
+                    <option value="">أختر العضو</option>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->id }}">{{ $user->email }}</option>
+                    @endforeach
+                </select>
+                <br>
                 <select style="width: 200px" class="form-cdontrol mb-2" id="city_id" name="city_id">
                     <option value="">أختر المحافظة</option>
                     @foreach ($cities as $city)

@@ -64,6 +64,16 @@
             </nav>
             <form action="{{ route('sites.update', $sites->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <label>العضو</label>
+                <select style="width: 200px" class="form-cdontrol mb-2" id="user_id" name="user_id">
+                    <option value="">أختر العضو</option>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->id }}" {{ $sites->user_id == $user->id ? 'selected' : '' }}>
+                            {{ $user->email }}</option>
+                    @endforeach
+                </select>
+                <br>
+                <label>المحافظة</label>
                 <select style="width: 200px" class="form-cdontrol mb-2" id="city_id" name="city_id">
                     <option value="">أختر المحافظة</option>
                     @foreach ($cities as $city)
@@ -72,6 +82,7 @@
                     @endforeach
                 </select>
                 <br>
+                <label>المدينة</label>
                 <select style="width: 200px" class="form-cdontrol mb-2" id="subcity" name="subcity">
                     <option value="">أختر المدينة</option>
                 </select><br>
@@ -111,7 +122,7 @@
                 <div class="form-row mb-2">
                     <div class="col">
                         <label for="exampleFormControlInput1">اسم الموقع</label>
-                        <input type="text" class="form-controll" name="site_name" value="{{ $site->site_name }}">
+                        <input type="text" class="form-controll" name="site_name" value="{{ $sites->site_name }}">
                     </div>
                     {{-- <div class="col">
                         <label for="">Tags:</label>

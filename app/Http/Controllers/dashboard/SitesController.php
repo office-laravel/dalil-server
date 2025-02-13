@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 
-
+use App\Models\User;
 class SitesController extends Controller
 {
     public function __construct()
@@ -58,8 +58,9 @@ class SitesController extends Controller
         $categories = Category::select('id', 'category_name')->where('parent_id', 0)->get();
         $countries = Countries::all();
         $cities = City::select('id', 'name')->get();
+        $users = User::select('id', 'email', 'name')->get();
         // return $countries;
-        return view('dash-board.sites.createSites', compact(['tags', 'categories', 'countries', 'cities']));
+        return view('dash-board.sites.createSites', compact(['tags', 'categories', 'countries', 'cities', 'users']));
     }
     // ****** get Cities Of Country
 
@@ -165,10 +166,11 @@ class SitesController extends Controller
                     'priority' => $request->input('priority'),
                     'subcategories' => $request->subcategory ? $request->subcategory : 0,
                     'category_id' => $request->category ? $request->category : 0,
-                    'latitude' => $request->input('latitude'),
-                    'longitude' => $request->input('longitude'),
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
                     'city_id' => $city_id,
                     'subcity_id' => $subcity_id,
+                    'user_id' => $request->user_id ? $request->user_id : null,
                     // 'is_show_all_sites' => $request->all_sites ? true : false ,
                 ]);
                 // $tagg = [];
@@ -365,8 +367,8 @@ class SitesController extends Controller
         $scategories = Category::where('parent_id', '!=', 0)->get();
         $countries = Countries::all();
         $cities = City::all();
-
-        return view('dash-board.sites.editSites', compact(['cities', 'scategories', 'tags', 'sites', 'categories', 'countries']));
+        $users = User::select('id', 'email', 'name')->get();
+        return view('dash-board.sites.editSites', compact(['cities', 'scategories', 'tags', 'sites', 'categories', 'countries', 'users']));
     }
     public function update(Request $request, $id)
     {
@@ -472,7 +474,7 @@ class SitesController extends Controller
         $sites->longitude = $longitude;
         $sites->city_id = $city_id;
         $sites->subcity_id = $subcity_id;
-
+        $sites->user_id = $request->user_id ? $request->user_id : null;
         $sites->update();
         return redirect()->route('sites.main')
             ->with('success', 'Successfuly updated data');

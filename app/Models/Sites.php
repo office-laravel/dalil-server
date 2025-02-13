@@ -46,6 +46,9 @@ class Sites extends Model
         'city_id',
         'subcity_id',
         'user_id',
+        'package_user_id',
+        'used_products_count',
+
     ];
     /**
      * Get the user that owns the Sites
@@ -56,16 +59,28 @@ class Sites extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
-    public function country()
+    public function subcategory(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'subcategories');
+    }
+    public function country(): BelongsTo
     {
         return $this->belongsTo(Countries::class, 'countries_id');
+    }
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
+    public function subcity(): BelongsTo
+    {
+        return $this->belongsTo(Subcity::class, 'subcity_id');
     }
 
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
     }
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
@@ -73,8 +88,9 @@ class Sites extends Model
     {
         return $this->hasMany(Product::class, 'site_id');
     }
-
-
-
+    public function packageuser(): BelongsTo
+    {
+        return $this->belongsTo(PackageUser::class, 'package_user_id');
+    }
 
 }

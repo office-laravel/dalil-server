@@ -5,6 +5,7 @@ namespace App\Http\Controllers\dalil;
 use App\Http\Controllers\Controller;
 use App\Models\Adds;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\sitting;
 use App\Models\Countries;
 use App\Models\City;
@@ -195,9 +196,19 @@ class dalilController extends Controller
 
         $adds = Adds::first();
         $Settings = sitting::first();
-        $get_site_descr = Sites::with('country', 'category', 'tags')->select('id', 'site_name', 'href', 'title', 'description', 'keyword', 'category_id', 'countries_id', 'facebook', 'twitter', 'instagram', 'telegram')->where('id', $id)->where('confirmed', 1)->get();
+        $get_site_descr = Sites::with(['country', 'category', 'tags'])->where('id', $id)->where('confirmed', 1)->get();
         // dd($get_site_descr);
-        $get_categoryTo_descr = Sites::with(['country', 'category'])->select('id', 'category_id', 'countries_id', 'title')->where('id', $id)->where('confirmed', 1)->first();
+        $get_categoryTo_descr = Sites::with(['country', 'category', 'subcategory', 'city', 'subcity'])->select(
+            'id',
+            'category_id',
+            'countries_id',
+            'title',
+            'subcategories',
+            'city_id',
+            'subcity_id',
+            'user_id',
+        )->where('id', $id)->where('confirmed', 1)->first();
+
         $get_SupCategory = Sites::with(['country', 'category'])->select('id', 'category_id', 'countries_id', 'subcategories', 'title')->where('id', $id)->where('confirmed', 1)->first();
         $scategories = Category::where('parent_id', '!=', 0)->get();
         $get_site_descrr = Sites::with('country', 'category', 'tags')->select('id', 'site_name', 'href', 'description', 'title', 'facebook', 'twitter', 'instagram', 'snapchat', 'youtube', 'telegram')->where('id', $id)->where('confirmed', 1)->first();
@@ -207,15 +218,15 @@ class dalilController extends Controller
 
         $Sites = Sites::find($id);
         $country_id = $Sites->country_id;
-        $is_SetCountry = Countries::select('id', 'country_name', 'href', 'country_flag')->where('id', $country_id)->first();
-        //  $articaleSites = Sites::where('id', $id)->where('countries_id', $country_id)->where('confirmed', 1)->first();
-        $articaleSites = null;
+        $is_SetCountry = Countries::select('id', 'country_name', 'href', 'country_flag')->where('href', 'Syria')->first();
+        $articaleSites = Sites::where('id', $id)->where('confirmed', 1)->first();
+        //  $articaleSites = null;
         // $getCityName = City::where('id', $articaleSites->cities_id)->first();
         // $getNameCategory = Category::select('id', 'category_name', 'href')->where('id', $articaleSites->category_id)->first();
         //$getNameSubCategory = Category::select('id', 'category_name', 'href')->where('id', $articaleSites->subcategories)->first();
-        $getCityName = null;
-        $getNameCategory = null;
-        $getNameSubCategory = null;
+        $getCityName = $get_categoryTo_descr->city;
+        $getNameCategory = $get_categoryTo_descr->category;
+        $getNameSubCategory = $get_categoryTo_descr->subcategory;
         $country_names = Countries::select('id', 'country_name', 'country_flag', 'href')->get();
         $all_pinned_page = PinnedPages::get();
         $gg = Countries::select('id')->first();
@@ -230,6 +241,7 @@ class dalilController extends Controller
         // $getDataOfCompany = Sites::where('title')
         $viewsSit = Sites::select('id', 'title', 'views')->where('id', $id)->first();
         $getLatestCompany = Sites::select('id', 'logo', 'site_name', 'href', 'category_id', 'countries_id', 'views')->latest()->get();
+        $products = Product::where('site_id', $articaleSites->id)->orderByDesc('sequence')->get();
         // dd($ff);
         return view('dalil.describtion', compact([
             'getNameSubCategory',
@@ -252,7 +264,8 @@ class dalilController extends Controller
             'all_pinned_page',
             'selectCountry',
             'getTagTitle',
-            'getMetaDescr'
+            'getMetaDescr',
+            'products',
         ]));
         // return view('dalil.describtion' , compact([ 'scategories' ,'addss','get_site_descrr','country_namess','get_about_waslat','get_SupCategory','get_categoryTo_descr','title_descr','DataSittings' , 'country_names' , 'all_pinned_page' , 'get_site_descr']));
     }

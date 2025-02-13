@@ -17,19 +17,3 @@
 
     </div>
 </div>
-<div style="text-align: -webkit-center;">
-    <div class="col col-sm-12 col-md-8 col-lg-6  ">
-        <div class="input-group" dir="ltr">
-            <div class="input-group-prepend">
-                <button class="input-group-text btn btn-secondary " style="padding: 15px;margin: 0px"><i
-                        class="fa fa-sliders  fa-rotate-90" aria-hidden="true"></i></i></button>
-                <button class="input-group-text btn btn-primary"
-                    style="padding: 15px;background-color: #4991f5;border: 0; margin: 0px"><i
-                        class="fa-solid fa-magnifying-glass"></i></button>
-            </div>
-            <input type="text" dir="rtl" style="padding: 15px" class="form-control"
-                placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
-        </div>
-    </div>
-
-</div>

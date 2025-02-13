@@ -26,7 +26,7 @@ class Product extends Model
         'currency',
 
     ];
-
+    protected $appends = ['type_conv'];
     public function site(): BelongsTo
     {
         return $this->belongsTo(Sites::class, 'site_id');
@@ -35,4 +35,22 @@ class Product extends Model
     {
         return $this->belongsTo(Pcategory::class, 'category_p_id');
     }
+
+    public function getTypeConvAttribute()
+    {
+        $conv = "";
+        switch ($this->type) {
+            case ('p'):
+                $conv = 'منتج';
+                break;
+            case ('s'):
+                $conv = 'خدمة';
+                break;
+
+            default:
+                $conv = 'منتج';
+        }
+        return $conv;
+    }
+
 }

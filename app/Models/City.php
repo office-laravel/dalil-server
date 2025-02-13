@@ -26,4 +26,8 @@ class City extends Model
     {
         return $this->hasMany(Subcity::class, 'city_id');
     }
+    public function sites()
+    {
+        return $this->hasMany(Sites::class, 'city_id');
+    }
 }

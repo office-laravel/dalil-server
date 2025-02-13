@@ -1,7 +1,7 @@
 @extends('dash-board.layout.navabr&footer')
 
 @section('content')
-@include('dash-board.layout.sidebar')
+    @include('dash-board.layout.sidebar')
 
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg overflow-x-hidden">
         <!-- Navbar -->
@@ -26,8 +26,7 @@
                             </a>
                         </li>
                         <li class="nav-item d-flex align-items-center">
-                            <a href="{{route('admin.logout')}}"
-                                class="nav-link text-body font-weight-bold px-0 logout">
+                            <a href="{{ route('admin.logout') }}" class="nav-link text-body font-weight-bold px-0 logout">
                                 <i class="fa fa-user me-sm-1"></i>
                                 <span class="d-sm-inline d-none">تسجيل خروج</span>
                             </a>
@@ -47,7 +46,6 @@
         </div>
 
         @if (count($errors) > 0)
-
             <ul>
                 @foreach ($errors->all() as $item)
                     <li class="text-danger">
@@ -55,18 +53,18 @@
                     </li>
                 @endforeach
             </ul>
-
         @endif
 
         <div class="row backgroundW p-4 m-3">
             <div class="container">
                 <div class="sear d-flex justify-content-center">
-                <form id="searchthis" action="{{route('live_search.action')}}" style="display:inline;" method="get">
+                    <form id="searchthis" action="{{ route('live_search.action') }}" style="display:inline;" method="get">
 
-                    <input id="search" name="q" type="text" placeholder="ما الذي تبحث عنه؟" style="padding:7px; border-radius:9px; border: 1px solid #abab;">
-                    <!--<button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>-->
-                    <!--  -->
-                </form>
+                        <input id="search" name="q" type="text" placeholder="ما الذي تبحث عنه؟"
+                            style="padding:7px; border-radius:9px; border: 1px solid #abab;">
+                        <!--<button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>-->
+                        <!--  -->
+                    </form>
                 </div>
 
                 <div class="form-group btn-create">
@@ -79,35 +77,36 @@
                 <br>
                 <div class="d-flex justify-content-between w-100">
                     <div class="btn-group">
-                    <label for="">فلترة الدول:</label>
-                    <button class="dropdown-toggle tgle" id="bbb" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
+                        <label for="">فلترة الدول:</label>
+                        <button class="dropdown-toggle tgle" id="bbb" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
 
-                        @if(isset($country_namess))
-                            {{$country_namess->country_name}}
-                        @else
-                        رئيسية
-                        @endif
-                    </button>
+                            @if (isset($country_namess))
+                                {{ $country_namess->country_name }}
+                            @else
+                                رئيسية
+                            @endif
+                        </button>
 
-                    <div class="dropdown-menu">
-                        <ul class="listt" id ="drop_list">
-                            <a class="text-decoration-none text-dark mb-1"
-                                href="{{ route('sites.main') }}">
-                                <li id="eee" style="text-align: right; background-color: #fff;"> --- رئيسية ---</li>
-                            </a>
-                            @foreach ($country_names as $get_country)
-                            <a class="text-decoration-none text-dark mb-1"
-                                    href="{{route('getSitesCounttry' , [$get_country->id])}}" >
-                            <li id="eee" style="text-align: right">
-                                    {{$get_country->country_name}}
+                        <div class="dropdown-menu">
+                            <ul class="listt" id ="drop_list">
+                                <a class="text-decoration-none text-dark mb-1" href="{{ route('sites.main') }}">
+                                    <li id="eee" style="text-align: right; background-color: #fff;"> --- رئيسية ---
+                                    </li>
+                                </a>
+                                @foreach ($country_names as $get_country)
+                                    <a class="text-decoration-none text-dark mb-1"
+                                        href="{{ route('getSitesCounttry', [$get_country->id]) }}">
+                                        <li id="eee" style="text-align: right">
+                                            {{ $get_country->country_name }}
 
-                                </li></a>
-                            @endforeach
+                                        </li>
+                                    </a>
+                                @endforeach
 
-                        </ul>
+                            </ul>
 
-                    </div>
+                        </div>
 
                     </div>
                     <div class="btn-group">
@@ -115,25 +114,26 @@
                         <button class="dropdown-toggle tgle" id="bbb" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
 
-                            @if(isset($categorySet))
-                                {{$categorySet->category_name}}
+                            @if (isset($categorySet))
+                                {{ $categorySet->category_name }}
                             @else
-                            التصنيف
+                                التصنيف
                             @endif
                         </button>
                         <div class="dropdown-menu">
                             <ul class="listt" id ="drop_list">
-                                <a class="text-decoration-none text-dark mb-1"
-                                    href="{{ route('sites.main') }}">
-                                    <li id="eee" style="text-align: right; background-color: #fff;"> --- رئيسية ---</li>
+                                <a class="text-decoration-none text-dark mb-1" href="{{ route('sites.main') }}">
+                                    <li id="eee" style="text-align: right; background-color: #fff;"> --- رئيسية ---
+                                    </li>
                                 </a>
                                 @foreach ($categories as $get_cate)
-                                <a class="text-decoration-none text-dark mb-1"
-                                        href="{{route('getSitesCategory', [$get_cate->id])}}" >
-                                <li id="eee" style="text-align: right">
-                                        {{$get_cate->category_name}}
+                                    <a class="text-decoration-none text-dark mb-1"
+                                        href="{{ route('getSitesCategory', [$get_cate->id]) }}">
+                                        <li id="eee" style="text-align: right">
+                                            {{ $get_cate->category_name }}
 
-                                    </li></a>
+                                        </li>
+                                    </a>
                                 @endforeach
                             </ul>
                         </div>
@@ -149,6 +149,7 @@
                             <th scope="col">اسم الشركة</th>
                             <th scope="col">عدد الزوار</th>
                             <th scope="col">عنوان</th>
+                            <th scope="col">المنتجات</th>
                             <th scope="col">عمليات</th>
 
 
@@ -159,7 +160,6 @@
                             $i = 0;
                         @endphp
                         @isset($showSites)
-
                             @forelse ($showSites as $item)
                                 <tr>
                                     <th scope="row">{{ $item->id }}</th>
@@ -167,7 +167,7 @@
                                     <td>{{ $item->site_name }}</td>
                                     <td>{{ $item->views }}</td>
                                     <td>{{ $item->title }}</td>
-
+                                    <td> <a href="{{ route('admin.product', $item->id) }}"> المنتجات</a></td>
                                     <td style="width: 50px">
                                         <div class="row">
                                             <div class="col-sm-2">
@@ -184,15 +184,14 @@
 
                                     </td>
                                 </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" style="text-align:center;">لايوجد بيانات لعرضها</td>
-                                    </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" style="text-align:center;">لايوجد بيانات لعرضها</td>
+                                </tr>
                             @endforelse
                         @endisset
 
                         @isset($sites_show)
-
                             @foreach ($sites_show as $item)
                                 <tr>
                                     <th scope="row">{{ ++$i }}</th>
@@ -200,7 +199,7 @@
                                     <td>{{ $item->site_name }}</td>
                                     <td>{{ $item->views }}</td>
                                     <td>{{ $item->title }}</td>
-
+                                    <td><a href="{{ route('admin.product', $item->id) }}">المنتجات</a></td>
                                     <td style="width: 50px">
                                         <div class="row">
                                             <div class="col-sm-2">
@@ -224,10 +223,10 @@
                     <tbody id="mycard" class="searchData"></tbody>
                 </table>
             </div>
-            @if(isset($showSites))
-            {!! $showSites->appends(['sort' => 'votes'])->links() !!}
+            @if (isset($showSites))
+                {!! $showSites->appends(['sort' => 'votes'])->links() !!}
             @else
-            {!! $sites_show->appends(['sort' => 'votes'])->links() !!}
+                {!! $sites_show->appends(['sort' => 'votes'])->links() !!}
             @endif
         </div>
 
@@ -239,45 +238,41 @@
 
 
 @section('script')
-
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        $(window).keydown(function(event){
-            if(event.keyCode == 13) {
-              event.preventDefault();
-              return false;
-            }
-        });
-        $('#search').on('keyup', function(){
-            var value = $(this).val();
-            if(value){
-                $('.allData').hide();
-                $('.searchData').show();
-            }
-            else{
-                $('.allData').show();
-                $('.searchData').hide();
-            }
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(window).keydown(function(event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                    return false;
                 }
             });
-            $.ajax({
-                type: "get",
-                url: "{{ route('live_search.action') }}",
-                data: {'q':value},
-
-                success: function (data) {
-                    // console.log(data);
-                    $('#mycard').html(data);
+            $('#search').on('keyup', function() {
+                var value = $(this).val();
+                if (value) {
+                    $('.allData').hide();
+                    $('.searchData').show();
+                } else {
+                    $('.allData').show();
+                    $('.searchData').hide();
                 }
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "{{ route('live_search.action') }}",
+                    data: {
+                        'q': value
+                    },
+
+                    success: function(data) {
+                        // console.log(data);
+                        $('#mycard').html(data);
+                    }
+                });
             });
         });
-    });
-</script>
-
-
+    </script>
 @endsection
-

@@ -1,3 +1,5 @@
+
+
 var valid = true;
 var fail_msg = "فشلت العملية"
 var delmsg = "تم حذف الحساب بنجاح";
@@ -201,6 +203,63 @@ $(document).ready(function () {
 			alert('يرجى إدخال سعر صحيح');
 		}
 	});
+
+	//subscribe
+	//fill prices by package
+	$(document).on('change', '#package_id', function (e) {
+		var option = $(this).find(":selected").val();
+
+
+		if (option != 0) {
+			getduration(option);
+		}
+
+	});
+	function getduration(option) {
+		if (option == 0) {
+
+			resetSelect("#year");
+		} else {
+			var newurl = durationurl;
+			newurl = newurl.replace("ItemId", option);
+
+			$.ajax({
+				url: newurl,
+				type: "GET",
+				//	contentType: false,
+				//	processData: false,
+				//contentType: 'application/json',
+				success: function (data) {
+					if (data.length == 0) {
+						resetSelect("#year");
+					} else {
+						fillDurations(data);
+					}
+
+				}, error: function (errorresult) {
+
+				}
+			});
+		}
+
+	}
+	function resetSelect(selectId) {
+		var choose = "اختر المدة";
+
+		$(selectId).html('<option title="" value="0" >' + choose + '</option>');
+	}
+	function fillDurations(data) {
+		resetSelect("#year");
+		$.each(data, function (key, value) {
+
+			// if (selcity == value.id) {
+			// 	$("#city").append('<option selected value="' + value.id + '">' + value.name_ar + '</option>');
+
+			// } else {
+			$("#year").append('<option value="' + value.id + '" >' + value.duration.duration + ' (' + value.price + ')' + '</option>');
+			//}
+		}); // close each()'latitude', 'longitude',  data-lat="'+value.latitude+'" data-long="'+value.longitude+'"
+	}
 
 });
 

@@ -121,6 +121,16 @@ class SearchItemsController extends Controller
         // $companies = Company::get();
         return response()->json($companies);
     }
+
+    public function querybyid(Request $request)
+    {
+        $request->validate([
+            'id' => 'required'
+        ]);
+        $id = json_decode($request->id, true);
+        $company = Sites::with('category:id,icon,title')->select('id', 'category_id', 'subcategories', 'title', 'latitude', 'longitude', 'city_id', 'subcity_id')->find($id);
+        return response()->json($company);
+    }
     public function getsublist($id)
     {
         $subcities = Subcity::where('city_id', $id)->select('id', 'city_id', 'subname', 'latitude', 'longitude')
