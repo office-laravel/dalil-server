@@ -36,7 +36,7 @@ class PackageUser extends Model
         'ios',
         'views',
         'priority',
-        'map',
+        'maploc',
         'city',
         'sites_count',
         'products_count',

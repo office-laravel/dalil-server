@@ -12,6 +12,8 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
+
 class SubscribeController extends Controller
 {
   /**
@@ -67,33 +69,21 @@ class SubscribeController extends Controller
 
   public function admin_store(Request $request)
   {
-    /*
-'name',
-    'type',
-    'description',
-    'image',
-    'price',
-    'unit',
-    'status',
-    'sequence',
-    'tag',
-    'site_id',
-    'user_id',
-    'category_p_id',
-*/
+
     $formdata = $request->all();
     $validator = Validator::make(
       $request->all(),
       [
-        'name' => 'required',
-        'type' => 'required|not_in:0|in:p,s',
 
-        'price' => 'nullable|numeric',
-        'sequence' => 'nullable|integer',
+        'user_id' => 'required|not_in:0',
+
+        'package_id' => 'required|not_in:0',
+        'year' => 'required|not_in:0',
       ],
       [
-        'type.*' => 'هذا الحقل مطلوب',
-        'name.*' => 'هذا الحقل مطلوب',
+        'user_id.*' => 'هذا الحقل مطلوب',
+        'package_id.*' => 'هذا الحقل مطلوب',
+        'year.*' => 'هذا الحقل مطلوب',
       ]
     );
 
@@ -102,34 +92,44 @@ class SubscribeController extends Controller
       return response()->json(['errors' => $validator->errors()], 422);
     } else {
       // $d =explode(',' ,$request->countries);
+      $now = Carbon::now()->format('Y-m-d');
 
-
-      $newObj = new Package();
-      $newObj->name = $formdata['name'];
-      $newObj->type = $formdata['type'];
-      $newObj->description = $formdata['description'];
-
-      $newObj->price = $formdata['price'];
-      $newObj->currency = $formdata['currency'];
-      $newObj->unit = $formdata['unit'];
-      $newObj->status = 'wait';
-      $newObj->sequence = $formdata['sequence'];
-      // $newObj->tag = $formdata['tag'];
-      $newObj->site_id = $formdata['site_id'];
-      $newObj->user_id = Auth::check() ? Auth::user()->id : null;
-      //  $newObj->category_p_id = $formdata['category_p_id'];
-
+      $package = Package::find($formdata['package_id']);
+      $duration_p = DurationPackage::with('duration')->find($formdata['year']);
+      $newObj = new PackageUser();
+      $newObj->user_id = $formdata['user_id'];
+      $newObj->package_id = $formdata['package_id'];
+      $newObj->total_sites_count = $package->sites_count;
+      $newObj->used_sites_count = 0;
+      $newObj->name = $package->name;
+      $newObj->code = $package->code;
+      $newObj->href = $package->href;
+      $newObj->category = $package->category;
+      $newObj->title = $package->title;
+      $newObj->logo = $package->logo;
+      $newObj->mobile_number = $package->mobile_number;
+      $newObj->phone_number = $package->phone_number;
+      $newObj->video = $package->video;
+      $newObj->description = $package->description;
+      $newObj->articale = $package->articale;
+      $newObj->subcategories = $package->subcategories;
+      $newObj->keyword = $package->keyword;
+      $newObj->social = $package->social;
+      $newObj->android = $package->android;
+      $newObj->ios = $package->ios;
+      $newObj->views = $package->views;
+      $newObj->priority = $package->priority;
+      $newObj->maploc = $package->maploc;
+      $newObj->city = $package->city;
+      $newObj->sites_count = $package->sites_count;
+      $newObj->products_count = $package->products_count;
+      $newObj->price = $duration_p->price;
+      $newObj->is_free = $package->is_free;
+      $newObj->duration = $duration_p->duration->duration;
+      $newObj->start_date = $now;
+      $newObj->expire_date = Carbon::parse($now)->addYears($duration_p->duration->duration);
+      $newObj->duration_id = $duration_p->duration_id;
       $newObj->save();
-
-      if ($request->hasFile('image')) {
-        $time = $newObj->id . time() . '.webp';
-        // $ext = $request->file('image')->getClientOriginalExtension();
-        Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
-        // $newImageName = time(). '.' . $request->photo->extension();
-        $newObj->image = $time;
-        $newObj->update();
-      }
-
       return response()->json("ok");
 
     }
