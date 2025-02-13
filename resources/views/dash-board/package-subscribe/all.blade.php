@@ -10,7 +10,7 @@
             <div class="container-fluid py-1 px-3">
                 <nav aria-label="breadcrumb">
 
-                    <h6 class="font-weight-bolder mb-0"><a href="{{ route('sites.main') }}">الباقات</a>
+                    <h6 class="font-weight-bolder mb-0"><a href="{{ route('sites.main') }}">الاشتراكات</a>
 
                     </h6>
                 </nav>
@@ -70,7 +70,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">حذف الباقة</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">حذف الاشتراك</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
@@ -94,7 +94,7 @@
                         <!-- Button trigger modal -->
                         <div style="display: flex;justify-content: space-between; width:100%;">
                             <a href="{{ url('admin/package/create') }}" class="btn btn-success mb-3">
-                                اضافة باقة<i class="fa-solid fa-plus mx-1"></i>
+                                اضافة اشتراك<i class="fa-solid fa-plus mx-1"></i>
                             </a>
 
 
@@ -114,25 +114,27 @@
                                         <th scope="col">#</th>
                                         <th scope="col">الباقة</th>
                                         <th scope="col">الرمز </th>
-
+                                        <th scope="col">العضو </th>
+                                        <th scope="col">تاريخ الانتهاء </th>
                                         <th scope="col">تحكم</th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if ($packages)
-                                        @foreach ($packages as $package)
+                                    @if ($packageusers)
+                                        @foreach ($packageusers as $package)
                                             <tr>
                                                 <td>{{ $package->id }}</td>
                                                 <td>{{ $package->name }}</td>
                                                 <td>{{ $package->code }}</td>
-
+                                                <td>{{ $package->user->email }}</td>
+                                                <td>{{ $package->expire_date }}</td>
                                                 <td class="editt">
-                                                    <a href="{{ url('admin/package/edit', $package->id) }}"
+                                                    <a href="{{ url('admin/subscribe/edit', $package->id) }}"
                                                         class=" btn btn-primary btn-sm">تعديل</a>
                                                 </td>
                                                 <td>
-                                                    <form action="{{ url('admin/package/delete', $package->id) }}"
+                                                    <form action="{{ url('admin/subscribe/delete', $package->id) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
 
