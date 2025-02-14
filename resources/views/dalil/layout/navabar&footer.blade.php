@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     @if (isset($getMeta_descr_getcountry))
         <meta name="description"
             content="@isset($getMeta_descr_getcountry->meta_descr){{ $getMeta_descr_getcountry->meta_descr }}@endisset">
@@ -201,7 +202,7 @@
                     // echo $Y . '/' . $M . '/' . $D . '-';
                     // $ss = Hijri::DateIndicDigits('l - j F - Y');
                     echo '<p style="margin:0;text-align: end;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    margin-left: 7px;">' .
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        margin-left: 7px;">' .
                         $mydate .
                         '</p>';
                     ?>
