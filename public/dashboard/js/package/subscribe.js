@@ -1,28 +1,19 @@
+
+
 var valid = true;
 var fail_msg = "فشلت العملية"
 var delmsg = "تم حذف الحساب بنجاح";
 var success_msg = "تم الحفظ بنجاح";
 $(document).ready(function () {
 	//image sec
-	$(document).on('change', '#image', function () {
-		var file = this.files[0];
-		var imgTag = $('#imgshow');
-		if (file) {
-			var reader = new FileReader();
-			reader.onload = function (e) {
-				// عرض الصورة الجديدة
-				imgTag.attr('src', e.target.result);
-			}
-			reader.readAsDataURL(file);
-		}
-	});
+
 
 	$('.btn-submit').on('click', function (e) {
 		e.preventDefault();
 		// تحديث الـ textarea
-		if (CKEDITOR.instances.description) {
-			CKEDITOR.instances.description.updateElement();
-		}
+		// if (CKEDITOR.instances.description) {
+		// 	CKEDITOR.instances.description.updateElement();
+		// }
 		var formId = $(this).parents("form").attr('id');
 		sendform('#' + formId);
 
@@ -44,6 +35,7 @@ $(document).ready(function () {
 
 	function sendform(formid) {
 		ClearErrors();
+
 		var form = $(formid)[0];
 		var formData = new FormData(form);
 		urlval = $(formid).attr("action");
@@ -63,8 +55,6 @@ $(document).ready(function () {
 					noteSuccess();
 					resetForm(formid);
 
-				} else if (data == "no-limit") {
-					swal('تجاوزت الحد المسموح من المنتجات');
 				} else {
 					noteError();
 				}
@@ -83,14 +73,90 @@ $(document).ready(function () {
 			}
 		});
 	}
+	//price table
 
-	function resetForm(formid) {
 
-		jQuery(formid)[0].reset();
+	// حذف السطر عند الضغط على زر حذف
+
+
+
+
+
+
+
+	//subscribe
+	//fill prices by package
+	$(document).on('change', '#package_id', function (e) {
+		var option = $(this).find(":selected").val();
+
+
+		if (option != 0) {
+			getduration(option);
+		}
+
+	});
+
+	function getduration(option) {
+		if (option == 0) {
+
+			resetSelect("#year");
+		} else {
+			var newurl = durationurl;
+			newurl = newurl.replace("ItemId", option);
+
+			$.ajax({
+				url: newurl,
+				type: "GET",
+				//	contentType: false,
+				//	processData: false,
+				//contentType: 'application/json',
+				success: function (data) {
+					if (data.length == 0) {
+						resetSelect("#year");
+					} else {
+						fillDurations(data);
+					}
+
+				}, error: function (errorresult) {
+
+				}
+			});
+		}
 
 	}
+	function resetSelect(selectId) {
+		var choose = "اختر المدة";
+
+		$(selectId).html('<option title="" value="0" >' + choose + '</option>');
+	}
+	function fillDurations(data) {
+		resetSelect("#year");
+		$.each(data, function (key, value) {
+
+			if (selyear == value.id) {
+				$("#year").append('<option selected value="' + value.id + '">' + value.duration.duration + ' (' + value.price + ')' + '</option>');
+
+			} else {
+				$("#year").append('<option value="' + value.id + '" >' + value.duration.duration + ' (' + value.price + ')' + '</option>');
+			}
+		});
+	}
+
+	getduration(selpackage);
 
 });
+
+
+function resetForm(formid) {
+
+	jQuery(formid)[0].reset();
+
+}
+
+
+
+
+
 function noteSuccess() {
 	swal(success_msg);
 }

@@ -16,7 +16,10 @@ use App\Models\sitting;
 use App\Models\Countries;
 
 use App\Models\PinnedPages;
-
+use App\Models\Package;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\PackageUser;
 class ProductController extends Controller
 {
 
@@ -71,20 +74,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        /*
-'name',
-        'type',
-        'description',
-        'image',
-        'price',
-        'unit',
-        'status',
-        'sequence',
-        'tag',
-        'site_id',
-        'user_id',
-        'category_p_id',
-*/
+
         $formdata = $request->all();
         $validator = Validator::make(
             $request->all(),
@@ -107,35 +97,55 @@ class ProductController extends Controller
         } else {
             // $d =explode(',' ,$request->countries);
 
+            $site = Sites::find($formdata['site_id']);
+            $now = Carbon::now();
+            $packusr = PackageUser::where('user_id', $site->user_id)->whereDate('expire_date', '>=', $now)->orderByDesc('created_at')->first();
 
-            $newObj = new Product();
-            $newObj->name = $formdata['name'];
-            $newObj->type = $formdata['type'];
-            $newObj->description = $formdata['description'];
+            $available_sites_count = 0;
+            $used_products_count = $site->used_products_count ? $site->used_products_count : 0;
 
-            $newObj->price = $formdata['price'];
-            $newObj->currency = $formdata['currency'];
-            $newObj->unit = $formdata['unit'];
-            $newObj->status = 'wait';
-            $newObj->sequence = $formdata['sequence'];
-            // $newObj->tag = $formdata['tag'];
-            $newObj->site_id = $formdata['site_id'];
-            $newObj->user_id = Auth::check() ? Auth::user()->id : null;
-            //  $newObj->category_p_id = $formdata['category_p_id'];
+            if ($packusr) {
+                $total_products_count = $packusr->products_count;
+                //  $used_products_count = $packusr->used_sites_count;
+                $available_sites_count = $total_products_count - $used_products_count;
+            } else {
 
-            $newObj->save();
-
-            if ($request->hasFile('image')) {
-                $time = $newObj->id . time() . '.webp';
-                // $ext = $request->file('image')->getClientOriginalExtension();
-                Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
-                // $newImageName = time(). '.' . $request->photo->extension();
-                $newObj->image = $time;
-                $newObj->update();
+                $freepck = Package::where('is_free', 1)->orderByDesc('created_at')->first();
+                $total_products_count = $freepck->products_count;
+                $available_sites_count = $total_products_count - $used_products_count;
+                //  $isfree = 1;
             }
+            if ($available_sites_count <= 0) {
+                return response()->json("no-limit");
+            } else {
+                $newObj = new Product();
+                $newObj->name = $formdata['name'];
+                $newObj->type = $formdata['type'];
+                $newObj->description = $formdata['description'];
 
-            return response()->json("ok");
+                $newObj->price = $formdata['price'];
+                $newObj->currency = $formdata['currency'];
+                $newObj->unit = $formdata['unit'];
+                $newObj->status = 'wait';
+                $newObj->sequence = $formdata['sequence'];
+                // $newObj->tag = $formdata['tag'];
+                $newObj->site_id = $formdata['site_id'];
+                $newObj->user_id = Auth::check() ? Auth::user()->id : null;
+                //  $newObj->category_p_id = $formdata['category_p_id'];
 
+                $newObj->save();
+
+                if ($request->hasFile('image')) {
+                    $time = $newObj->id . time() . '.webp';
+                    // $ext = $request->file('image')->getClientOriginalExtension();
+                    Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
+                    // $newImageName = time(). '.' . $request->photo->extension();
+                    $newObj->image = $time;
+                    $newObj->update();
+                }
+
+                return response()->json("ok");
+            }
         }
 
     }
@@ -285,8 +295,11 @@ class ProductController extends Controller
             if (File::exists($pathImg)) {
                 File::delete($pathImg);
             }
-            Product::find($id)->delete();
+            $site = Sites::find($object->site_id);
 
+            Product::find($id)->delete();
+            //decrease used product
+            $site->used_products_count--;
         }
         return redirect()->back();
         // return  $this->index();
@@ -346,20 +359,7 @@ class ProductController extends Controller
 
     public function admin_store(Request $request)
     {
-        /*
-'name',
-        'type',
-        'description',
-        'image',
-        'price',
-        'unit',
-        'status',
-        'sequence',
-        'tag',
-        'site_id',
-        'user_id',
-        'category_p_id',
-*/
+
         $formdata = $request->all();
         $validator = Validator::make(
             $request->all(),
@@ -381,36 +381,58 @@ class ProductController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         } else {
             // $d =explode(',' ,$request->countries);
+            //  $user_id = $request->user_id ? $request->user_id : 0;
+            $site = Sites::find($formdata['site_id']);
+            $now = Carbon::now();
+            $packusr = PackageUser::where('user_id', $site->user_id)->whereDate('expire_date', '>=', $now)->orderByDesc('created_at')->first();
 
+            $available_sites_count = 0;
+            $used_products_count = $site->used_products_count ? $site->used_products_count : 0;
 
-            $newObj = new Product();
-            $newObj->name = $formdata['name'];
-            $newObj->type = $formdata['type'];
-            $newObj->description = $formdata['description'];
+            if ($packusr) {
+                $total_products_count = $packusr->products_count;
+                //  $used_products_count = $packusr->used_sites_count;
+                $available_sites_count = $total_products_count - $used_products_count;
+            } else {
 
-            $newObj->price = $formdata['price'];
-            $newObj->currency = $formdata['currency'];
-            $newObj->unit = $formdata['unit'];
-            $newObj->status = 'wait';
-            $newObj->sequence = $formdata['sequence'];
-            // $newObj->tag = $formdata['tag'];
-            $newObj->site_id = $formdata['site_id'];
-            $newObj->user_id = Auth::check() ? Auth::user()->id : null;
-            //  $newObj->category_p_id = $formdata['category_p_id'];
-
-            $newObj->save();
-
-            if ($request->hasFile('image')) {
-                $time = $newObj->id . time() . '.webp';
-                // $ext = $request->file('image')->getClientOriginalExtension();
-                Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
-                // $newImageName = time(). '.' . $request->photo->extension();
-                $newObj->image = $time;
-                $newObj->update();
+                $freepck = Package::where('is_free', 1)->orderByDesc('created_at')->first();
+                $total_products_count = $freepck->products_count;
+                $available_sites_count = $total_products_count - $used_products_count;
+                //  $isfree = 1;
             }
+            if ($available_sites_count <= 0) {
+                return response()->json("no-limit");
+            } else {
+                $newObj = new Product();
+                $newObj->name = $formdata['name'];
+                $newObj->type = $formdata['type'];
+                $newObj->description = $formdata['description'];
 
-            return response()->json("ok");
+                $newObj->price = $formdata['price'];
+                $newObj->currency = $formdata['currency'];
+                $newObj->unit = $formdata['unit'];
+                $newObj->status = 'wait';
+                $newObj->sequence = $formdata['sequence'];
+                // $newObj->tag = $formdata['tag'];
+                $newObj->site_id = $formdata['site_id'];
+                $newObj->user_id = Auth::check() ? Auth::user()->id : null;
+                //  $newObj->category_p_id = $formdata['category_p_id'];
 
+                $newObj->save();
+
+                if ($request->hasFile('image')) {
+                    $time = $newObj->id . time() . '.webp';
+                    // $ext = $request->file('image')->getClientOriginalExtension();
+                    Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
+                    // $newImageName = time(). '.' . $request->photo->extension();
+                    $newObj->image = $time;
+                    $newObj->update();
+                }
+                $site->used_products_count++;
+                $site->save();
+
+                return response()->json("ok");
+            }
         }
 
     }
@@ -553,15 +575,17 @@ class ProductController extends Controller
     {
 
         $object = Product::find($id);
-
         if (!($object === null)) {
             $pathImg = str_replace('\\', '/', public_path('picProduct/')) . $object->image;
 
             if (File::exists($pathImg)) {
                 File::delete($pathImg);
             }
-            Product::find($id)->delete();
 
+            $site = Sites::find($object->site_id);
+            Product::find($id)->delete();
+            //decrease used product
+            $site->used_products_count--;
         }
         return redirect()->back();
         // return  $this->index();

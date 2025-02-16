@@ -17,6 +17,7 @@ use App\Models\Tag;
 use App\Models\Sites_tag;
 use App\Models\News;
 use App\Models\FixedSitesMain;
+use App\Models\User;
 use Auth;
 use Illuminate\Support\Facades\DB;
 use Prophecy\Exception\Doubler\ReturnByReferenceException;
@@ -24,6 +25,7 @@ use Illuminate\Http\Request;
 
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use App\Http\Controllers\dashboard\SitesController;
 class dalilController extends Controller
 {
     public function index(Request $request)
@@ -366,6 +368,9 @@ class dalilController extends Controller
             ]
         );
         if ($valid) {
+            $sitectrlr = new SitesController();
+            $res_arr = $sitectrlr->checksites_count(Auth::user()->id);
+
             $latitude = null;
             $longitude = null;
             if ($request->input('latitude') && $request->input('longitude')) {
@@ -481,7 +486,9 @@ class dalilController extends Controller
 
             }
 
-
+            $res_arr[1]->used_sites_count++;
+            //$user->used_sites_count++;
+            $res_arr[1]->save();
 
             /*
                         return redirect()->route('sites.main')
@@ -624,7 +631,13 @@ class dalilController extends Controller
                 }
 
 
+                $user = User::find($sites->user_id);
                 $sites->delete();
+
+                if ($user) {
+                    $user->used_sites_count = $user->used_sites_count - 1;
+                    $user->save();
+                }
             }
         }
 

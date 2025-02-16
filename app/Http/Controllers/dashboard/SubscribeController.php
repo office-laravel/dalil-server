@@ -56,7 +56,7 @@ class SubscribeController extends Controller
     //   $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
     // $site = Sites::select('id', 'site_name', 'title', 'user_id')->find($site_id);
     $users = User::get();
-    $packages = Package::where('status', '1')->get();
+    $packages = Package::where('status', '1')->where('is_free', '!=', 1)->get();
     return view('dash-board.package-subscribe.create', compact('users', 'packages'));
   }
 
@@ -129,6 +129,7 @@ class SubscribeController extends Controller
       $newObj->start_date = $now;
       $newObj->expire_date = Carbon::parse($now)->addYears($duration_p->duration->duration);
       $newObj->duration_id = $duration_p->duration_id;
+      $newObj->duration_package_id = $duration_p->id;
       $newObj->save();
       return response()->json("ok");
 
@@ -182,41 +183,31 @@ class SubscribeController extends Controller
   }
 
 
-  public function edit($id)
+  public function admin_edit($id)
   {
-    $adds = Adds::first();
-    $all_pinned_page = PinnedPages::all();
-    $DataSittings = sitting::where("id", 1)->first();
-    $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
-
-    $product = Package::find($id);
-    $site = Sites::select('id', 'site_name', 'title', 'user_id')->find($product->site_id);
-    return view('dash-board.product.edit', compact(
-      'country_names',
-      'DataSittings',
-      'all_pinned_page',
-      'adds',
-      'site',
-      'product',
-    ));
+    $users = User::get();
+    $packages = Package::where('status', '1')->where('is_free', '!=', 1)->get();
+    $subscribe = PackageUser::find($id);
+    return view('dash-board.package-subscribe.edit', compact('users', 'packages', 'subscribe'));
   }
 
 
-  public function update(Request $request, $id)
+  public function admin_update(Request $request, $id)
   {
     $formdata = $request->all();
     $validator = Validator::make(
       $request->all(),
       [
-        'name' => 'required',
-        'type' => 'required|not_in:0|in:p,s',
 
-        'price' => 'nullable|numeric',
-        'sequence' => 'nullable|integer',
+        'user_id' => 'required|not_in:0',
+
+        'package_id' => 'required|not_in:0',
+        'year' => 'required|not_in:0',
       ],
       [
-        'type.*' => 'هذا الحقل مطلوب',
-        'name.*' => 'هذا الحقل مطلوب',
+        'user_id.*' => 'هذا الحقل مطلوب',
+        'package_id.*' => 'هذا الحقل مطلوب',
+        'year.*' => 'هذا الحقل مطلوب',
       ]
     );
 
@@ -225,42 +216,47 @@ class SubscribeController extends Controller
       return response()->json(['errors' => $validator->errors()], 422);
     } else {
       // $d =explode(',' ,$request->countries);
+      $now = Carbon::now()->format('Y-m-d');
 
-
-      $newObj = Package::find($id);
-      $newObj->name = $formdata['name'];
-      $newObj->type = $formdata['type'];
-      $newObj->description = $formdata['description'];
-
-      $newObj->price = $formdata['price'];
-      $newObj->currency = $formdata['currency'];
-      $newObj->unit = $formdata['unit'];
-      $newObj->status = 'wait';
-      $newObj->sequence = $formdata['sequence'];
-      // $newObj->tag = $formdata['tag'];
-      $newObj->site_id = $formdata['site_id'];
-      $newObj->user_id = Auth::check() ? Auth::user()->id : null;
-      //  $newObj->category_p_id = $formdata['category_p_id'];
-
+      $package = Package::find($formdata['package_id']);
+      $duration_p = DurationPackage::with('duration')->find($formdata['year']);
+      $newObj = PackageUser::find($id);
+      $newObj->user_id = $formdata['user_id'];
+      $newObj->package_id = $formdata['package_id'];
+      $newObj->total_sites_count = $package->sites_count;
+      $newObj->used_sites_count = 0;
+      $newObj->name = $package->name;
+      $newObj->code = $package->code;
+      $newObj->href = $package->href;
+      $newObj->category = $package->category;
+      $newObj->title = $package->title;
+      $newObj->logo = $package->logo;
+      $newObj->mobile_number = $package->mobile_number;
+      $newObj->phone_number = $package->phone_number;
+      $newObj->video = $package->video;
+      $newObj->description = $package->description;
+      $newObj->articale = $package->articale;
+      $newObj->subcategories = $package->subcategories;
+      $newObj->keyword = $package->keyword;
+      $newObj->social = $package->social;
+      $newObj->android = $package->android;
+      $newObj->ios = $package->ios;
+      $newObj->views = $package->views;
+      $newObj->priority = $package->priority;
+      $newObj->maploc = $package->maploc;
+      $newObj->city = $package->city;
+      $newObj->sites_count = $package->sites_count;
+      $newObj->products_count = $package->products_count;
+      $newObj->price = $duration_p->price;
+      $newObj->is_free = $package->is_free;
+      $newObj->duration = $duration_p->duration->duration;
+      $newObj->start_date = $now;
+      $newObj->expire_date = Carbon::parse($now)->addYears($duration_p->duration->duration);
+      $newObj->duration_id = $duration_p->duration_id;
+      $newObj->duration_package_id = $duration_p->id;
       $newObj->save();
-
-      if ($request->hasFile('image')) {
-
-        $pathImg = str_replace('\\', '/', public_path('picProduct/')) . $newObj->image;
-
-        if (File::exists($pathImg)) {
-          File::delete($pathImg);
-        }
-
-        $time = $newObj->id . time() . '.webp';
-        // $ext = $request->file('image')->getClientOriginalExtension();
-        Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
-        // $newImageName = time(). '.' . $request->photo->extension();
-        $newObj->image = $time;
-        $newObj->update();
-      }
-
       return response()->json("ok");
+
     }
   }
 
@@ -270,18 +266,18 @@ class SubscribeController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
+  public function admin_destroy($id)
   {
 
-    $object = Package::find($id);
+    $object = PackageUser::find($id);
 
     if (!($object === null)) {
-      $pathImg = str_replace('\\', '/', public_path('picProduct/')) . $object->image;
+      // $pathImg = str_replace('\\', '/', public_path('picProduct/')) . $object->image;
 
-      if (File::exists($pathImg)) {
-        File::delete($pathImg);
-      }
-      Package::find($id)->delete();
+      // if (File::exists($pathImg)) {
+      //   File::delete($pathImg);
+      // }
+      PackageUser::find($id)->delete();
 
     }
     return redirect()->back();

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Package;
 use App\Models\Sites;
 use App\Models\Tag;
 use App\Models\City;
 use App\Models\Sites_tag;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
 use App\Models\Countries;
@@ -15,6 +17,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 
 use App\Models\User;
+use App\Models\PackageUser;
 class SitesController extends Controller
 {
     public function __construct()
@@ -107,6 +110,7 @@ class SitesController extends Controller
                 'href' => 'required',
                 'countries_id' => 'nullable',
                 'category' => 'required',
+                'user_id' => 'required|not_in:""',
                 // 'subcategory'   => 'required',
                 'latitude' => 'nullable|numeric',
                 'longitude' => 'nullable|numeric',
@@ -119,128 +123,194 @@ class SitesController extends Controller
         );
 
         if ($valid) {
-            $latitude = null;
-            $longitude = null;
-            if ($request->input('latitude') && $request->input('longitude')) {
-                $latitude = $request->input('latitude');
-                $longitude = $request->input('longitude');
-            }
-            $city_id = null;
-            $subcity_id = null;
-            if ($request->input('city_id')) {
-                $city_id = $request->input('city_id');
 
-                if ($request->input('subcity')) {
-                    $subcity_id = $request->input('subcity');
-                }
-            }
+            //check count of sites
+            $user_id = $request->user_id;
+            $res_arr = $this->checksites_count($user_id);
+            /*
+                        $now = Carbon::now();
+                        $packusr = PackageUser::where('user_id', $user_id)->whereDate('expire_date', '>=', $now)->orderByDesc('created_at')->first();
 
-            if ($request->logo) {
-                $time = time();
-                $filePath = public_path('picCompany/' . $time . '.' . 'webp');
-                Image::make($request->file('logo')->getRealPath())->encode('webp', 100)->resize(228, 170)->save($filePath);
-                $savingPic = $time . '.' . 'webp';
+                        $available_sites_count = 0;
+                        //   $isfree = 0;
+                        $user = User::find($user_id);
+                        $used_sites_count = $user->used_sites_count ? $user->used_sites_count : 0;
+                        if ($packusr) {
+                            $total_sites_count = $packusr->total_sites_count;
+                            $used_sites_count = $packusr->used_sites_count;
+                            $available_sites_count = $total_sites_count - $used_sites_count;
 
-                $mydataSites = Sites::create([
-                    'site_name' => $request->input('site_name'),
-                    'href' => $request->input('href'),
-                    'title' => $request->input('title'),
-                    'description' => $request->input('description'),
-                    'articale' => $request->input('articale'),
-                    'countries_id' => $request->countries_id,
-                    'logo' => $savingPic,
-                    'cities_id' => $request->cities_id,
-                    'mobile_number' => $request->mobile_number,
-                    'phone_number' => $request->phone_number,
-                    'video' => $request->video,
-                    'keyword' => $request->input('keyword'),
+                        } else {
 
-                    'facebook' => $request->input('facebook'),
-                    'twitter' => $request->input('twitter'),
-                    'instagram' => $request->input('instagram'),
-                    'snapchat' => $request->input('snapchat'),
-                    'youtube' => $request->input('youtube'),
-                    'telegram' => $request->input('telegram'),
-                    'android' => $request->input('android'),
-                    'ios' => $request->input('ios'),
-                    'priority' => $request->input('priority'),
-                    'subcategories' => $request->subcategory ? $request->subcategory : 0,
-                    'category_id' => $request->category ? $request->category : 0,
-                    'latitude' => $latitude,
-                    'longitude' => $longitude,
-                    'city_id' => $city_id,
-                    'subcity_id' => $subcity_id,
-                    'user_id' => $request->user_id ? $request->user_id : null,
-                    // 'is_show_all_sites' => $request->all_sites ? true : false ,
-                ]);
-                // $tagg = [];
-                if ($request->tags) {
-                    foreach (explode(',', $request->tags) as $tagss) {
-                        $taggs = Tag::create([
-                            'name' => $tagss,
-
-                        ]);
-                        $mydataSites->tags()->attach($taggs);
-                    }
-                }
-
+                            $freepck = Package::where('is_free', 1)->orderByDesc('created_at')->first();
+                            $total_sites_count = $freepck->sites_count;
+                            $available_sites_count = $total_sites_count - $used_sites_count;
+                            //  $isfree = 1;
+                        }
+                        */
+            //   return dd($res_arr);
+            if ($res_arr[0] == 0) {
+                return redirect()->back()
+                    ->with('error', 'انتهى الحد المسموح');
             } else {
-                $mydataSites = Sites::create([
-                    'site_name' => $request->input('site_name'),
-                    'href' => $request->input('href'),
-                    'title' => $request->input('title'),
-                    'description' => $request->input('description'),
-                    'articale' => $request->input('articale'),
-                    'countries_id' => $request->countries_id,
-                    'logo' => Null,
-                    'cities_id' => $request->cities_id,
-                    'mobile_number' => $request->mobile_number,
-                    'phone_number' => $request->phone_number,
-                    'video' => $request->video,
-                    'keyword' => $request->input('keyword'),
+                $latitude = null;
+                $longitude = null;
+                if ($request->input('latitude') && $request->input('longitude')) {
+                    $latitude = $request->input('latitude');
+                    $longitude = $request->input('longitude');
+                }
+                $city_id = null;
+                $subcity_id = null;
+                if ($request->input('city_id')) {
+                    $city_id = $request->input('city_id');
 
-                    'facebook' => $request->input('facebook'),
-                    'twitter' => $request->input('twitter'),
-                    'instagram' => $request->input('instagram'),
-                    'snapchat' => $request->input('snapchat'),
-                    'youtube' => $request->input('youtube'),
-                    'telegram' => $request->input('telegram'),
-                    'android' => $request->input('android'),
-                    'ios' => $request->input('ios'),
-                    'priority' => $request->input('priority'),
-                    'subcategories' => $request->subcategory ? $request->subcategory : 0,
-                    'category_id' => $request->category ? $request->category : 0,
-                    'latitude' => $request->input('latitude'),
-                    'longitude' => $request->input('longitude'),
-                    'city_id' => $city_id,
-                    'subcity_id' => $subcity_id,
-                    // 'is_show_all_sites' => $request->all_sites ? true : false ,
-                ]);
-                // $tagg = [];
-                if ($request->tags) {
-                    foreach (explode(',', $request->tags) as $tagss) {
-                        $taggs = Tag::create([
-                            'name' => $tagss,
-
-                        ]);
-                        $mydataSites->tags()->attach($taggs);
+                    if ($request->input('subcity')) {
+                        $subcity_id = $request->input('subcity');
                     }
                 }
 
+                if ($request->logo) {
+                    $time = time();
+                    $filePath = public_path('picCompany/' . $time . '.' . 'webp');
+                    Image::make($request->file('logo')->getRealPath())->encode('webp', 100)->resize(228, 170)->save($filePath);
+                    $savingPic = $time . '.' . 'webp';
+
+                    $mydataSites = Sites::create([
+                        'site_name' => $request->input('site_name'),
+                        'href' => $request->input('href'),
+                        'title' => $request->input('title'),
+                        'description' => $request->input('description'),
+                        'articale' => $request->input('articale'),
+                        'countries_id' => $request->countries_id,
+                        'logo' => $savingPic,
+                        'cities_id' => $request->cities_id,
+                        'mobile_number' => $request->mobile_number,
+                        'phone_number' => $request->phone_number,
+                        'video' => $request->video,
+                        'keyword' => $request->input('keyword'),
+
+                        'facebook' => $request->input('facebook'),
+                        'twitter' => $request->input('twitter'),
+                        'instagram' => $request->input('instagram'),
+                        'snapchat' => $request->input('snapchat'),
+                        'youtube' => $request->input('youtube'),
+                        'telegram' => $request->input('telegram'),
+                        'android' => $request->input('android'),
+                        'ios' => $request->input('ios'),
+                        'priority' => $request->input('priority'),
+                        'subcategories' => $request->subcategory ? $request->subcategory : 0,
+                        'category_id' => $request->category ? $request->category : 0,
+                        'latitude' => $latitude,
+                        'longitude' => $longitude,
+                        'city_id' => $city_id,
+                        'subcity_id' => $subcity_id,
+                        'user_id' => $request->user_id ? $request->user_id : null,
+                        // 'is_show_all_sites' => $request->all_sites ? true : false ,
+                    ]);
+                    // $tagg = [];
+                    if ($request->tags) {
+                        foreach (explode(',', $request->tags) as $tagss) {
+                            $taggs = Tag::create([
+                                'name' => $tagss,
+
+                            ]);
+                            $mydataSites->tags()->attach($taggs);
+                        }
+                    }
+
+                } else {
+
+                    $mydataSites = Sites::create([
+                        'site_name' => $request->input('site_name'),
+                        'href' => $request->input('href'),
+                        'title' => $request->input('title'),
+                        'description' => $request->input('description'),
+                        'articale' => $request->input('articale'),
+                        'countries_id' => $request->countries_id,
+                        'logo' => Null,
+                        'cities_id' => $request->cities_id,
+                        'mobile_number' => $request->mobile_number,
+                        'phone_number' => $request->phone_number,
+                        'video' => $request->video,
+                        'keyword' => $request->input('keyword'),
+
+                        'facebook' => $request->input('facebook'),
+                        'twitter' => $request->input('twitter'),
+                        'instagram' => $request->input('instagram'),
+                        'snapchat' => $request->input('snapchat'),
+                        'youtube' => $request->input('youtube'),
+                        'telegram' => $request->input('telegram'),
+                        'android' => $request->input('android'),
+                        'ios' => $request->input('ios'),
+                        'priority' => $request->input('priority'),
+                        'subcategories' => $request->subcategory ? $request->subcategory : 0,
+                        'category_id' => $request->category ? $request->category : 0,
+                        'latitude' => $request->input('latitude'),
+                        'longitude' => $request->input('longitude'),
+                        'city_id' => $city_id,
+                        'subcity_id' => $subcity_id,
+                        'user_id' => $request->user_id ? $request->user_id : 0,
+                        // 'is_show_all_sites' => $request->all_sites ? true : false ,
+                    ]);
+                    // $tagg = [];
+                    if ($request->tags) {
+                        foreach (explode(',', $request->tags) as $tagss) {
+                            $taggs = Tag::create([
+                                'name' => $tagss,
+
+                            ]);
+                            $mydataSites->tags()->attach($taggs);
+                        }
+                    }
+
+                }
+
+                // if ($isfree != 1) {
+                //     // $packusr->used_sites_count++;
+                //     // $packusr->save();
+                // }
+                $res_arr[1]->used_sites_count++;
+                //$user->used_sites_count++;
+                $res_arr[1]->save();
+                return redirect()->route('sites.main')
+                    ->with('success', 'Successfuly added data');
             }
 
-
-
-
-            return redirect()->route('sites.main')
-                ->with('success', 'Successfuly added data');
         }
-
-
 
     }
 
+    public function checksites_count($user_id)
+    {
+        //check count of sites
+        $user_id = $user_id ? $user_id : 0;
+        $now = Carbon::now();
+        $packusr = PackageUser::where('user_id', $user_id)->whereDate('expire_date', '>=', $now)->orderByDesc('created_at')->first();
 
+        $available_sites_count = 0;
+        //   $isfree = 0;
+        $user = User::find($user_id);
+        $used_sites_count = $user->used_sites_count ? $user->used_sites_count : 0;
+        if ($packusr) {
+            $total_sites_count = $packusr->total_sites_count;
+
+            $available_sites_count = $total_sites_count - $used_sites_count;
+
+        } else {
+
+            $freepck = Package::where('is_free', 1)->orderByDesc('created_at')->first();
+            $total_sites_count = $freepck->sites_count;
+            $available_sites_count = $total_sites_count - $used_sites_count;
+            //  $isfree = 1;
+        }
+        $res = 0;
+        if ($available_sites_count <= 0) {
+            $res = 0;
+        } else {
+            $res = 1;
+        }
+        return [$res, $user];
+    }
     public function toShowSites()
     {
         $tags = Tag::all();
@@ -483,6 +553,8 @@ class SitesController extends Controller
     public function destroy(Sites $sites, $id)
     {
         $sites = Sites::find($id);
+        $user = User::find($sites->user_id);
+
         $getSites_id = DB::table('sites_tag')->where('sites_id', $id)->get();
         foreach ($getSites_id as $val) {
             DB::table('tags')->where('id', $val->tag_id)->delete();
@@ -495,7 +567,10 @@ class SitesController extends Controller
 
 
         $sites->delete();
-
+        if ($user) {
+            $user->used_sites_count = $user->used_sites_count - 1;
+            $user->save();
+        }
         // return redirect()->route('sites.main')
         //     ->with('success' , 'Successfuly deleted data');
         return redirect()->back();

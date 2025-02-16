@@ -365,8 +365,9 @@
     <script>
         var token = '{{ csrf_token() }}';
         var durationurl = "{{ url('subscribeyears/ItemId') }}";
+        var selyear = "0";
     </script>
-    <script src="{{ url('dashboard/js/package/package.js') }}"></script>
+    <script src="{{ url('dashboard/js/package/subscribe.js') }}"></script>
 @endsection
 @section('map-js')
 @endsection
