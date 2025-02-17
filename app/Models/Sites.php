@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use Carbon\Carbon;
 class Sites extends Model
 {
     use HasFactory;
@@ -92,5 +92,73 @@ class Sites extends Model
     {
         return $this->belongsTo(PackageUser::class, 'package_user_id');
     }
+    protected $appends = ['package'];
+    public function getPackageAttribute()
+    {
 
+        //check count of sites
+        $site_id = $this->id;
+        $now = Carbon::now();
+        $site = Sites::find($site_id);
+        $package = new Package();
+        if ($site->package_user_id) {
+            $packusr = PackageUser::where('id', $site->package_user_id)->whereDate('expire_date', '>=', $now)->first();
+            $package->name = $packusr->name;
+            $package->href = $packusr->href;
+            $package->category = $packusr->category;
+            $package->title = $packusr->title;
+            $package->logo = $packusr->logo;
+            $package->mobile_number = $packusr->mobile_number;
+            $package->phone_number = $packusr->phone_number;
+            $package->video = $packusr->video;
+            $package->description = $packusr->description;
+            $package->articale = $packusr->articale;
+            $package->subcategories = $packusr->subcategories;
+            $package->keyword = $packusr->keyword;
+            $package->social = $packusr->social;
+            $package->android = $packusr->android;
+            $package->ios = $packusr->ios;
+            //  $package->priority = isset($formdata['priority']) ? 1 : 0;
+            $package->maploc = $packusr->maploc;
+            $package->city = $packusr->city;
+
+            $package->sites_count = $packusr->sites_count;
+            $package->products_count = $packusr->products_count;
+            // $package->price = $formdata['price'];
+            $package->is_free = 0;
+
+        } else {
+            //free
+            $packusr = Package::where('is_free', 1)->orderByDesc('created_at')->first();
+            $package->name = $packusr->name;
+            $package->href = $packusr->href;
+            $package->category = $packusr->category;
+            $package->title = $packusr->title;
+            $package->logo = $packusr->logo;
+            $package->mobile_number = $packusr->mobile_number;
+            $package->phone_number = $packusr->phone_number;
+            $package->video = $packusr->video;
+            $package->description = $packusr->description;
+            $package->articale = $packusr->articale;
+            $package->subcategories = $packusr->subcategories;
+            $package->keyword = $packusr->keyword;
+            $package->social = $packusr->social;
+            $package->android = $packusr->android;
+            $package->ios = $packusr->ios;
+
+            //  $package->priority = isset($formdata['priority']) ? 1 : 0;
+            $package->maploc = $packusr->maploc;
+            $package->city = $packusr->city;
+
+            $package->sites_count = $packusr->sites_count;
+            $package->products_count = $packusr->products_count;
+            // $package->price = $formdata['price'];
+            $package->is_free = 1;
+            //  $isfree = 1;
+        }
+        $res = 0;
+
+        return $package;
+
+    }
 }

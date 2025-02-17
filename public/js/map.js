@@ -52,12 +52,14 @@ $(document).ready(function () {
 				setUserLocation(position.coords.latitude, position.coords.longitude);
 			},
 			function () {
+				var url = 'https://api.ipgeolocation.io/ipgeo?apiKey=017f861c64cb4f9885c36061ccdf1eee&fields=geo&excludes=continent_code,continent_name';
 				//	console.log("تعذر الحصول على الموقع من المتصفح، سيتم استخدام عنوان IP بدلاً من ذلك.");
 
 				// في حالة الفشل، نحاول استخدام IP
-				$.getJSON('http://ip-api.com/json/', function (data) {
-					if (data.status === "success") {
-						setUserLocation(data.lat, data.lon);
+				//	$.getJSON('http://ip-api.com/json/', function (data) {
+				$.getJSON(url, function (data) {
+					if (data) {
+						setUserLocation(data.latitude, data.longitude);
 					} else {
 						//	console.log("تعذر الحصول على الموقع عبر عنوان IP.");
 					}

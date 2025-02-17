@@ -75,6 +75,8 @@ class SearchItemsController extends Controller
         //$companies = Company::where('category', $request->category)
         $companies_query = Sites::whereBetween('latitude', [$bounds['south'], $bounds['north']])
             ->whereBetween('longitude', [$bounds['west'], $bounds['east']])->with('category:id,icon,title');
+
+
         //city + subcity
         if ($city_id && $city_id > 0) {
             $companies_query = $companies_query->where('city_id', $city_id);
@@ -116,8 +118,11 @@ class SearchItemsController extends Controller
             //site_name
         }
 
-        $companies = $companies_query->select('id', 'category_id', 'subcategories', 'title', 'latitude', 'longitude', 'city_id', 'subcity_id')->get();
-
+        $companies = $companies_query->select('id', 'category_id', 'subcategories', 'title', 'latitude', 'longitude', 'city_id', 'subcity_id', 'package_user_id')->get();
+        $companies = $companies->where('package.maploc', 1);
+        $companies = $companies->filter(function ($item) {
+            return $item->package->maploc = 1;
+        });
         // $companies = Company::get();
         return response()->json($companies);
     }

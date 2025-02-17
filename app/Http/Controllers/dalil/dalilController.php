@@ -255,8 +255,8 @@ class dalilController extends Controller
             $package->sites_count = $packusr->sites_count;
             $package->products_count = $packusr->products_count;
             // $package->price = $formdata['price'];
-            $package->is_free = 0;
-            //  $isfree = 1;
+            $package->is_free = 1;
+
         }
         $res = 0;
 

@@ -7,49 +7,47 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
     @if (isset($getMeta_descr_getcountry))
-        <meta name="description"
-            content="@isset($getMeta_descr_getcountry->meta_descr){{ $getMeta_descr_getcountry->meta_descr }}@endisset">
+    <meta name="description"
+        content="@isset($getMeta_descr_getcountry->meta_descr){{ $getMeta_descr_getcountry->meta_descr }}@endisset">
     @elseif (isset($getMetaDescr))
-        <meta name="description" content="@isset($getMetaDescr){{ $getMetaDescr->description }}@endisset">
+    <meta name="description" content="@isset($getMetaDescr){{ $getMetaDescr->description }}@endisset">
     @else
-        <meta name="description" content="@isset($Settings){{ $Settings->Description }}@endisset">
+    <meta name="description" content="@isset($Settings){{ $Settings->Description }}@endisset">
     @endif
     @if (isset($getMeta_descr_getcountry))
-        <meta property="og:description"
-            content="@isset($getMeta_descr_getcountry){{ $getMeta_descr_getcountry->meta_descr }}@endisset">
+    <meta property="og:description"
+        content="@isset($getMeta_descr_getcountry){{ $getMeta_descr_getcountry->meta_descr }}@endisset">
     @elseif (isset($getMetaDescr))
-        <meta property="og:description"
-            content="@isset($getMetaDescr){{ $getMetaDescr->description }}@endisset">
+    <meta property="og:description" content="@isset($getMetaDescr){{ $getMetaDescr->description }}@endisset">
     @else
-        <meta property="og:description"
-            content="@isset($Settings){{ $Settings->Description }}@endisset">
+    <meta property="og:description" content="@isset($Settings){{ $Settings->Description }}@endisset">
     @endif
     <meta property="og:url" content="@isset($Settings){{ $Settings->linkWebsite }}@endisset">
     @if (isset($Settings))
-        <meta name="keywords" content="@isset($Settings){{ $Settings->Keywords }}@endisset">
+    <meta name="keywords" content="@isset($Settings){{ $Settings->Keywords }}@endisset">
     @endif
     @isset($Settings->socialMidialinkden)
-        <meta property="og:url" content="{{ $Settings->socialMidialinkden }}" />
+    <meta property="og:url" content="{{ $Settings->socialMidialinkden }}" />
     @endisset
     @isset($Settings->socialMidiaYoutube)
-        <meta property="og:url" content="{{ $Settings->socialMidiaYoutube }}" />
+    <meta property="og:url" content="{{ $Settings->socialMidiaYoutube }}" />
     @endisset
     @isset($Settings->socialMidiaInstagram)
-        <meta property="og:url" content="{{ $Settings->socialMidiaInstagram }}" />
+    <meta property="og:url" content="{{ $Settings->socialMidiaInstagram }}" />
     @endisset
     @isset($Settings->socialMidiaFacebook)
-        <meta property="og:url" content="{{ $Settings->socialMidiaFacebook }}" />
+    <meta property="og:url" content="{{ $Settings->socialMidiaFacebook }}" />
     @endisset
     @isset($Settings->socialMidiaTelegram)
-        <meta property="og:url" content="{{ $Settings->socialMidiaTelegram }}" />
+    <meta property="og:url" content="{{ $Settings->socialMidiaTelegram }}" />
     @endisset
     @isset($Settings->favicon)
-        <link rel="icon" type="image/x-icon" href="{{ url('/public/uploading/' . $Settings->favicon) }}">
+    <link rel="icon" type="image/x-icon" href="{{ url('/public/uploading/' . $Settings->favicon) }}">
     @endisset
     @isset($Settings->favicon)
-        <meta property="og:image" content="{{ url('/public/uploading/' . $Settings->favicon) }}">
+    <meta property="og:image" content="{{ url('/public/uploading/' . $Settings->favicon) }}">
     @endisset
     <!-- Bootstrap CSS -->
     <link rel=dns-prefetch>
@@ -74,44 +72,44 @@
     <!-- Map End -->
     <title>
         @if (isset($Settings) &&
-                empty($titleNewSites) &&
-                empty($titleSearch) &&
-                empty($titleVisit) &&
-                empty($titleNewsMeta) &&
-                empty($country) &&
-                empty($getMeta) &&
-                empty($getTagTitle) &&
-                empty($getTitle_About) &&
-                empty($getCountryNameofSubCat->country_name) &&
-                empty($getCountryNameofSubCat) &&
-                empty($tagSam->name))
-            {{ $Settings->nameWebsite }}
+        empty($titleNewSites) &&
+        empty($titleSearch) &&
+        empty($titleVisit) &&
+        empty($titleNewsMeta) &&
+        empty($country) &&
+        empty($getMeta) &&
+        empty($getTagTitle) &&
+        empty($getTitle_About) &&
+        empty($getCountryNameofSubCat->country_name) &&
+        empty($getCountryNameofSubCat) &&
+        empty($tagSam->name))
+        {{ $Settings->nameWebsite }}
         @elseif (isset($country) && isset($Settings))
-            وصلات {{ $country->country_name }}..{{ $country->title }}
+        وصلات {{ $country->country_name }}..{{ $country->title }}
         @elseif(isset($getMeta) && isset($Settings))
-            @if ($getMeta->parent_id == 0)
-                وصلات {{ $getCountryNameofSubCat->country_name }} - {{ $getMeta->category_name }}
-            @endif
+        @if ($getMeta->parent_id == 0)
+        وصلات {{ $getCountryNameofSubCat->country_name }} - {{ $getMeta->category_name }}
+        @endif
         @elseif (isset($getTagTitle))
-            {{ $getTagTitle->site_name }}
+        {{ $getTagTitle->site_name }}
         @elseif (isset($getTitle_About))
-            {{ $getTitle_About->title }}
+        {{ $getTitle_About->title }}
         @elseif (isset($tagSam))
-            {{ $tagSam->name }}
+        {{ $tagSam->name }}
         @elseif (isset($titleNewsMeta))
-            {{ $titleNewsMeta->title }}
+        {{ $titleNewsMeta->title }}
         @elseif (isset($titleVisit))
-            {{ $titleVisit }}
+        {{ $titleVisit }}
         @elseif (isset($titleSearch))
-            {{ $titleSearch }}
+        {{ $titleSearch }}
         @elseif (isset($titleNewSites))
-            {{ $titleNewSites }}
+        {{ $titleNewSites }}
         @else
-            {{ 'وصلات - مفضلتي' }}
+        {{ 'وصلات - مفضلتي' }}
         @endif
     </title>
     @isset($adds)
-        {!! $adds->atHead !!}
+    {!! $adds->atHead !!}
     @endisset
 </head>
 
@@ -142,21 +140,21 @@
                 <div class="main-nav" style="width: 12rem">
                     <div class="btn-group">
 
-                        <button class="btn btn-sm dropdown-toggle" id="bbb" type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-sm dropdown-toggle" id="bbb" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
 
                             @if (isset($is_SetCountry))
-                                <img src="{{ url('public/uploading/' . $is_SetCountry->country_flag) }}"
-                                    alt="{{ $is_SetCountry->country_name }}"
-                                    style="margin-left:5px;width:16px;height:11px;" loading="lazy">
-                                {{ $is_SetCountry->country_name }}
+                            <img src="{{ url('public/uploading/' . $is_SetCountry->country_flag) }}"
+                                alt="{{ $is_SetCountry->country_name }}" style="margin-left:5px;width:16px;height:11px;"
+                                loading="lazy">
+                            {{ $is_SetCountry->country_name }}
                             @elseif (isset($selectCountry->country))
-                                <img src="{{ url('public/uploading/' . $selectCountry->country->country_flag) }}"
-                                    alt="{{ $selectCountry->country->country_name }}"
-                                    style="margin-left:5px;width:16px;height:11px;" loading="lazy">
-                                {{ $selectCountry->country->country_name }}
+                            <img src="{{ url('public/uploading/' . $selectCountry->country->country_flag) }}"
+                                alt="{{ $selectCountry->country->country_name }}"
+                                style="margin-left:5px;width:16px;height:11px;" loading="lazy">
+                            {{ $selectCountry->country->country_name }}
                             @else
-                                اختر الدولة
+                            اختر الدولة
                             @endif
 
                         </button>
@@ -164,15 +162,14 @@
                         <div class="dropdown-menu" style="z-index:999999;">
                             <ul class="list" id="drop_list">
                                 @foreach ($country_names as $get_country)
-                                    <li id="eee">
-                                        <img src="{{ url('public/uploading/' . $get_country->country_flag) }}"
-                                            alt="{{ $get_country->country_name }}" style="margin-left:5px"
-                                            loading="lazy">
-                                        <a class="text-decoration-none text-dark mb-1"
-                                            href="{{ route('reload', [$get_country->href]) }}">
-                                            {{ $get_country->country_name }}</a>
+                                <li id="eee">
+                                    <img src="{{ url('public/uploading/' . $get_country->country_flag) }}"
+                                        alt="{{ $get_country->country_name }}" style="margin-left:5px" loading="lazy">
+                                    <a class="text-decoration-none text-dark mb-1"
+                                        href="{{ route('reload', [$get_country->href]) }}">
+                                        {{ $get_country->country_name }}</a>
 
-                                    </li>
+                                </li>
                                 @endforeach
 
                             </ul>
@@ -198,7 +195,7 @@
                     $M = date('m');
                     $ss = Hijri::DateIndicDigits('l');
                     $mydate = $ss . ' - ' . $Y . '/' . $M . '/' . $D;
-                    
+
                     // echo $Y . '/' . $M . '/' . $D . '-';
                     // $ss = Hijri::DateIndicDigits('l - j F - Y');
                     echo '<p style="margin:0;text-align: end;
@@ -210,11 +207,10 @@
                     {{-- <div class="icon-barr">
                         <span class="icon-home">
                             @isset($get_about_waslat)
-                                <a
-                                    href="{{ route('about-dalil', [$get_about_waslat->href, $get_about_waslat->id]) }}">
-                                    <i class="fa-solid fa-house"></i>
-                                    اجعلنا صفحتك الرئيسية
-                                </a>
+                            <a href="{{ route('about-dalil', [$get_about_waslat->href, $get_about_waslat->id]) }}">
+                                <i class="fa-solid fa-house"></i>
+                                اجعلنا صفحتك الرئيسية
+                            </a>
                             @endisset
                         </span>
                     </div> --}}
@@ -226,17 +222,16 @@
                             </a>
                         </span>
                         @if (Auth::check())
-                            <div class="profile" id="clicked_pro" onclick="myFunction()">
-                                <img src="{{ url('/public/upload/icon-person.png') }}" width="20"
-                                    alt="">
-                            </div>
+                        <div class="profile" id="clicked_pro" onclick="myFunction()">
+                            <img src="{{ url('/public/upload/icon-person.png') }}" width="20" alt="">
+                        </div>
                         @else
-                            <span class="icon-home">
-                                <a href="{{ route('loginu') }}">
-                                    <i class="fa-solid fa-right-to-bracket"></i>
-                                    حسابي
-                                </a>
-                            </span>
+                        <span class="icon-home">
+                            <a href="{{ route('loginu') }}">
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                                حسابي
+                            </a>
+                        </span>
                         @endif
 
                         <ul class="list-unstyled listli d-none" id="ul-list">
@@ -272,26 +267,26 @@
         <div class="container l-wrap t-c d-inline-flex justify-content-center edit-footer">
             @isset($all_pinned_page)
 
-                <ul class="box-fot no-hover">
-                    <li><a href="{{ route('news.all') }}">المقالات</a><b class="space"></b></li>
-                    <li><a href="{{ route('new.site') }}">أحدث المواقع</a><b class="space"></b></li>
-                    <li><a href="{{ route('visits') }}">المواقع الأكثر زيارة</a><b class="space"></b></li>
-                    @foreach ($all_pinned_page as $get_pinned)
-                        <li><a href="{{ route('about-dalil', [$get_pinned->href]) }}">{{ $get_pinned->page_name }}</a><b
-                                class="space"></b></li>
-                    @endforeach
-                </ul>
-                <br>
+            <ul class="box-fot no-hover">
+                <li><a href="{{ route('news.all') }}">المقالات</a><b class="space"></b></li>
+                <li><a href="{{ route('new.site') }}">أحدث المواقع</a><b class="space"></b></li>
+                <li><a href="{{ route('visits') }}">المواقع الأكثر زيارة</a><b class="space"></b></li>
+                @foreach ($all_pinned_page as $get_pinned)
+                <li><a href="{{ route('about-dalil', [$get_pinned->href]) }}">{{ $get_pinned->page_name }}</a><b
+                        class="space"></b></li>
+                @endforeach
+            </ul>
+            <br>
 
 
 
             @endisset
         </div>
         @php
-            use App\Models\Sites;
+        use App\Models\Sites;
 
-            $countSites = Sites::count();
-            $countVisits = Sites::select('views')->sum('views');
+        $countSites = Sites::count();
+        $countVisits = Sites::select('views')->sum('views');
 
         @endphp
         <div class="visit_and_sites text-center d-flex flex-wrap justify-content-center" style="color:#777;">
@@ -300,7 +295,9 @@
             <p>عدد المواقع: {{ $countSites }}</p>
         </div>
         <div style="color: #595959">
-            {{ 'كل المعلومات المقدمة في موقع وصلات من روابط مواقع ، صور ، فيديو ، لوجوهات ، وأيقونات الخ ، بانها ملكاً للغير ولا تنتمى بأي شكل من الأشكال لملكية شركة السورية لخدمات الانترنت وموقع وصلات بإستثناء لوجو وأيقون وصلات.' }}
+            {{ 'كل المعلومات المقدمة في موقع وصلات من روابط مواقع ، صور ، فيديو ، لوجوهات ، وأيقونات الخ ، بانها ملكاً
+            للغير ولا تنتمى بأي شكل من الأشكال لملكية شركة السورية لخدمات الانترنت وموقع وصلات بإستثناء لوجو وأيقون
+            وصلات.' }}
         </div>
     </div>
 
@@ -309,15 +306,16 @@
 
     <!-- Map -->
     <script src="{{ url('/public/js/jquery-3.7.1.min.js') }}"></script>
-    {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    {{--
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-    </script> --}}
+        </script> --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-    </script>
+        </script>
 
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
@@ -327,16 +325,19 @@
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     <script src="{{ url('/public/FrontStyle/css/js/script.js') }}"></script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+    {{--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous">
-    </script> --}}
+        </script> --}}
 
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
+    {{--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> --}}
+    {{--
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> --}}
     <!--<script src="https://code.jquery.com/jquery-3.6.0.js"></script>-->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="{{ url('/public/ckeditor/ckeditor.js') }}"></script>
@@ -345,14 +346,14 @@
 
 
     @if (session('success'))
-        <script>
-            swal("{{ session('success') }}");
-        </script>
+    <script>
+        swal("{{ session('success') }}");
+    </script>
     @endif
     @if (session('pass'))
-        <script>
-            swal("تمت العملية بنجاح", "بامكانك الدخول الى حسابك", "success");
-        </script>
+    <script>
+        swal("تمت العملية بنجاح", "بامكانك الدخول الى حسابك", "success");
+    </script>
     @endif
     <script>
         // let theBtn = document.querySelector("#bbb"),
