@@ -5,6 +5,7 @@ namespace App\Http\Controllers\dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\DurationPackage;
 use App\Models\PackageUser;
+use App\Models\Sites;
 use Illuminate\Http\Request;
 use App\Models\Package;
 use App\Models\User;
@@ -131,6 +132,8 @@ class SubscribeController extends Controller
       $newObj->duration_id = $duration_p->duration_id;
       $newObj->duration_package_id = $duration_p->id;
       $newObj->save();
+      //update sites with new package_user_id
+      Sites::where('user_id', $newObj->user_id)->update(['package_user_id' => $newObj->id]);
       return response()->json("ok");
 
     }
@@ -277,6 +280,7 @@ class SubscribeController extends Controller
       // if (File::exists($pathImg)) {
       //   File::delete($pathImg);
       // }
+      Sites::where('package_user_id', $object->id)->update(['package_user_id' => null]);
       PackageUser::find($id)->delete();
 
     }

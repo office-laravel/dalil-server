@@ -18,6 +18,9 @@ use App\Models\Sites_tag;
 use App\Models\News;
 use App\Models\FixedSitesMain;
 use App\Models\User;
+use App\Models\PackageUser;
+use App\Models\Package;
+use Carbon\Carbon;
 use Auth;
 use Illuminate\Support\Facades\DB;
 use Prophecy\Exception\Doubler\ReturnByReferenceException;
@@ -193,9 +196,76 @@ class dalilController extends Controller
         ]));
         // return view('dalil.describtion' , compact([ 'scategories' ,'addss','get_site_descrr','country_namess','get_about_waslat','get_SupCategory','get_categoryTo_descr','title_descr','DataSittings' , 'country_names' , 'all_pinned_page' , 'get_site_descr']));
     }
+    public function checksites_package($site_id)
+    {
+        //check count of sites
+
+        $now = Carbon::now();
+        $site = Sites::find($site_id);
+        $package = new Package();
+        if ($site->package_user_id) {
+            $packusr = PackageUser::where('id', $site->package_user_id)->whereDate('expire_date', '>=', $now)->first();
+            $package->name = $packusr->name;
+            $package->href = $packusr->href;
+            $package->category = $packusr->category;
+            $package->title = $packusr->title;
+            $package->logo = $packusr->logo;
+            $package->mobile_number = $packusr->mobile_number;
+            $package->phone_number = $packusr->phone_number;
+            $package->video = $packusr->video;
+            $package->description = $packusr->description;
+            $package->articale = $packusr->articale;
+            $package->subcategories = $packusr->subcategories;
+            $package->keyword = $packusr->keyword;
+            $package->social = $packusr->social;
+            $package->android = $packusr->android;
+            $package->ios = $packusr->ios;
+            //  $package->priority = isset($formdata['priority']) ? 1 : 0;
+            $package->maploc = $packusr->maploc;
+            $package->city = $packusr->city;
+
+            $package->sites_count = $packusr->sites_count;
+            $package->products_count = $packusr->products_count;
+            // $package->price = $formdata['price'];
+            $package->is_free = 0;
+
+        } else {
+            //free
+            $packusr = Package::where('is_free', 1)->orderByDesc('created_at')->first();
+            $package->name = $packusr->name;
+            $package->href = $packusr->href;
+            $package->category = $packusr->category;
+            $package->title = $packusr->title;
+            $package->logo = $packusr->logo;
+            $package->mobile_number = $packusr->mobile_number;
+            $package->phone_number = $packusr->phone_number;
+            $package->video = $packusr->video;
+            $package->description = $packusr->description;
+            $package->articale = $packusr->articale;
+            $package->subcategories = $packusr->subcategories;
+            $package->keyword = $packusr->keyword;
+            $package->social = $packusr->social;
+            $package->android = $packusr->android;
+            $package->ios = $packusr->ios;
+
+            //  $package->priority = isset($formdata['priority']) ? 1 : 0;
+            $package->maploc = $packusr->maploc;
+            $package->city = $packusr->city;
+
+            $package->sites_count = $packusr->sites_count;
+            $package->products_count = $packusr->products_count;
+            // $package->price = $formdata['price'];
+            $package->is_free = 0;
+            //  $isfree = 1;
+        }
+        $res = 0;
+
+        return $package;
+    }
     public function showby_id($id)
     {
-
+        $package = $this->checksites_package($id);
+        //   return response()->json($package);
         $adds = Adds::first();
         $Settings = sitting::first();
         $get_site_descr = Sites::with(['country', 'category', 'tags'])->where('id', $id)->where('confirmed', 1)->get();
@@ -268,6 +338,7 @@ class dalilController extends Controller
             'getTagTitle',
             'getMetaDescr',
             'products',
+            'package',
         ]));
         // return view('dalil.describtion' , compact([ 'scategories' ,'addss','get_site_descrr','country_namess','get_about_waslat','get_SupCategory','get_categoryTo_descr','title_descr','DataSittings' , 'country_names' , 'all_pinned_page' , 'get_site_descr']));
     }
@@ -370,7 +441,7 @@ class dalilController extends Controller
         if ($valid) {
             $sitectrlr = new SitesController();
             $res_arr = $sitectrlr->checksites_count(Auth::user()->id);
-
+            $package_user_id = $res_arr[2];
             $latitude = null;
             $longitude = null;
             if ($request->input('latitude') && $request->input('longitude')) {
@@ -428,6 +499,8 @@ class dalilController extends Controller
                     'longitude' => $longitude,
                     'city_id' => $city_id,
                     'subcity_id' => $subcity_id,
+                    'user_id' => Auth::user()->id,
+                    'package_user_id' => $package_user_id,
                     // 'is_show_all_sites' => $request->all_sites ? true : false ,
                 ]);
                 // $tagg = [];
@@ -472,6 +545,9 @@ class dalilController extends Controller
                     'longitude' => $longitude,
                     'city_id' => $city_id,
                     'subcity_id' => $subcity_id,
+
+                    'user_id' => Auth::user()->id,
+                    'package_user_id' => $package_user_id,
                 ]);
                 // $tagg = [];
                 if ($request->tags) {

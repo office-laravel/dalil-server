@@ -153,6 +153,7 @@ class SitesController extends Controller
                 return redirect()->back()
                     ->with('error', 'انتهى الحد المسموح');
             } else {
+                $package_user_id = $res_arr[2];
                 $latitude = null;
                 $longitude = null;
                 if ($request->input('latitude') && $request->input('longitude')) {
@@ -205,6 +206,7 @@ class SitesController extends Controller
                         'city_id' => $city_id,
                         'subcity_id' => $subcity_id,
                         'user_id' => $request->user_id ? $request->user_id : null,
+                        'package_user_id' => $package_user_id,
                         // 'is_show_all_sites' => $request->all_sites ? true : false ,
                     ]);
                     // $tagg = [];
@@ -250,6 +252,7 @@ class SitesController extends Controller
                         'city_id' => $city_id,
                         'subcity_id' => $subcity_id,
                         'user_id' => $request->user_id ? $request->user_id : 0,
+                        'package_user_id' => $package_user_id,
                         // 'is_show_all_sites' => $request->all_sites ? true : false ,
                     ]);
                     // $tagg = [];
@@ -286,7 +289,7 @@ class SitesController extends Controller
         $user_id = $user_id ? $user_id : 0;
         $now = Carbon::now();
         $packusr = PackageUser::where('user_id', $user_id)->whereDate('expire_date', '>=', $now)->orderByDesc('created_at')->first();
-
+        $package_user_id = null;
         $available_sites_count = 0;
         //   $isfree = 0;
         $user = User::find($user_id);
@@ -295,7 +298,7 @@ class SitesController extends Controller
             $total_sites_count = $packusr->total_sites_count;
 
             $available_sites_count = $total_sites_count - $used_sites_count;
-
+            $package_user_id = $packusr->id;
         } else {
 
             $freepck = Package::where('is_free', 1)->orderByDesc('created_at')->first();
@@ -309,7 +312,7 @@ class SitesController extends Controller
         } else {
             $res = 1;
         }
-        return [$res, $user];
+        return [$res, $user, $package_user_id];
     }
     public function toShowSites()
     {

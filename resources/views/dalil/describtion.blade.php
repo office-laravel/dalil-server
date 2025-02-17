@@ -17,7 +17,8 @@
                     <div class="picture-company m">
 
 
-                        <img src="{{ url('picCompany/' . $articaleSites->logo) }}" alt="{{ $articaleSites->site_name }}">
+                        <img src="{{ $package->logo == 1 ? url('picCompany/' . $articaleSites->logo) : url('picCompany/' . 'default.webp') }}"
+                            alt="{{ $articaleSites->site_name }}">
 
 
                     </div>
@@ -25,31 +26,39 @@
                         <h3> {{ $articaleSites->site_name }}</h3>
                         @if (isset($getNameSubCategory) && isset($getNameCategory) && isset($is_SetCountry))
                             <div class="category-company mb-3">
-                                <a href="{{ route('showSubCat', [$is_SetCountry->href, $getNameCategory->href]) }}"
-                                    class="span-one delLink"><i title="تصنيف"
-                                        class="fas fa-folder-open mx-1 "></i>{{ $getNameCategory->category_name }}</a>
-                                <a class="delLink"
-                                    href="{{ route('subofcategory', [$is_SetCountry->href, $getNameCategory->href, $getNameSubCategory->href]) }}"><i
-                                        title="تصنيف فرعي"
-                                        class="fas fa-folder-open   mx-1"></i>{{ $getNameSubCategory->category_name }}</a>
+                                @if ($package->category == 1)
+                                    <a href="{{ route('showSubCat', [$is_SetCountry->href, $getNameCategory->href]) }}"
+                                        class="span-one delLink"><i title="تصنيف"
+                                            class="fas fa-folder-open mx-1 "></i>{{ $getNameCategory->category_name }}</a>
+                                @endif
+                                @if ($package->subcategories == 1)
+                                    <a class="delLink"
+                                        href="{{ route('subofcategory', [$is_SetCountry->href, $getNameCategory->href, $getNameSubCategory->href]) }}"><i
+                                            title="تصنيف فرعي"
+                                            class="fas fa-folder-open   mx-1"></i>{{ $getNameSubCategory->category_name }}</a>
+                                @endif
                             </div>
                         @endif
 
 
                         <p class="description">
                         </p>
-                        <p>{!! $articaleSites->description !!}</p>
+                        @if ($package->description == 1)
+                            <p>{!! $articaleSites->description !!}</p>
+                        @endif
                         <p></p>
                     </div>
 
                 </div>
-                <div style="padding: 0;">
-                    <div class="col col-md-12  text-center">
-                        <div class="map-result ">
-                            <div id="map" style="height: 400px; width: 100%;"></div>
+                @if ($package->maploc == 1)
+                    <div style="padding: 0;">
+                        <div class="col col-md-12  text-center">
+                            <div class="map-result ">
+                                <div id="map" style="height: 400px; width: 100%;"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
                 <div class="hrr">
                     <hr style="margin:12px 50px;">
                 </div>
@@ -63,36 +72,47 @@
                                         alt="$is_SetCountry->country_name">
                                 </div>
 
-                                <a href="..." style="color:#494949;">{{ $is_SetCountry->country_name }}</a><span>-<a
-                                        href="#" style="color:#494949;">{{ $getCityName->name }}</a></span>
-
+                                <a href="..." style="color:#494949;">{{ $is_SetCountry->country_name }}</a>
+                                @if ($package->city == 1)
+                                    <span> -
+                                        <a href="#" style="color:#494949;">{{ $getCityName->name }}</a></span>
+                                @endif
                             </li>
                         @endif
-                        <li>
-                            <a href="tel:{{ $articaleSites->phone_number }}"><i title="اتصال" class="fa-solid fa-phone"
-                                    style="padding-left:18px"></i>{{ $articaleSites->phone_number }}</a>
-                        </li>
-                        <li>
+                        @if ($package->phone_number == 1)
+                            <li>
+                                <a href="tel:{{ $articaleSites->phone_number }}"><i title="اتصال" class="fa-solid fa-phone"
+                                        style="padding-left:18px"></i>{{ $articaleSites->phone_number }}</a>
+                            </li>
+                        @endif
+                        @if ($package->mobile_number == 1)
+                            <li>
+                                <a href="tel:{{ $articaleSites->mobile_number }}"><i title="اتصال" class="fa-solid fa-mobile"
+                                        style="padding-left:18px"></i>{{ $articaleSites->mobile_number }}</a>
+                            </li>
+                        @endif
+                        @if ($package->social == 1)
+                            <li>
 
-                            <i class="fa-solid fa-square-share-nodes" style="font-size:20px;"></i>
-                            @isset($articaleSites->facebook)
-                                <a target="_blank" class="desc-social" href="{{ $articaleSites->facebook }}"><i
-                                        class="fab fa-facebook fa-xl" style="color:#1877F2;"></i></a>
-                            @endisset
-                            @isset($articaleSites->instagram)
-                                <a target="_blank" href="{{ $articaleSites->instagram }}" class="desc-social"><i
-                                        class="fab fa-instagram fa-xl" style="color:#E4405F;"></i></a>
-                            @endisset
-                            @isset($articaleSites->twitter)
-                                <a target="_blank" href="{{ $articaleSites->twitter }}" class="desc-social"><i
-                                        class="fa-brands fa-twitter fa-xl" style="color:#1DA1F2;"></i></a>
-                            @endisset
-                            @isset($articaleSites->telegram)
-                                <a target="_blank" href="{{ $articaleSites->telegram }}" class="desc-social"><i
-                                        class="fa-brands fa-telegram fa-xl" style="color:#0088cc;"></i></a>
-                            @endisset
-                        </li>
-
+                                <i class="fa-solid fa-square-share-nodes" style="font-size:20px;"></i>
+                                @isset($articaleSites->facebook)
+                                    <a target="_blank" class="desc-social" href="{{ $articaleSites->facebook }}"><i
+                                            class="fab fa-facebook fa-xl" style="color:#1877F2;"></i></a>
+                                @endisset
+                                @isset($articaleSites->instagram)
+                                    <a target="_blank" href="{{ $articaleSites->instagram }}" class="desc-social"><i
+                                            class="fab fa-instagram fa-xl" style="color:#E4405F;"></i></a>
+                                @endisset
+                                @isset($articaleSites->twitter)
+                                    <a target="_blank" href="{{ $articaleSites->twitter }}" class="desc-social"><i
+                                            class="fa-brands fa-twitter fa-xl" style="color:#1DA1F2;"></i></a>
+                                @endisset
+                                @isset($articaleSites->telegram)
+                                    <a target="_blank" href="{{ $articaleSites->telegram }}" class="desc-social"><i
+                                            class="fa-brands fa-telegram fa-xl" style="color:#0088cc;"></i></a>
+                                @endisset
+                            </li>
+                        @endif
                     </ul>
                 </div>
 
@@ -106,7 +126,7 @@
                         <h3>المنتجات</h3>
                     </div>
                     <div class="N-box">
-                        @forelse($products as $product)
+                        @forelse($products->take($package->products_count) as $product)
                             <a href="{{ url('product', $product->id) }}" class="NewsBox text-decoration-none">
                                 <img src="{{ url('picProduct/' . $product->image) }}" alt="{{ $product->name }}">
                                 <h4>{{ $product->name }}</h4>
@@ -156,11 +176,12 @@
             </div>
         </section>
         @isset($articaleSites)
-            @if ($articaleSites->articale == null)
+            @if ($articaleSites->articale == null || $package->articale != 1)
             @else
                 <div class="container" style="padding-left:0;padding-right:0;">
                     <div class="mt-4 text-white rounded box-main-discr">
                         <div class="main-box">
+
                             <h4 class="edit-descr-page"><span>مقال ذو صلة</span></h4>
                             <div class="box-right" style="padding-bottom: 15px;">
                                 <div class="box-descr mainBox" style="color:#000;">
