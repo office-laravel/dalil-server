@@ -452,7 +452,14 @@ Route::get('/subscribeyears/{id}', [SubscribeController::class, 'duration_byid']
 //product
 Route::get('product/{id}', [App\Http\Controllers\dalil\ProductController::class, 'showby_id']);
 //
-
+Route::prefix('package')->group(function () {
+    Route::get('all', [PackageController::class, 'user_index'])->name('user.package');
+    Route::get('create', [PackageController::class, 'user_create']);
+    Route::post('store', [PackageController::class, 'user_store']);
+    // Route::post('update/{id}', [PackageController::class, 'update']);
+    // Route::get('edit/{id}', [PackageController::class, 'edit']);
+    // Route::post('delete/{id}', [PackageController::class, 'destroy']);
+});
 #################################################################### نهاية صفحة الموقع الرئيسية  ##########################################################/
 
 

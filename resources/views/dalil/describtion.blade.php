@@ -17,7 +17,7 @@
                     <div class="picture-company m">
 
 
-                        <img src="{{ $package->logo == 1 ? url('picCompany/' . $articaleSites->logo) : url('picCompany/' . 'default.webp') }}"
+                        <img src="{{ $package->logo == 1 && $articaleSites->logo ? url('picCompany/' . $articaleSites->logo) : url('picCompany/' . 'default.webp') }}"
                             alt="{{ $articaleSites->site_name }}">
 
 
@@ -150,12 +150,13 @@
                     </div>
                 </div>
                 <div class="box-part-main">
+
                     @isset($getLatestCompany)
-                        @foreach ($getLatestCompany as $item)
+                        @foreach ($getLatestCompany->take($package->sites_count) as $item)
                             <div class="list-company">
                                 <a href="{{ url('company/get', $item->id) }}">
                                     <div class="company-preview-image">
-                                        <img src="{{ url('./public/picCompany/' . $item->logo) }}"
+                                        <img src="{{ $package->logo == 1 && $item->logo ? url('picCompany/' . $item->logo) : url('picCompany/' . 'default.webp') }}"
                                             alt="{{ $item->site_name }}">
                                     </div>
                                 </a>

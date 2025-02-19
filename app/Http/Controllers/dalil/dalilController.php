@@ -312,7 +312,7 @@ class dalilController extends Controller
 
         // $getDataOfCompany = Sites::where('title')
         $viewsSit = Sites::select('id', 'title', 'views')->where('id', $id)->first();
-        $getLatestCompany = Sites::select('id', 'logo', 'site_name', 'href', 'category_id', 'countries_id', 'views')->latest()->get();
+        $getLatestCompany = Sites::select('id', 'logo', 'site_name', 'href', 'category_id', 'countries_id', 'views', 'package_user_id')->latest()->get();
         $products = Product::where('site_id', $articaleSites->id)->orderByDesc('sequence')->get();
         // dd($ff);
         return view('dalil.describtion', compact([
