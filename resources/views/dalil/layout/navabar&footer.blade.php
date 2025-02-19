@@ -69,6 +69,7 @@
 
     <link rel="stylesheet" href="{{ url('/public/FrontStyle/css/map.css') }}">
     <link rel="stylesheet" href="{{ url('/public/FrontStyle/css/style_product.css') }}" />
+        @yield('map-css')
     <!-- Map End -->
     <title>
         @if (isset($Settings) &&
@@ -269,6 +270,7 @@
 
             <ul class="box-fot no-hover">
                 <li><a href="{{ route('news.all') }}">المقالات</a><b class="space"></b></li>
+                     <li><a href="{{ route('user.package') }}">اشتراك</a><b class="space"></b></li>
                 <li><a href="{{ route('new.site') }}">أحدث المواقع</a><b class="space"></b></li>
                 <li><a href="{{ route('visits') }}">المواقع الأكثر زيارة</a><b class="space"></b></li>
                 @foreach ($all_pinned_page as $get_pinned)

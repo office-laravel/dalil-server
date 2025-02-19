@@ -206,8 +206,8 @@ flex-wrap: wrap;
   text-align: -webkit-center;
 }
 .u-active-white:hover{
-  border-style: solid !important;
-  border-color:#4991f5 !important;
+  border:#4991f5  solid 1px !important;
+ 
   background-color:#fefefe !important ;
   transition: 500ms;
 }

@@ -217,15 +217,13 @@
 
                                                 </ul>
                                                 <form action="{{ url('users/package/store') }}" method="POST"
-                                                    id="form-product">
+                                                    id="form-{{ $package->id }}" name="form-{{ $package->id }}">
                                                     @csrf
                                                     @if ($package->is_free != 1)
                                                         <div style="text-align: right ;padding-top:10px;">
                                                             @php
                                                                 $i = 0;
                                                             @endphp
-
-
                                                             @foreach ($package->durationspackages->sortBy('duration.duration') as $durationspackage)
                                                                 <div class="form-check">
                                                                     <input class="form-check-input" type="radio"
@@ -245,10 +243,11 @@
                                                             <input type="hidden" name="package"
                                                                 value="{{ $package->id }}">
                                                         </div>
+
+                                                        <button type="submit"
+                                                            class="u-active-white u-align-right-sm u-align-right-xs u-border-2 u-border-active-palette-1-base u-border-hover-palette-1-base u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-white u-palette-1-base u-radius u-text-active-black u-text-body-alt-color u-text-hover-black u-btn-1">
+                                                            اشترك الان</button>
                                                 </form>
-                                                <a href="#"
-                                                    class="u-active-white u-align-right-sm u-align-right-xs u-border-2 u-border-active-palette-1-base u-border-hover-palette-1-base u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-white u-palette-1-base u-radius u-text-active-black u-text-body-alt-color u-text-hover-black u-btn-1">
-                                                    اشترك الان</a>
                                     @endif
 
                                 </div>
