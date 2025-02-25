@@ -271,12 +271,12 @@
     </div>
 @endsection
 @section('map-css')
-    <link rel="stylesheet" href="{{ url('/FrontStyle/bootstrap-icons/font/bootstrap-icons.min.css') }}">
-    <link rel="stylesheet" href="{{ url('/FrontStyle/css/nicepage.css') }}">
-    <link rel="stylesheet" href="{{ url('/FrontStyle/css/Pricing.css') }}">
+    <link rel="stylesheet" href="{{ url('/public/FrontStyle/bootstrap-icons/font/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ url('/public/FrontStyle/css/nicepage.css') }}">
+    <link rel="stylesheet" href="{{ url('/public/FrontStyle/css/Pricing.css') }}">
 @endsection
 @section('map-js')
-    <script src="{{ url('js/subscribe.js') }}"></script>
+    <script src="{{ url('public/js/subscribe.js') }}"></script>
 @endsection
 
 <style>
