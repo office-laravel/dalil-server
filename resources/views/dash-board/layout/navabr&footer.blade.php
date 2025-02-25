@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
 
 
-    <link rel="stylesheet" href="{{ url('/FrontStyle/css/map.css') }}">
+    <link rel="stylesheet" href="{{ url('/public/FrontStyle/css/map.css') }}">
     <!-- Map End -->
 
     <title>
@@ -56,8 +56,8 @@
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <!-- CSS Files -->
-    <link id="pagestyle" href="{{ url('../public/dashboard/css/material-dashboard.css?v=3.0.2') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ url('../public/css/asw.css') }}">
+    <link id="pagestyle" href="{{ url('/public/dashboard/css/material-dashboard.css?v=3.0.2') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url('/public/css/asw.css') }}">
 </head>
 
 <body class="g-sidenav-show rtl bg-gray-200">
@@ -165,11 +165,11 @@
     <!--   Core JS Files   -->
 
     {{-- <script src="{{ url('../public/dashboard/js/core/popper.min.js') }}"></script> --}}
-    <script src="{{ url('../public/dashboard/js/core/bootstrap.min.js') }}"></script>
-    <script src="{{ url('../public/dashboard/js/plugins/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ url('../public/dashboard/js/plugins/smooth-scrollbar.min.js') }}"></script>
-    <script src="{{ url('../public/dashboard/js/plugins/chartjs.min.js') }}"></script>
-    <script src="{{ url('../public/js/appdrop.js') }}"></script>
+    <script src="{{ url('/public/dashboard/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ url('/public/dashboard/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ url('/public/dashboard/js/plugins/smooth-scrollbar.min.js') }}"></script>
+    <script src="{{ url('/public/dashboard/js/plugins/chartjs.min.js') }}"></script>
+    <script src="{{ url('/public/js/appdrop.js') }}"></script>
     <!-- Map -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
@@ -187,7 +187,7 @@
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{{ asset('dashboard/js/material-dashboard.min.js?v=3.0.2') }}"></script>
+    <script src="{{ asset('public/dashboard/js/material-dashboard.min.js?v=3.0.2') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous">
     </script>
