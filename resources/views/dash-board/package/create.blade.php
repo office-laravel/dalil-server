@@ -341,7 +341,7 @@
 @endsection
 
 @section('map-js')
-    <script src="{{ url('dashboard/js/package/package.js') }}"></script>
+    <script src="{{ url('public/dashboard/js/package/package.js') }}"></script>
 @endsection
 @section('map-js')
 @endsection

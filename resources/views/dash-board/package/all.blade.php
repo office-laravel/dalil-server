@@ -181,7 +181,7 @@
 @endsection
 
 @section('map-js')
-    <script src="{{ url('js/delete.js') }}"></script>
+    <script src="{{ url('public/js/delete.js') }}"></script>
 @endsection
 @section('script')
     <script type="text/javascript">
