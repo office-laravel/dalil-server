@@ -123,7 +123,7 @@
 
     <nav class="navbar navbar-expand-sm navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/public/') }}">
+            <a class="navbar-brand" href="{{ url('/') }}">
                 {{-- <h1 class="logo">دليل</h1> --}}
                 <img src="{{ url('/public/upload/logo_waslat.png') }}" alt="لوغو"
                     style="margin-right: 4rem;width:150px;height:50px;">
