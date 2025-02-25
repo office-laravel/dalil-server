@@ -16,14 +16,15 @@
 
 
 
-            {{-- delete Modal Sites --}}
-            <div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+            {{-- sub Modal Sites --}}
+            <div class="modal fade" id="subModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
                 style="z-index:999999;">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">حذف المنتج</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title" id="exampleModalLabel">اشتراك </h5>
+                            <button type="button" class="btn-close closemodal" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <div class="container mt-2">
                             <ul id="edit_div_err"></ul>
@@ -32,7 +33,7 @@
                         <h4 style="text-align: center;">هل انت متأكد ؟</h4>
                         <div class="modal-footer">
 
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">لا</button>
+                            <button type="button" class="btn btn-secondary closemodal" data-bs-dismiss="modal">لا</button>
                             <button type="submit" class="btn btn-primary  " id="btn-modal-del">نعم</button>
                         </div>
 
@@ -212,11 +213,8 @@
                                                         <span>عدد المنتجات لكل موقع</span><span>/
                                                             {{ $package->sites_count }} /</span>
                                                     </li>
-
-
-
                                                 </ul>
-                                                <form action="{{ url('users/package/store') }}" method="POST"
+                                                <form action="{{ url('package/store') }}" method="POST"
                                                     id="form-{{ $package->id }}" name="form-{{ $package->id }}">
                                                     @csrf
                                                     @if ($package->is_free != 1)
@@ -244,33 +242,24 @@
                                                                 value="{{ $package->id }}">
                                                         </div>
 
-                                                        <button type="submit"
-                                                            class="u-active-white u-align-right-sm u-align-right-xs u-border-2 u-border-active-palette-1-base u-border-hover-palette-1-base u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-white u-palette-1-base u-radius u-text-active-black u-text-body-alt-color u-text-hover-black u-btn-1">
+                                                        <button type="submit" id="sub-btn-{{ $package->id }}"
+                                                            class="u-active-white u-align-right-sm u-align-right-xs u-border-2 u-border-active-palette-1-base u-border-hover-palette-1-base u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-white u-palette-1-base u-radius u-text-active-black u-text-body-alt-color u-text-hover-black u-btn-1 sub-btn">
                                                             اشترك الان</button>
+                                                    @endif
                                                 </form>
-                                    @endif
 
+
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
-                            @endforeach
-
-
-
-
-
-
-
-
-
-
                         </div>
                     </div>
                 </div>
-        </div>
-    </div>
-    </section>
+            </section>
 
-    </div>
+        </div>
 
     </div>
 
@@ -287,7 +276,7 @@
     <link rel="stylesheet" href="{{ url('/FrontStyle/css/Pricing.css') }}">
 @endsection
 @section('map-js')
-    <script src="{{ url('js/delete.js') }}"></script>
+    <script src="{{ url('js/subscribe.js') }}"></script>
 @endsection
 
 <style>

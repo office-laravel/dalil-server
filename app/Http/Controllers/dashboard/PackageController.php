@@ -325,7 +325,7 @@ class PackageController extends Controller
 
   public function user_store(Request $request)
   {
-
+   if( Auth::check() ) {
     $formdata = $request->all();
     $validator = Validator::make(
       $request->all(),
@@ -404,6 +404,10 @@ class PackageController extends Controller
 
     }
 
+   }else{
+return redirect()->route('loginu');
+   }
+ 
   }
 
 

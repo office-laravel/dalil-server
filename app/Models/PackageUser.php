@@ -47,6 +47,7 @@ class PackageUser extends Model
         'start_date',
         'duration_id',
         'duration_package_id',
+        'status',
     ];
 
     public function user()
