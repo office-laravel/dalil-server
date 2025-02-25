@@ -289,7 +289,7 @@
 @endsection
 <!-- Map -->
 @section('map-js')
-    <script src="{{ url('js/add-location.js') }}"></script>
+    <script src="{{ url('public/js/add-location.js') }}"></script>
 @endsection
 <!-- Map end -->
 <style>
