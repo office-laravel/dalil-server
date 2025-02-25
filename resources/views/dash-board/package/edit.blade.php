@@ -425,5 +425,4 @@
 
 
 
-@section('map-js')
-@endsection
+ 
