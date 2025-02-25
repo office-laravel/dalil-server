@@ -16,7 +16,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('../public/dashboard/img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('../public/dashboard/img/favicon.png') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-    <link id="pagestyle" href="{{ url('dashboard/css/material-dashboard.css?v=3.0.2') }}" rel="stylesheet" />
+    <link id="pagestyle" href="{{ url('public/dashboard/css/material-dashboard.css?v=3.0.2') }}" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"
         rel="stylesheet" />
@@ -49,8 +49,8 @@
     <link rel="stylesheet" type="text/css"
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
     <!-- Nucleo Icons -->
-    <!--<link href="{{ url('dashboard/css/nucleo-icons.css') }}" rel="stylesheet" />-->
-    <!--<link href="{{ url('dashboard/css/nucleo-svg.css') }}" rel="stylesheet" />-->
+    <!--<link href="{{ url('public/dashboard/css/nucleo-icons.css') }}" rel="stylesheet" />-->
+    <!--<link href="{{ url('public/dashboard/css/nucleo-svg.css') }}" rel="stylesheet" />-->
     <!-- Font Awesome Icons -->
     <!--<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>-->
     <!-- Material Icons -->
@@ -197,7 +197,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     {{-- <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script> --}}
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="{{ url('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ url('public/ckeditor/ckeditor.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
