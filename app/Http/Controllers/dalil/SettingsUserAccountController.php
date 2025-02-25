@@ -15,7 +15,7 @@ use App\Models\Adds;
 class SettingsUserAccountController extends Controller
 {
     public function __construct(){
-        $this->middleware('admin');
+        $this->middleware('auth');
     }
     public function settingAccount(){
         $Settings = sitting::first();
