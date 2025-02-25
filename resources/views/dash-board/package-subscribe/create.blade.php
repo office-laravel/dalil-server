@@ -128,7 +128,6 @@
         var durationurl = "{{ url('subscribeyears/ItemId') }}";
         var selyear = "0";
     </script>
-    <script src="{{ url('dashboard/js/package/subscribe.js') }}"></script>
+    <script src="{{ url('public/dashboard/js/package/subscribe.js') }}"></script>
 @endsection
-@section('map-js')
-@endsection
+ 

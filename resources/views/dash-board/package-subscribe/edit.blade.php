@@ -149,7 +149,6 @@
         var selyear = "{{ $subscribe->duration_package_id }}";
         var selpackage = "{{ $subscribe->package_id }}";
     </script>
-    <script src="{{ url('dashboard/js/package/subscribe.js') }}"></script>
+    <script src="{{ url('public/dashboard/js/package/subscribe.js') }}"></script>
 @endsection
-@section('map-js')
-@endsection
+ 

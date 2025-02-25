@@ -162,7 +162,7 @@
 @endsection
 
 @section('map-js')
-    <script src="{{ url('js/product.js') }}"></script>
+    <script src="{{ url('public/js/product.js') }}"></script>
 @endsection
 
 

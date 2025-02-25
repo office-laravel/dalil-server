@@ -388,6 +388,6 @@
         var com_lat = {{ $sites->latitude }};
         var com_lang = {{ $sites->longitude }};
     </script>
-    <script src="{{ url('js/add-location.js') }}"></script>
+    <script src="{{ url('public/js/add-location.js') }}"></script>
 @endsection
 <!-- Map end -->

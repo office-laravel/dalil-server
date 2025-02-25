@@ -15,7 +15,7 @@
                     <div class="picture-company m">
 
 
-                        <img src="{{ url('picProduct/' . $product->image) }}" alt="{{ $product->name }}">
+                        <img src="{{ url('public/picProduct/' . $product->image) }}" alt="{{ $product->name }}">
 
 
                     </div>
@@ -57,7 +57,7 @@
             <div class="N-box">
                 @forelse($related_products as $product)
                     <a href="{{ url('product', $product->id) }}" class="NewsBox text-decoration-none">
-                        <img src="{{ url('picProduct/' . $product->image) }}" alt="{{ $product->name }}">
+                        <img src="{{ url('public/picProduct/' . $product->image) }}" alt="{{ $product->name }}">
                         <h4>{{ $product->name }}</h4>
                         <p class="text-center">{{ $product->price }} {{ $product->currency }}</p>
                     </a>
@@ -70,7 +70,7 @@
     @endsection
     @section('map-js')
         <script>
-            var mainurl = "{{ url('PicCate/icon/') }}";
+            var mainurl = "{{ url('public/PicCate/icon/') }}";
             var token = '{{ csrf_token() }}';
         </script>
     @endsection
