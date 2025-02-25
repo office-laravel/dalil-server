@@ -323,7 +323,7 @@ Route::prefix('admin')->group(function () {
     ####################################################################نهاية قسم اشعار الموقع لا يعمل لوحة تحكم ##########################################################/
 
     //المنتجات
-    Route::prefix('product')->group(function () {
+    Route::middleware('admin')->prefix('product')->group(function () {
         Route::get('all/{site_id}', [ProductController::class, 'admin_index'])->name('admin.product');
         Route::get('create/{site_id}', [ProductController::class, 'admin_create']);
         Route::post('store', [ProductController::class, 'admin_store']);
@@ -332,7 +332,7 @@ Route::prefix('admin')->group(function () {
         Route::post('delete/{id}', [ProductController::class, 'admin_destroy']);
     });
     //الباقات
-    Route::prefix('package')->group(function () {
+    Route::middleware('admin')->prefix('package')->group(function () {
         Route::get('all', [PackageController::class, 'index'])->name('admin.package');
         Route::get('create', [PackageController::class, 'create']);
         Route::post('store', [PackageController::class, 'store']);
@@ -341,7 +341,7 @@ Route::prefix('admin')->group(function () {
         Route::post('delete/{id}', [PackageController::class, 'destroy']);
     });
     //الاشتراكات
-    Route::prefix('subscribe')->group(function () {
+    Route::middleware('admin')->prefix('subscribe')->group(function () {
         Route::get('all', [SubscribeController::class, 'admin_index'])->name('admin.subscribe');
         Route::get('create', [SubscribeController::class, 'admin_create']);
         Route::post('store', [SubscribeController::class, 'admin_store']);
@@ -350,7 +350,7 @@ Route::prefix('admin')->group(function () {
         Route::post('delete/{id}', [SubscribeController::class, 'admin_destroy']);
     });
        //الاشتراكات بانتظار الموافقة
-       Route::prefix('wait-subscribe')->group(function () {
+       Route::middleware('admin')->prefix('wait-subscribe')->group(function () {
         Route::get('all', [SubscribeController::class, 'admin_index_wait'])->name('admin.wait-subscribe');
        // Route::get('create', [SubscribeController::class, 'admin_create']);
       //  Route::post('store', [SubscribeController::class, 'admin_store']);
