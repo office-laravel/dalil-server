@@ -95,7 +95,7 @@
 
                             </div>
                             <div style="width:300px;padding:20px;">
-                                <img src="{{ url('picProduct/' . $product->image) }}"
+                                <img src="{{ url('public/picProduct/' . $product->image) }}"
                                     style="padding: 5px;border:1px solid #ced4da" width="100px;" id="imgshow">
 
                             </div>
@@ -316,5 +316,5 @@
     }
 </style>
 @section('map-js')
-    <script src="{{ url('js/product.js') }}"></script>
+    <script src="{{ url('public/js/product.js') }}"></script>
 @endsection
