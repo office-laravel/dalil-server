@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Facade\Ignition\Support\Packagist\Package;
+//use Facade\Ignition\Support\Packagist\Package;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -49,6 +49,25 @@ class PackageUser extends Model
         'duration_package_id',
         'status',
     ];
+    protected $appends = ['status_conv'];
+        public function getStatusConvAttribute()
+    {
+        $conv = "";
+        switch ($this->status) {
+            case ('w'):
+                $conv = 'انتظار';
+                break;
+            case ('a'):
+                $conv = 'موافق';
+                break;
+                case ('r'):
+                    $conv = 'مرفوص';
+                    break;
+            default:
+                $conv = '-';
+        }
+        return $conv;
+    }
 
     public function user()
     {

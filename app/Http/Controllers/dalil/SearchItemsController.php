@@ -118,13 +118,16 @@ class SearchItemsController extends Controller
             //site_name
         }
 
-        $companies = $companies_query->select('id', 'category_id', 'subcategories', 'title', 'latitude', 'longitude', 'city_id', 'subcity_id', 'package_user_id')->get();
-        $companies = $companies->where('package.maploc', 1);
-        $companies = $companies->filter(function ($item) {
-            return $item->package->maploc = 1;
+        $companies = $companies_query->select('id', 'category_id', 'subcategories', 'title', 'latitude', 'longitude', 'city_id', 'subcity_id', 'package_user_id','user_id')->get();
+     //   $companies = $companies->where('package.maploc', 1);
+     
+        $fcompanies = $companies->filter(function ($item) {
+            return $item->package->maploc == 1;
         });
+ 
+       
         // $companies = Company::get();
-        return response()->json($companies);
+        return response()->json($fcompanies);
     }
 
     public function querybyid(Request $request)

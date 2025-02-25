@@ -80,7 +80,6 @@
 
                                 <h4 style="text-align: center;">هل انت متأكد ؟</h4>
                                 <div class="modal-footer">
-
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">لا</button>
                                     <button type="submit" class="btn btn-primary  " id="btn-modal-del">نعم</button>
                                 </div>
@@ -93,20 +92,10 @@
                     <div class="contentEdit">
                         <!-- Button trigger modal -->
                         <div style="display: flex;justify-content: space-between; width:100%;">
-                            <a href="{{ url('admin/subscribe/create') }}" class="btn btn-success mb-3">
-                                اضافة اشتراك<i class="fa-solid fa-plus mx-1"></i>
-                            </a>
-
-
-
-
-
                         </div>
                     </div>
 
                     <ul class="list-sitess-search">
-
-
                         <div class="fetchD" style="display: contents;">
                             <table class="container table">
                                 <thead>
@@ -115,8 +104,8 @@
                                         <th scope="col">الباقة</th>
                                         <th scope="col">الرمز </th>
                                         <th scope="col">العضو </th>
-                                        <th scope="col">الحالة </th>
-                                        <th scope="col">تاريخ الانتهاء </th>
+                                        <th scope="col">الحالة</th>
+                                        <th scope="col">تاريخ الطلب</th>
                                         <th scope="col">تحكم</th>
                                         <th scope="col"></th>
                                     </tr>
@@ -130,9 +119,9 @@
                                                 <td>{{ $package->code }}</td>
                                                 <td>{{ $package->user->email }}</td>
                                                 <td>{{ $package->status_conv }}</td>
-                                                <td>{{ $package->expire_date }}</td>
+                                                <td>{{ $package->created_at }}</td>
                                                 <td class="editt">
-                                                    <a href="{{ url('admin/subscribe/edit', $package->id) }}"
+                                                    <a href="{{ url('admin/wait-subscribe/edit', $package->id) }}"
                                                         class=" btn btn-primary btn-sm">تعديل</a>
                                                 </td>
                                                 <td>

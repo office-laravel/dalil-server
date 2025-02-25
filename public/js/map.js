@@ -134,8 +134,8 @@ $(document).ready(function () {
 			},
 			success: function (companies) {
 				companyMarkers.clearLayers();
-
-				companies.forEach(company => {
+				$.each(companies, function(key, company) {
+				 
 					var cat_title = '';
 					var cat_icon = '/default.png';
 					if (!((typeof company.category === 'undefined') || (company.category == null))) {

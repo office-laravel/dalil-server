@@ -349,6 +349,15 @@ Route::prefix('admin')->group(function () {
         Route::get('edit/{id}', [SubscribeController::class, 'admin_edit']);
         Route::post('delete/{id}', [SubscribeController::class, 'admin_destroy']);
     });
+       //الاشتراكات بانتظار الموافقة
+       Route::prefix('wait-subscribe')->group(function () {
+        Route::get('all', [SubscribeController::class, 'admin_index_wait'])->name('admin.wait-subscribe');
+       // Route::get('create', [SubscribeController::class, 'admin_create']);
+      //  Route::post('store', [SubscribeController::class, 'admin_store']);
+        Route::post('update/{id}', [SubscribeController::class, 'admin_update_wait']);
+        Route::get('edit/{id}', [SubscribeController::class, 'admin_edit_wait']);
+       // Route::post('delete/{id}', [SubscribeController::class, 'admin_destroy']);
+    });
 
 });
 

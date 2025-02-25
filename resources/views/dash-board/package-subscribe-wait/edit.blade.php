@@ -69,45 +69,28 @@
 
                 <div class="list-sitess-search">
 
-                    <h5 class="head-search-sitess">تعديل اشتراك </h5>
+                    <h5 class="head-search-sitess">تعديل حالة الاشتراك </h5>
                     <div class="fetchD" style="display: contents;">
-                        <form action="{{ url('admin/subscribe/update', $subscribe->id) }}" method="POST" id="form-product"
+                        <form action="{{ url('admin/wait-subscribe/update', $subscribe->id) }}" method="POST" id="form-product"
                             enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 {{-- user section --}}
                                 <div class="mb-3">
-                                    <label for="user_id" class="form-label">العضو</label>
-                                    <select class="form-controll" id="user_id" name="user_id">
-                                        <option value=""> اختر العضو</option>
-                                        @foreach ($users as $user)
-                                            <option value="{{ $user->id }}"
-                                                {{ $user->id == $subscribe->user_id ? 'selected' : '' }}>
-                                                {{ $user->email }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="user_id" class="form-label">العضو:</label>
+                                    <label for="user_id" style="color: #000;"   >{{ $subscribe->user->email}}</label>
+                                     
                                 </div>
                                 {{-- package section --}}
                                 <div class="mb-3">
-                                    <label for="package_id" class="form-label">الباقة</label>
-
-                                    <select class="form-controll" id="package_id" name="package_id">
-                                        <option value="0"> اختر الباقة</option>
-                                        @foreach ($packages as $package)
-                                            <option value="{{ $package->id }}"
-                                                {{ $package->id == $subscribe->package_id ? 'selected' : '' }}>
-                                                {{ $package->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="package_id" class="form-label">الباقة:</label>
+                                    <label for="package_id"  style="color: #000">{{  $subscribe->package->name }}</label>
+                                   
                                 </div>
                                 {{-- year section --}}
                                 <div class="mb-3">
-                                    <label for="year" class="form-label">المدة/سنة</label>
-                                    <select class="form-controll" id="year" name="year">
-
-                                        <option value=""> اختر المدة</option>"
-
-                                    </select>
+                                    <label for="package_id" class="form-label">المدة:</label>
+                                    <label for="package_id" class="form-label" style="color: #000">{{ $subscribe->duration }} سنة</label>                                   
                                 </div>
                                 <div class="mb-3">
                                     <label for="package_id" class="form-label">الحالة</label>
@@ -126,6 +109,7 @@
                                         
                                     </select>
                                 </div>
+
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-primary btn-submit"
                                         style="padding-left:40px;padding-right: 40px">حفظ</button>
@@ -145,9 +129,9 @@
 @section('map-js')
     <script>
         var token = '{{ csrf_token() }}';
-        var durationurl = "{{ url('subscribeyears/ItemId') }}";
-        var selyear = "{{ $subscribe->duration_package_id }}";
-        var selpackage = "{{ $subscribe->package_id }}";
+        var durationurl = "";
+        var selyear = "";
+        var selpackage = "";
     </script>
     <script src="{{ url('dashboard/js/package/subscribe.js') }}"></script>
 @endsection

@@ -27,7 +27,7 @@ class SubscribeController extends Controller
   }
   public function admin_index()
   {
-    $packageusers = PackageUser::orderByDesc('created_at')->get();
+    $packageusers = PackageUser::where('status','!=','w')->orderByDesc('created_at')->get();
     return view('dash-board.package-subscribe.all', compact('packageusers'));
     ;
   }
@@ -131,6 +131,7 @@ class SubscribeController extends Controller
       $newObj->expire_date = Carbon::parse($now)->addYears($duration_p->duration->duration);
       $newObj->duration_id = $duration_p->duration_id;
       $newObj->duration_package_id = $duration_p->id;
+      $newObj->status ='a'; 
       $newObj->save();
       //update sites with new package_user_id
       Sites::where('user_id', $newObj->user_id)->update(['package_user_id' => $newObj->id]);
@@ -257,6 +258,15 @@ class SubscribeController extends Controller
       $newObj->expire_date = Carbon::parse($now)->addYears($duration_p->duration->duration);
       $newObj->duration_id = $duration_p->duration_id;
       $newObj->duration_package_id = $duration_p->id;
+      if(isset($formdata['status'])){
+        $package_user_id=null;
+        $newObj->status = $formdata['status'];
+        if($formdata['status']=='a'){
+          $package_user_id=$newObj->id;
+        } 
+        Sites::where('user_id', $newObj->user_id)->update(['package_user_id' => $package_user_id]);
+    
+      }
       $newObj->save();
       return response()->json("ok");
 
@@ -365,5 +375,99 @@ class SubscribeController extends Controller
 
   }
 
+  // admin wait orders
 
+ 
+  public function admin_index_wait()
+  {
+    $packageusers = PackageUser::orderByDesc('created_at')->where('status','w')->get();
+    return view('dash-board.package-subscribe-wait.all', compact('packageusers'));
+   
+  }
+
+  public function admin_edit_wait($id)
+  {
+  //  $users = User::get();
+ //   $packages = Package::where('status', '1')->where('is_free', '!=', 1)->get();
+    $subscribe = PackageUser::with(['package','user'])->find($id);
+  //  $user = User::find($subscribe->user_id);
+    return view('dash-board.package-subscribe-wait.edit', compact('subscribe'));
+  }
+
+
+  public function admin_update_wait(Request $request, $id)
+  {
+    $formdata = $request->all();
+    $validator = Validator::make(
+      $request->all(),
+      [
+        'status' => 'required|not_in:0',    
+      ],
+      [
+        'status.*' => 'هذا الحقل مطلوب',       
+      ]
+    );
+
+    if ($validator->fails()) {
+
+      return response()->json(['errors' => $validator->errors()], 422);
+    } else {
+      // $d =explode(',' ,$request->countries);
+      $now = Carbon::now()->format('Y-m-d');
+
+    //  $package = Package::find($formdata['package_id']);
+    //  $duration_p = DurationPackage::with('duration')->find($formdata['year']);
+      $newObj = PackageUser::find($id);
+ 
+     // $newObj->package_id = $formdata['package_id'];
+      // $newObj->total_sites_count = $package->sites_count;
+      // $newObj->used_sites_count = 0;
+      // $newObj->name = $package->name;
+      // $newObj->code = $package->code;
+      // $newObj->href = $package->href;
+      // $newObj->category = $package->category;
+      // $newObj->title = $package->title;
+      // $newObj->logo = $package->logo;
+      // $newObj->mobile_number = $package->mobile_number;
+      // $newObj->phone_number = $package->phone_number;
+      // $newObj->video = $package->video;
+      // $newObj->description = $package->description;
+      // $newObj->articale = $package->articale;
+      // $newObj->subcategories = $package->subcategories;
+      // $newObj->keyword = $package->keyword;
+      // $newObj->social = $package->social;
+      // $newObj->android = $package->android;
+      // $newObj->ios = $package->ios;
+      // $newObj->views = $package->views;
+      // $newObj->priority = $package->priority;
+      // $newObj->maploc = $package->maploc;
+      // $newObj->city = $package->city;
+      // $newObj->sites_count = $package->sites_count;
+      // $newObj->products_count = $package->products_count;
+      // $newObj->price = $duration_p->price;
+      // $newObj->is_free = $package->is_free;
+      // $newObj->duration = $duration_p->duration->duration;
+     
+      if(isset($formdata['status'])){
+        $package_user_id=null;
+        $newObj->status = $formdata['status'];
+        if($formdata['status']=='a'){
+          $newObj->start_date = $now;
+          $newObj->expire_date = Carbon::parse($now)->addYears($newObj->duration);
+          $package_user_id=$newObj->id;
+        } 
+        Sites::where('user_id', $newObj->user_id)->update(['package_user_id' => $package_user_id]);
+    
+      }
+     
+     // $newObj->duration_id = $duration_p->duration_id;
+     // $newObj->duration_package_id = $duration_p->id;
+     $newObj->status =$formdata['status']; 
+      $newObj->save();
+      return response()->json("ok");
+
+    }
+  }
+
+ 
 }

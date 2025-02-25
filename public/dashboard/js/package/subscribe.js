@@ -53,7 +53,7 @@ $(document).ready(function () {
 				} else if (data == "ok") {
 
 					noteSuccess();
-					resetForm(formid);
+				//	resetForm(formid);
 
 				} else {
 					noteError();

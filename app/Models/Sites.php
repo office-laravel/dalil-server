@@ -99,10 +99,10 @@ class Sites extends Model
         //check count of sites
         $site_id = $this->id;
         $now = Carbon::now();
-        $site = Sites::find($site_id);
+      //  $site = Sites::find($site_id);
         $package = new Package();
-        if ($site->package_user_id) {
-            $packusr = PackageUser::where('id', $site->package_user_id)->whereDate('expire_date', '>=', $now)->first();
+        if ($this->package_user_id) {
+            $packusr = PackageUser::where('id', $this->package_user_id)->whereDate('expire_date', '>=', $now)->first();
             $package->name = $packusr->name;
             $package->href = $packusr->href;
             $package->category = $packusr->category;
