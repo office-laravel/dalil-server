@@ -14,7 +14,7 @@
                         <a href="{{ $item->href }}" target="_blank" class="anch_fixedSites text-decoration-none">
                             <li>
                                 <div class="img_fixedSites">
-                                    <img src="{{ url('../brand/public/uploading/' . $item->photo) }}" alt="{{ $item->site_name }}" loading="lazy">
+                                    <img src="{{ url('/public/uploading/' . $item->photo) }}" alt="{{ $item->site_name }}" loading="lazy">
                                 </div>
                                 <div class="textFixedSites">{{ $item->site_name }}</div>
                             </li>
@@ -40,7 +40,7 @@
                 @foreach($news as $item)
                 @php
                     $imageArray = explode(',', $item->image);
-                    $imageUrl = isset($imageArray[1]) ? url('../brand/public/smallNewsImage/'.$imageArray[1]) : '';
+                    $imageUrl = isset($imageArray[1]) ? url('/public/smallNewsImage/'.$imageArray[1]) : '';
                 @endphp
                     <a href="{{route('news.descr', $item->id)}}" class="NewsBox text-decoration-none">
                         <img src="{{ $imageUrl }}" alt="{{ $item->title }}">
@@ -59,7 +59,7 @@
                         @foreach ($getAllCate as $item)
                                 <a href="{{ route('showSubCat', [$category_change_country->href, $item->href]) }}" class="mt-3 one">
                                     <div class="img">
-                                        <img src="{{ url('../brand/public/PicCate/'.$item->image)}} " alt="{{$item->category_name}}">
+                                        <img src="{{ url('/public/PicCate/'.$item->image)}} " alt="{{$item->category_name}}">
                                     </div>
                                     <p class="title">{{$item->category_name}}</p>
                                 </a>
