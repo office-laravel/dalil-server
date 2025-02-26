@@ -136,9 +136,9 @@ class dalilController extends Controller
         return view('dalil.about', compact(['Settings', 'adds', 'getTitle_About', 'country_namess', 'get_about_waslat', 'title_about', 'country_names', 'all_pinned_page', 'get_content']));
     }
 
-    public function showDescr($country_id, $id)
+    public function showDescr( $id)
     {
-
+        $country_id=    Countries::select('id', 'country_name', 'href', 'country_flag')->where('href', 'Syria')->first()->id;
         $adds = Adds::first();
         $Settings = sitting::first();
         $get_site_descr = Sites::with('country', 'category', 'tags')->select('id', 'site_name', 'href', 'title', 'description', 'keyword', 'category_id', 'countries_id', 'facebook', 'twitter', 'instagram', 'telegram')->where('id', $id)->where('confirmed', 1)->get();

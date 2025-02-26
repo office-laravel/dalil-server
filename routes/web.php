@@ -432,7 +432,7 @@ Route::get('visits/', [App\Http\Controllers\dalil\dalilController::class, 'moreV
 Route::get('{href}/', [App\Http\Controllers\dalil\dalilController::class, 'getCountry'])->name('reload');
 Route::get('category/{country_href}/{href}', [App\Http\Controllers\dalil\dalilController::class, 'showCategory'])->name('showSubCat');
 Route::get('subofcategory/{country_name}/{category_href}/{setname}', [App\Http\Controllers\dalil\dalilController::class, 'showSubCategoryByCategory'])->name('subofcategory');
-Route::get('companydetails/get/{country_name}/{id}', [App\Http\Controllers\dalil\dalilController::class, 'showDescr'])->name('get_descr');
+Route::get('companydetails/get/{id}', [App\Http\Controllers\dalil\dalilController::class, 'showDescr'])->name('get_descr');
 Route::get('company/get/{id}', [App\Http\Controllers\dalil\dalilController::class, 'showby_id']);
 Route::get('pages/{href}', [App\Http\Controllers\dalil\dalilController::class, 'about'])->name('about-dalil');
 
