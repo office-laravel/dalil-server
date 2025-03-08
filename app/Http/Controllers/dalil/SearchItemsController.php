@@ -67,7 +67,7 @@ class SearchItemsController extends Controller
 
         $city_id = $formData['city_id'] ?? null;
         $subcity = $formData['subcity'] ?? null;
-        $category = $formData['category'] ?? null;
+        $category = $request->category ?? null;
         $subcategory = $formData['subcategory'] ?? null;
         $bounds = json_decode($request->bounds, true);
         $textsrc = $request->srchtxt;

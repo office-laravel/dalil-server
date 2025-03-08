@@ -152,7 +152,7 @@ class ProductController extends Controller
 
     public function showby_id($id)
     {
-        $adds = Adds::first();
+      //  $adds = Adds::first();
         $Settings = sitting::first();
         //   $get_site_descr = Sites::with(['country', 'category', 'tags'])->where('id', $id)->where('confirmed', 1)->get();
         // dd($get_site_descr);
@@ -167,27 +167,27 @@ class ProductController extends Controller
             'user_id',
         )->where('id', $id)->where('confirmed', 1)->first();
 
-        $addss = Adds::select('atTop', 'atRight', 'otherSite', 'atHead')->first();
-        $is_setTags = Sites::with('tags')->where('id', $id)->first();
+      //  $addss = Adds::select('atTop', 'atRight', 'otherSite', 'atHead')->first();
+      //  $is_setTags = Sites::with('tags')->where('id', $id)->first();
 
 
         $Sites = Sites::find($id);
         //  $country_id = $Sites->country_id;
-        $is_SetCountry = Countries::select('id', 'country_name', 'href', 'country_flag')->where('href', 'Syria')->first();
+    //    $is_SetCountry = Countries::select('id', 'country_name', 'href', 'country_flag')->where('href', 'Syria')->first();
 
-        $country_names = Countries::select('id', 'country_name', 'country_flag', 'href')->get();
-        $all_pinned_page = PinnedPages::get();
+       // $country_names = Countries::select('id', 'country_name', 'country_flag', 'href')->get();
+     //   $all_pinned_page = PinnedPages::get();
 
         $product = Product::with('site')->find($id);
         $related_products = Product::where('site_id', $product->site_id)->where('id', '!=', $product->id)->orderByDesc('sequence')->get();
         // dd($ff);
-        return view('dalil.product.product-describtion', compact([
-            'adds',
+        return view('site.product.product-describtion', compact([
+          //  'adds',
             'Settings',
-            'addss',
-            'country_names',
-            'all_pinned_page',
-            'is_SetCountry',
+          //  'addss',
+          //  'country_names',
+         //   'all_pinned_page',
+          //  'is_SetCountry',
             'product',
             'related_products'
         ]));
