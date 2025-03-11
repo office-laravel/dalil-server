@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\dashboard\SubscribeController;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -14,6 +15,8 @@ use App\Models\sitting;
 use App\Models\Countries;
 use App\Models\PinnedPages;
 use App\Models\Adds;
+
+
 
 class RegisteredUserController extends Controller
 {
@@ -62,6 +65,7 @@ class RegisteredUserController extends Controller
                 'confirmed',
                 Rules\Password::defaults()
             ],
+            'package_reg' => ['required','not_in:0'],
         ], [
             'enname.required' => 'حقل اسم المستخدم مطلوب',
             'enname.regex' => 'يجب أن يحتوي حقل اسم المستخدم على أحرف ومسافات إنجليزية فقط.',
@@ -73,6 +77,7 @@ class RegisteredUserController extends Controller
             'password.confirmed' => 'يجب تأكيد كلمة المرور',
             'password.min' => 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل',
             'password.regex' => 'يجب أن تحتوي كلمة المرور على حرف كبير وحرف صغير ورقم ورمز',
+            'package_reg.*' => 'هذا الحقل مطلوب',
         ]);
 
         $string = $request->enname;
@@ -84,7 +89,7 @@ class RegisteredUserController extends Controller
             // String is not contains space between words
 
             $user = User::create([
-                // 'name' => $request->name,
+               'name' => $request->enname,
                 'en_name' => $request->enname,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -92,11 +97,17 @@ class RegisteredUserController extends Controller
 
             event(new Registered($user));
 
-            // Auth::login($user);
+             Auth::login($user);
 
-
+// store package
+$subsctrlr=new SubscribeController();
+$year_id=0;
+if(isset($request->year_reg)){
+    $year_id=$request->year_reg;
+}
+$res=$subsctrlr->subscribe_store($user->id,$request->package_reg, $year_id);
             // return redirect(RouteServiceProvider::HOME);
-            return redirect()->route('loginu')->with('msg', 'تم انشاء الحساب بنجاح بإمكانك التسجيل الدخول');
+            return redirect()->route('site.home')->with('msg', 'تم انشاء الحساب بنجاح بإمكانك التسجيل الدخول');
         }
     }
 }

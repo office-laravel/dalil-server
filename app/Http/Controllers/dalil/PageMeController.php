@@ -22,10 +22,11 @@ class PageMeController extends Controller
 {
     public function index()
     {
-        $adds = Adds::first();
-        $all_pinned_page = PinnedPages::all();
-        $DataSittings = sitting::where("id", 1)->first();
-        $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
+      //  $adds = Adds::first();
+       // $all_pinned_page = PinnedPages::all();
+     //   $DataSittings = sitting::where("id", 1)->first();
+        $Settings = sitting::first();
+     //  $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
         $user_id = Auth::check() ? Auth::user()->id : null;
         $sites = null;
         if ($user_id) {
@@ -38,12 +39,13 @@ class PageMeController extends Controller
             )->get();
         }
 
-        return view('dalil.Auth_User.pageMe', compact(
-            'country_names',
-            'DataSittings',
-            'all_pinned_page',
-            'adds',
-            'sites'
+        return view('site.client.pageMe', compact(
+          //  'country_names',
+         //   'DataSittings',
+            //'all_pinned_page',
+           // 'adds',
+            'sites',
+            'Settings'
         ));
     }
 

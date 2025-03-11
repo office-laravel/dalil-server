@@ -301,9 +301,9 @@ class PackageController extends Controller
   {
     $packages = Package::with(['durationspackages:id,duration_id,package_id,status,price', 'durationspackages.duration:id,duration'])->orderByDesc('is_free')->orderBy('price')->get();
     $Settings = sitting::first();
-    $country_names = Countries::select('id', 'country_name', 'href', 'country_flag')->get();
+    //$country_names = Countries::select('id', 'country_name', 'href', 'country_flag')->get();
 
-    return view('dalil.package.all', compact('packages', 'country_names'));
+    return view('site.package.all', compact('packages','Settings'));
   }
 
 
