@@ -26,7 +26,7 @@ class AuthenticatedSessionController extends Controller
         $all_pinned_page = PinnedPages::all();
         $adds = Adds::first();
 
-        return view('auth.loginn', compact('Settings', 'country_names', 'all_pinned_page'));
+        return view('site.Auth_User.loginn', compact('Settings', 'country_names', 'all_pinned_page'));
         // return view('auth.login');
     }
 

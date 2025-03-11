@@ -369,16 +369,16 @@ class dalilController extends Controller
 
     public function createSites()
     {
-        $adds = Adds::first();
+      //  $adds = Adds::first();
         $category = Category::with('sites', 'country')->where('parent_id', 0)->where('show_status', 1)->get();
-        $country_names = Countries::select('id', 'country_name', 'href', 'country_flag')->get();
-        $tags = Tag::all();
+      //  $country_names = Countries::select('id', 'country_name', 'href', 'country_flag')->get();
+       // $tags = Tag::all();
         $categories = Category::select('id', 'category_name')->where('parent_id', 0)->get();
-        $countries = Countries::all();
-        $all_pinned_page = PinnedPages::all();
+     //   $countries = Countries::all();
+     //   $all_pinned_page = PinnedPages::all();
         $Settings = sitting::first();
         $cities = City::select('id', 'name')->get();
-        return view('dalil.pageCreateSites', compact(['Settings', 'all_pinned_page', 'adds', 'tags', 'categories', 'countries', 'category', 'country_names', 'cities']));
+        return view('site.company.pageCreateSites', compact(['Settings',  'categories',   'category',   'cities']));
     }
     public function editSites($id)
     {
