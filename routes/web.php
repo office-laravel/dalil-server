@@ -34,7 +34,9 @@ use App\Http\Controllers\dalil\ProductController;
 use App\Http\Controllers\dashboard\PackageController;
 use App\Http\Controllers\dashboard\SubscribeController;
 
-
+//site
+use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Auth\LoginController; // step 1
 
 
 /*
@@ -48,7 +50,9 @@ use App\Http\Controllers\dashboard\SubscribeController;
 |
 */
 
+//Route::get('/login', [LoginController::class, 'login']); 
 
+    Auth::routes();
 
 Route::get('/send', function () {
     Artisan::call('optimize:clear');
@@ -424,7 +428,8 @@ Route::prefix('users')->group(function () {
 //frontend
 
 #################################################################### صفحة الموقع الرئيسية  ##########################################################/
-Route::get('/', [App\Http\Controllers\dalil\dalilController::class, 'index'])->name('index');
+//Route::get('/', [App\Http\Controllers\dalil\dalilController::class, 'index'])->name('index');
+Route::get('/', [HomeController::class, 'index'])->name('site.home');
 // Route::get('/' ,  [App\Http\Controllers\dalil\dalilController::class, 'HomePage'])->name('HomePage');
 // Route::post('fetch-category/' ,  [App\Http\Controllers\dalil\dalilController::class, 'fetchCategory'])->name('fetch');
 Route::get('search/', [App\Http\Controllers\dalil\SearchItemsController::class, 'search'])->name('search');
@@ -440,13 +445,14 @@ Route::get('pages/{href}', [App\Http\Controllers\dalil\dalilController::class, '
 Route::get('all/tags/{id}', [App\Http\Controllers\dalil\dalilController::class, 'showTag'])->name('tags.sites');
 Route::get('news/all', [dalilController::class, 'getAllNews'])->name('news.all');
 Route::get('news/{id}', [dalilController::class, 'getDescrNews'])->name('news.descr');
+Route::middleware('auth')->group(function () {
 Route::get('user/create-sites', [App\Http\Controllers\dalil\dalilController::class, 'createSites'])->name('create-sites.user');
 //update
 Route::get('user/edit-sites/{id}', [App\Http\Controllers\dalil\dalilController::class, 'editSites'])->name('edit-sites.user');
 Route::post('user/update-sites/{id}', [App\Http\Controllers\dalil\dalilController::class, 'update'])->name('update-sites.user');
 //delete
 Route::post('user/sites/destroy/{id}', [App\Http\Controllers\dalil\dalilController::class, 'destroy'])->name('destroy-sites.user');
-
+});
 Route::post('supcate/', [App\Http\Controllers\dalil\dalilController::class, 'supCate'])->name('supcate');
 Route::post('/store-sites', [App\Http\Controllers\dalil\dalilController::class, 'StoreSites'])->name('store-sites.user');
 Route::get('/up-to-date/sites', [App\Http\Controllers\dalil\dalilController::class, 'newSites'])->name('new.site');
