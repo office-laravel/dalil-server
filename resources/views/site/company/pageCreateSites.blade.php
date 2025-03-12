@@ -43,7 +43,7 @@
                 @endif
             
                 <form action="{{ route('store-sites.user') }}" class="p-2 form-create-user" style="background-color: white"
-                    method="POST">
+                    method="POST"  enctype="multipart/form-data">
                     @csrf
 
                     <h4   style="margin:20px 0px;border-bottom: 1px solid #dee2e6;"> بيانات الشركة:</h4>

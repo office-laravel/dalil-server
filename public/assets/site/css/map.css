@@ -1,0 +1,251 @@
+#map { height: 100vh; }
+.map-btn {
+    position: absolute;
+    z-index: 1000;
+    padding: 5px;
+  
+    border: 1px solid #ccc;
+    cursor: pointer;
+
+    background: #fff !important;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .09));
+    display: flex
+;
+    justify-content: center;
+    align-items: center;
+}
+/* direction btn */
+ .main-color{
+    color: #fdc93a;
+ }
+ .no-color{
+    color: #000000;
+ }
+.map-btn.right {
+    right: 10px;
+    top: 10px;
+}
+ 
+.map-out-cls {
+
+    border: 1px solid #ced4da;
+    margin: 0 2px;
+}
+.map-result {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border: 1px solid #ced4da;
+     margin-top: 10px;
+        margin-bottom: 0px;
+        min-height: 400px;
+      
+}
+.filter-input{
+    padding: 10px;
+}
+/* collapse */
+ .map-container{
+    min-height: auto;
+        border: 1px solid #2222;
+        border-radius: 2px;
+        background-color: #fff;
+ }
+ .desc-social {
+     padding-left: 5px;
+    padding-right:5px;
+ }
+
+ 
+ .thumbnails[_ngcontent-ng-c1314327070] {
+     margin-bottom: -1rem;
+     overflow: auto;
+     padding: .35rem 0 .625rem .625rem
+ }
+
+ .thumbnails[_ngcontent-ng-c1314327070] .list-thumbnail[_ngcontent-ng-c1314327070] {
+     white-space: nowrap;
+     display: flex;
+     gap: .5rem;
+     align-items: center;
+     margin-inline-start: 1px
+ }
+
+ .thumbnails[_ngcontent-ng-c1314327070] .list-thumbnail[_ngcontent-ng-c1314327070] span[_ngcontent-ng-c1314327070] {
+     margin: 0;
+     min-height: 2.6875rem;
+     display: flex;
+     align-items: center
+ }
+
+ .select-filter[_ngcontent-ng-c1314327070] {
+     border: 1px solid var(--primary-p-500-primary, #fdc93a) !important;
+     background: var(--primary-p-100, #fff4d8) !important
+ }
+
+ span[_ngcontent-ng-c1314327070] {
+     border-radius: .5rem;
+     border: 1px solid var(--neutral-n-100, #e4e8eb);
+     background: var(--neutral-n-50-background, #f7f9fa);
+     margin-inline-end: .5rem;
+     padding: .375rem 1rem;
+     cursor: pointer
+ }
+
+ .div-filter[_ngcontent-ng-c1314327070] {
+     display: flex;
+     padding-bottom: .5rem
+ }
+
+ .search[_ngcontent-ng-c1314327070] {
+     margin-inline-start: 1rem;
+     padding: .4375rem .9375rem;
+     margin-top: .3125rem;
+     height: 2.6875rem;
+     display: flex;
+     align-items: center;
+     justify-content: center
+ }
+
+ .search[_ngcontent-ng-c1314327070] ion-icon[_ngcontent-ng-c1314327070] {
+     font-size: 1.125rem
+ }
+
+ *[_ngcontent-ng-c1314327070] {
+     color: var(--ion-colorNeutralN900Primary)
+ }
+
+ /* The Modal (background) */
+ .modal {
+     display: none;
+     /* Hidden by default */
+     position: fixed;
+     /* Stay in place */
+     z-index: 1000;
+     /* Sit on top */
+     left: 0;
+     top: 0;
+     width: 100%;
+     /* Full width */
+     height: 100%;
+     /* Full height */
+     overflow: auto;
+     /* Enable scroll if needed */
+     background-color: rgb(0, 0, 0);
+     /* Fallback color */
+     background-color: rgba(0, 0, 0, 0.4);
+     /* Black w/ opacity */
+     -webkit-animation-name: fadeIn;
+     /* Fade in the background */
+     -webkit-animation-duration: 0.4s;
+     animation-name: fadeIn;
+     animation-duration: 0.4s;
+     margin-bottom: 20px;
+     padding-bottom: 100px;
+
+ }
+
+ /* Modal Content */
+ .modal-content-search {
+     position: fixed;
+     bottom: 0;
+     background-color: #fefefe;
+     width: 100%;
+     height: 70%;
+     -webkit-animation-name: slideIn;
+     -webkit-animation-duration: 0.4s;
+     animation-name: slideIn;
+     animation-duration: 0.4s;
+    
+ }
+ .modal-content {
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
+ }
+
+ /* The Close Button */
+ .close {
+
+     color: white;
+     /*   float: right; */
+     font-size: 28px;
+     font-weight: bold;
+     margin-left: 0 !important;
+ }
+
+ .close:hover,
+ .close:focus {
+     color: #000;
+     text-decoration: none;
+     cursor: pointer;
+ }
+
+ .modal-header {
+     padding: 16px 16px;
+     background-color: #fdc93a;
+     color: white;
+     border-top-right-radius: 25px;
+     border-top-left-radius: 25px;
+ }
+
+ .modal-body {
+     padding: 2px 16px;
+     border-top-right-radius: 25px;
+     border-top-left-radius: 25px;
+
+ }
+
+ .modal-footer {
+     padding: 2px 16px;
+     background-color: #fdc93a;
+     color: white;
+ }
+
+ /* Add Animation */
+ @-webkit-keyframes slideIn {
+     from {
+         bottom: -300px;
+         opacity: 0
+     }
+
+     to {
+         bottom: 0;
+         opacity: 1
+     }
+ }
+
+ @keyframes slideIn {
+     from {
+         bottom: -300px;
+         opacity: 0
+     }
+
+     to {
+         bottom: 0;
+         opacity: 1
+     }
+ }
+
+ @-webkit-keyframes fadeIn {
+     from {
+         opacity: 0
+     }
+
+     to {
+         opacity: 1
+     }
+ }
+
+ @keyframes fadeIn {
+     from {
+         opacity: 0
+     }
+
+     to {
+         opacity: 1
+     }
+ }
+
+ 

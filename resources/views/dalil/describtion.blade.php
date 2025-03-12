@@ -202,7 +202,7 @@
             @endisset
         </div>
 
-
+    </div>
     @endsection
     @section('map-js')
         <script>

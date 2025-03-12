@@ -135,20 +135,7 @@
 
                 </div>
                 <div class="container datee">
-                    <?php
-                    use Carbon\Carbon;
-                    use Alkoumi\LaravelHijriDate\Hijri;
-                    $Y = date('Y');
-                    $D = date('d');
-                    $M = date('m');
-                    $ss = Hijri::DateIndicDigits('l');
-                    $mydate = $ss. ' - ' .$Y.'/'.$M.'/'.$D;
-                    
-                    // echo $Y . '/' . $M . '/' . $D . '-';
-                    // $ss = Hijri::DateIndicDigits('l - j F - Y');
-                    echo '<p style="margin:0;text-align: end;
-    margin-left: 7px;">'.$mydate.'</p>';
-                    ?>
+                  <!-- #region -->
 
                     {{-- <div class="icon-barr">
                         <span class="icon-home">
