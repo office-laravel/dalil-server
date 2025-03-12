@@ -321,53 +321,22 @@ class SubscribeController extends Controller
      // return response()->json(['errors' => $validator->errors()], 422);
       return redirect()->back()->with('errors' , $validator->errors());
     } else {
-      // $d =explode(',' ,$request->countries);
-      $now = Carbon::now()->format('Y-m-d');
-      $package = Package::find($formdata['package']);
       $year_field_name='year-'.$formdata['package'];
-      $year_id=$formdata[$year_field_name];
-      $duration_p = DurationPackage::with('duration')->find($year_id);
-      $newObj = new PackageUser();
-      $newObj->user_id = Auth::user()->id;
-      $newObj->package_id = $formdata['package'];
-      $newObj->total_sites_count = $package->sites_count;
-      $newObj->used_sites_count = 0;
-      $newObj->name = $package->name;
-      $newObj->code = $package->code;
-      $newObj->href = $package->href;
-      $newObj->category = $package->category;
-      $newObj->title = $package->title;
-      $newObj->logo = $package->logo;
-      $newObj->mobile_number = $package->mobile_number;
-      $newObj->phone_number = $package->phone_number;
-      $newObj->video = $package->video;
-      $newObj->description = $package->description;
-      $newObj->articale = $package->articale;
-      $newObj->subcategories = $package->subcategories;
-      $newObj->keyword = $package->keyword;
-      $newObj->social = $package->social;
-      $newObj->android = $package->android;
-      $newObj->ios = $package->ios;
-      $newObj->views = $package->views;
-      $newObj->priority = $package->priority;
-      $newObj->maploc = $package->maploc;
-      $newObj->city = $package->city;
-      $newObj->sites_count = $package->sites_count;
-      $newObj->products_count = $package->products_count;
-      $newObj->price = $duration_p->price;
-      $newObj->is_free = $package->is_free;
-      $newObj->duration = $duration_p->duration->duration;
-     // $newObj->start_date = $now;
-    //  $newObj->expire_date = Carbon::parse($now)->addYears($duration_p->duration->duration);
-      $newObj->duration_id = $duration_p->duration_id;
-      $newObj->duration_package_id = $duration_p->id;
-      $newObj->status ='w';      
-      $newObj->save();
-      //update sites with new package_user_id
-   //   Sites::where('user_id', $newObj->user_id)->update(['package_user_id' => $newObj->id]);
-     // return response()->json("ok");
-         return redirect()->route('index')
-             ->with('success' , 'تم تسجيل الاشتراك بانتظار موافقة الادارة');
+      $year_id=null;
+      if(isset($formdata[$year_field_name])){
+        $year_id=$formdata[$year_field_name];
+      }    
+
+      $res=$this->subscribe_store(Auth::user()->id,$formdata['package'], $year_id);
+      if( $res==1){
+        return redirect()->route('site.home')
+        ->with('success' , 'تم تسجيل الاشتراك بانتظار موافقة الادارة');
+      }else{
+        return redirect()->route('site.home')
+        ->with('error' , 'لم تنجح العملية');
+      }
+    
+     
     }
   }else{
     return redirect()->route('loginu');
@@ -429,6 +398,7 @@ class SubscribeController extends Controller
       $newObj->sites_count = $package->sites_count;
       $newObj->products_count = $package->products_count;
       $newObj->is_free = $package->is_free;
+
       if($package->is_free!=1){
         $duration_p = DurationPackage::with('duration')->find($year_id);
         $newObj->price = $duration_p->price;
@@ -442,9 +412,10 @@ class SubscribeController extends Controller
         $newObj->status ='w';  
       }else{
         $newObj->status ='a';  
-      }
-      
+      }  
+     
       $newObj->save();
+  
       //update sites with new package_user_id
    //   Sites::where('user_id', $newObj->user_id)->update(['package_user_id' => $newObj->id]);
      // return response()->json("ok");
@@ -533,9 +504,11 @@ class SubscribeController extends Controller
           $newObj->start_date = $now;
           $newObj->expire_date = Carbon::parse($now)->addYears($newObj->duration);
           $package_user_id=$newObj->id;
+
+       
         } 
         Sites::where('user_id', $newObj->user_id)->update(['package_user_id' => $package_user_id]);
-    
+      
       }
      
      // $newObj->duration_id = $duration_p->duration_id;

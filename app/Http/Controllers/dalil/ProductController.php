@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\dalil;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Client\ResponseSequence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
+ 
+use Intervention\Image\Laravel\Facades\Image;
+
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
@@ -25,21 +28,21 @@ class ProductController extends Controller
 
     public function index($site_id)
     {
-        $adds = Adds::first();
-        $all_pinned_page = PinnedPages::all();
-        $DataSittings = sitting::where("id", 1)->first();
-        $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
+        // $adds = Adds::first();
+        // $all_pinned_page = PinnedPages::all();
+        $Settings = sitting::where("id", 1)->first();
+      //  $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
         $user_id = Auth::check() ? Auth::user()->id : null;
         $site = Sites::find($site_id);
         $products = null;
         if ($user_id) {
             $products = Product::where('site_id', $site_id)->where('user_id', $user_id)->get();
         }
-        return view('dalil.product.all', compact(
-            'country_names',
-            'DataSittings',
-            'all_pinned_page',
-            'adds',
+        return view('site.product.all', compact(
+          //  'country_names',
+            'Settings',
+            //'all_pinned_page',
+         //   'adds',
             'products',
             'site_id',
             'site',
@@ -50,17 +53,17 @@ class ProductController extends Controller
 
     public function create($site_id)
     {
-        $adds = Adds::first();
-        $all_pinned_page = PinnedPages::all();
-        $DataSittings = sitting::where("id", 1)->first();
-        $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
+        // $adds = Adds::first();
+        // $all_pinned_page = PinnedPages::all();
+        $Settings = sitting::where("id", 1)->first();
+      //  $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
         $site = Sites::select('id', 'site_name', 'title', 'user_id')->find($site_id);
 
-        return view('dalil.product.create', compact(
-            'country_names',
-            'DataSittings',
-            'all_pinned_page',
-            'adds',
+        return view('site.product.create', compact(
+          
+            'Settings',
+        
+       
             'site'
         ));
     }
@@ -99,8 +102,8 @@ class ProductController extends Controller
 
             $site = Sites::find($formdata['site_id']);
             $now = Carbon::now();
-            $packusr = PackageUser::where('user_id', $site->user_id)->whereDate('expire_date', '>=', $now)->orderByDesc('created_at')->first();
-
+            $packusr = PackageUser::where('user_id', $site->user_id)->whereDate('expire_date', '>=', $now)->whereNot('is_free',1)->orderByDesc('created_at')->first();
+//return response()->json(   $packusr );
             $available_sites_count = 0;
             $used_products_count = $site->used_products_count ? $site->used_products_count : 0;
 
@@ -134,15 +137,20 @@ class ProductController extends Controller
                 //  $newObj->category_p_id = $formdata['category_p_id'];
 
                 $newObj->save();
-
+                $site->used_products_count++;
+                $site->save();
                 if ($request->hasFile('image')) {
                     $time = $newObj->id . time() . '.webp';
+
                     // $ext = $request->file('image')->getClientOriginalExtension();
-                    Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
+                     Image::read($request->file('image')->getRealPath())->resize(100, 60)->toWebp(100)->save(public_path('picProduct/' . $time));
+                    //$image;
+                  //  $image->toWebp(100)->resize(100, 60)->save(public_path('picProduct/' . $time));
                     // $newImageName = time(). '.' . $request->photo->extension();
                     $newObj->image = $time;
                     $newObj->update();
                 }
+             
 
                 return response()->json("ok");
             }
@@ -198,18 +206,18 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $adds = Adds::first();
-        $all_pinned_page = PinnedPages::all();
-        $DataSittings = sitting::where("id", 1)->first();
-        $country_names = Countries::select('id', 'country_flag', 'country_name', 'href')->get();
+  
+      
+        $Settings = sitting::where("id", 1)->first();
+  
 
         $product = Product::find($id);
         $site = Sites::select('id', 'site_name', 'title', 'user_id')->find($product->site_id);
-        return view('dalil.product.edit', compact(
-            'country_names',
-            'DataSittings',
-            'all_pinned_page',
-            'adds',
+        return view('site.product.edit', compact(
+          
+            'Settings',
+          
+           
             'site',
             'product',
         ));
@@ -267,8 +275,11 @@ class ProductController extends Controller
                 }
 
                 $time = $newObj->id . time() . '.webp';
+
+                Image::read($request->file('image')->getRealPath())->resize(100, 60)->toWebp(100)->save(public_path('picProduct/' . $time));
+                
                 // $ext = $request->file('image')->getClientOriginalExtension();
-                Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
+                //Image::make($request->file('image')->getRealPath())->encode('webp', 100)->resize(100, 60)->save(public_path('picProduct/' . $time));
                 // $newImageName = time(). '.' . $request->photo->extension();
                 $newObj->image = $time;
                 $newObj->update();
@@ -277,14 +288,7 @@ class ProductController extends Controller
             return response()->json("ok");
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function delete_product($id)
     {
 
         $object = Product::find($id);
@@ -300,12 +304,25 @@ class ProductController extends Controller
             Product::find($id)->delete();
             //decrease used product
             $site->used_products_count--;
+            $site->save();
         }
-        return redirect()->back();
-        // return  $this->index();
-        //   return redirect()->route('users.index');
+        return 1; 
 
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+$res=$this->delete_product($id);
+return redirect()->back();       
+
+    }
+
 
     // Admin Methods //////////////////////////////////////////////////////////////////
     public function admin_index($site_id)
@@ -384,7 +401,7 @@ class ProductController extends Controller
             //  $user_id = $request->user_id ? $request->user_id : 0;
             $site = Sites::find($formdata['site_id']);
             $now = Carbon::now();
-            $packusr = PackageUser::where('user_id', $site->user_id)->whereDate('expire_date', '>=', $now)->orderByDesc('created_at')->first();
+            $packusr = PackageUser::where('user_id', $site->user_id)->whereDate('expire_date', '>=', $now)->whereNot('is_free',1)->orderByDesc('created_at')->first();
 
             $available_sites_count = 0;
             $used_products_count = $site->used_products_count ? $site->used_products_count : 0;

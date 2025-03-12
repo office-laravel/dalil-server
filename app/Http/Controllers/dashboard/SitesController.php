@@ -13,8 +13,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
 use App\Models\Countries;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
+ 
 use Illuminate\Support\Facades\File;
+use Intervention\Image\Laravel\Facades\Image;
 
 use App\Models\User;
 use App\Models\PackageUser;
@@ -173,7 +174,9 @@ class SitesController extends Controller
                 if ($request->logo) {
                     $time = time();
                     $filePath = public_path('picCompany/' . $time . '.' . 'webp');
-                    Image::make($request->file('logo')->getRealPath())->encode('webp', 100)->resize(228, 170)->save($filePath);
+                  //  Image::make($request->file('logo')->getRealPath())->encode('webp', 100)->resize(228, 170)->save($filePath);
+                  Image::read($request->file('logo')->getRealPath())->resize(228, 170)->toWebp(100)->save($filePath);
+                
                     $savingPic = $time . '.' . 'webp';
 
                     $mydataSites = Sites::create([
@@ -288,7 +291,7 @@ class SitesController extends Controller
         //check count of sites
         $user_id = $user_id ? $user_id : 0;
         $now = Carbon::now();
-        $packusr = PackageUser::where('user_id', $user_id)->whereDate('expire_date', '>=', $now)->orderByDesc('created_at')->first();
+        $packusr = PackageUser::where('user_id', $user_id)->whereDate('expire_date', '>=', $now)->whereNot('is_free',1)->orderByDesc('created_at')->first();
         $package_user_id = null;
         $available_sites_count = 0;
         //   $isfree = 0;
@@ -459,7 +462,9 @@ class SitesController extends Controller
                 File::delete($pathImg);
             }
             $time = time();
-            $image = Image::make($request->file('logo')->getRealPath())->encode('webp', 100)->resize(228, 170)->save(public_path('picCompany/' . $time . '.webp'));
+          //  $image = Image::make($request->file('logo')->getRealPath())->encode('webp', 100)->resize(228, 170)->save(public_path('picCompany/' . $time . '.webp'));
+            Image::read($request->file('logo')->getRealPath())->resize(228, 170)->toWebp(100)->save(public_path('picCompany/' . $time . '.webp'));
+                
             DB::table('sites')->where('id', $id)->update([
                 'logo' => $time . '.' . 'webp',
             ]);

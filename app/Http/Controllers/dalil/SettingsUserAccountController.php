@@ -19,11 +19,11 @@ class SettingsUserAccountController extends Controller
     }
     public function settingAccount(){
         $Settings = sitting::first();
-        $country_names = Countries::select('id', 'country_name','href' , 'country_flag')->get();
-        $all_pinned_page = PinnedPages::all();
-        $adds = Adds::first();
+      //  $country_names = Countries::select('id', 'country_name','href' , 'country_flag')->get();
+    //    $all_pinned_page = PinnedPages::all();
+   //     $adds = Adds::first();
         $getUserAuth = Auth::user();
-        return view('dalil.Auth_User.SettingAccount' , compact('adds','getUserAuth','Settings', 'country_names', 'all_pinned_page'));
+        return view('site.client.SettingAccount' , compact('getUserAuth','Settings'));
     }
 
     public function updatesettingAccount(Request $request){

@@ -302,7 +302,9 @@ class PackageController extends Controller
     $packages = Package::with(['durationspackages:id,duration_id,package_id,status,price', 'durationspackages.duration:id,duration'])->orderByDesc('is_free')->orderBy('price')->get();
     $Settings = sitting::first();
     //$country_names = Countries::select('id', 'country_name', 'href', 'country_flag')->get();
-
+if(Auth::check()){
+  return view('site.package.all-auth', compact('packages','Settings'));
+}
     return view('site.package.all', compact('packages','Settings'));
   }
 

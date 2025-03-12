@@ -25,10 +25,11 @@ use Auth;
 use Illuminate\Support\Facades\DB;
 use Prophecy\Exception\Doubler\ReturnByReferenceException;
 use Illuminate\Http\Request;
-
-use Intervention\Image\Facades\Image;
+use Intervention\Image\Laravel\Facades\Image;
+ 
 use Illuminate\Support\Facades\File;
 use App\Http\Controllers\dashboard\SitesController;
+use App\Http\Controllers\dalil\ProductController;
 class dalilController extends Controller
 {
     public function index(Request $request)
@@ -466,7 +467,9 @@ class dalilController extends Controller
             if ($request->logo) {
                 $time = time();
                 $filePath = public_path('picCompany/' . $time . '.' . 'webp');
-                Image::make($request->file('logo')->getRealPath())->encode('webp', 100)->resize(228, 170)->save($filePath);
+             //   Image::read($request->file('logo')->getRealPath())->encode('webp', 100)->resize(228, 170)->save($filePath);
+                Image::read($request->file('logo')->getRealPath())->resize(228, 170)->toWebp(100)->save($filePath);
+                
                 $savingPic = $time . '.' . 'webp';
 
 
@@ -570,7 +573,7 @@ class dalilController extends Controller
                         return redirect()->route('sites.main')
                             ->with('success', 'Successfuly added data');
             */
-            return redirect()->back()->with('msgsuccess', 'تم اضافة الموقع وهو في حالة انتظار المشرف للموافقة عليه');
+            return redirect()->back()->with('msgsuccess', 'تم إضافة الموقع بنجاح');
 
             // ->with('success' , 'Successfuly added data');
         }
@@ -594,8 +597,9 @@ class dalilController extends Controller
                 File::delete($pathImg);
             }
             $time = time();
-            $image = Image::make($request->file('logo')->getRealPath())->encode('webp', 100)->resize(228, 170)->save(public_path('picCompany/' . $time . '.webp'));
-
+          //  $image = Image::make($request->file('logo')->getRealPath())->encode('webp', 100)->resize(228, 170)->save(public_path('picCompany/' . $time . '.webp'));
+            Image::read($request->file('logo')->getRealPath())->resize(228, 170)->toWebp(100)->save(public_path('picCompany/' . $time . '.webp'));
+                
             $sites->logo = $time . '.' . 'webp';
             $sites->update();
         }
@@ -705,7 +709,13 @@ class dalilController extends Controller
                 if (File::exists($pathImg)) {
                     File::delete($pathImg);
                 }
+//delete products
+$products=Product::where('site_id',$id)->select('id')->get();
+$prodCtrlr=new ProductController();
 
+foreach ($products as $product) {
+    $prodCtrlr->delete_product($product->id);
+}
 
                 $user = User::find($sites->user_id);
                 $sites->delete();
