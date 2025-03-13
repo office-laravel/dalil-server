@@ -102,7 +102,7 @@ class Sites extends Model
       //  $site = Sites::find($site_id);
         $package = new Package();
         if ($this->package_user_id) {
-            $packusr = PackageUser::where('id', $this->package_user_id)->whereDate('expire_date', '>=', $now)->first();
+            $packusr = PackageUser::where('id', $this->package_user_id)->whereNot('is_free',1)->whereDate('expire_date', '>=', $now)->first();
             $package->name = $packusr->name;
             $package->href = $packusr->href;
             $package->category = $packusr->category;

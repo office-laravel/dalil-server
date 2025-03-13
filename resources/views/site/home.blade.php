@@ -102,7 +102,7 @@
     </script>
 
     <script>
-        var mainurl = "{{ url('PicCate/icon/') }}";
+        var mainurl = "{{ url('public/PicCate/icon/') }}";
         var token = '{{ csrf_token() }}';
         var subcityurl = "{{ url('subcity/ItemId') }}";
         var companyurl = "{{ url('company/get') }}"
