@@ -54,5 +54,5 @@
     @yield('map-js')
     <!--  Map end -->
   </body>
-  </html>
+ 
   

@@ -73,7 +73,8 @@
                     @endforelse
                 </div>
             </div>
-
+            <div style="margin-bottom: 75px;">
+            </div>
         </div>
     @endsection
     @section('map-js')

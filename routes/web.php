@@ -452,6 +452,7 @@ Route::get('user/edit-sites/{id}', [App\Http\Controllers\dalil\dalilController::
 Route::post('user/update-sites/{id}', [App\Http\Controllers\dalil\dalilController::class, 'update'])->name('update-sites.user');
 //delete
 Route::post('user/sites/destroy/{id}', [App\Http\Controllers\dalil\dalilController::class, 'destroy'])->name('destroy-sites.user');
+Route::get('user/mysubscribe', [SubscribeController::class, 'my_package']);
 });
 Route::post('supcate/', [App\Http\Controllers\dalil\dalilController::class, 'supCate'])->name('supcate');
 Route::post('/store-sites', [App\Http\Controllers\dalil\dalilController::class, 'StoreSites'])->name('store-sites.user');

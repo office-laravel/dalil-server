@@ -38,7 +38,7 @@ class Package extends Model
         'is_free',
         'status',
     ];
-    //  protected $appends = ['type_conv'];
+    protected $hidden = ['expire_date'];
 
     public function packagesusers(): HasMany
     {

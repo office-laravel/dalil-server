@@ -8,7 +8,7 @@
                 <div class="picture-company m">
 
 
-                    <img src="{{ $package->logo == 1 && $articaleSites->logo ? url('picCompany/' . $articaleSites->logo) : url('picCompany/' . 'default.webp') }}"
+                    <img src="{{ $package->logo == 1 && $articaleSites->logo ? url('public/picCompany/' . $articaleSites->logo) : url('public/picCompany/' . 'default.webp') }}"
                         alt="{{ $articaleSites->site_name }}">
 
 
@@ -18,13 +18,13 @@
                     @if (isset($getNameSubCategory) && isset($getNameCategory) && isset($is_SetCountry))
                         <div class="category-company mb-3">
                             @if ($package->category == 1)
-                                <a href="{{ route('showSubCat', [$is_SetCountry->href, $getNameCategory->href]) }}"
+                                <a href="#"
                                     class="span-one delLink"><i title="تصنيف"
                                         class="fas fa-folder-open mx-1 "></i>{{ $getNameCategory->category_name }}</a>
                             @endif
                             @if ($package->subcategories == 1)
-                                <a class="delLink"
-                                    href="{{ route('subofcategory', [$is_SetCountry->href, $getNameCategory->href, $getNameSubCategory->href]) }}"><i
+                                <a class="delLink span-one delLink"
+                                    href="#"><i
                                         title="تصنيف فرعي"
                                         class="fas fa-folder-open   mx-1"></i>{{ $getNameSubCategory->category_name }}</a>
                             @endif
@@ -59,7 +59,7 @@
                     @if ($is_SetCountry && $getCityName)
                         <li>
                             <div class="flag-country heighter">
-                                <img src="{{ url('uploading/' . $is_SetCountry->country_flag) }}"
+                                <img src="{{ url('public/uploading/' . $is_SetCountry->country_flag) }}"
                                     alt="$is_SetCountry->country_name">
                             </div>
 
@@ -110,7 +110,7 @@
 
         </section>
     @endisset
-    @if ($products)
+    @if ($products->count()>0)
         <div class="container   mb-3 padNews">
             <div class="info-company mt-5 edit-info">
                 <div class="boxinfo-company f">
@@ -148,7 +148,7 @@
         </div>
     @endif
 
-    <section class="info-company  edit-info">
+    <section class="info-company  edit-info"   style="margin-bottom:10px">
         <div class="container">
             <div class="boxinfo-company f">
                 <div class="title-companys m">
@@ -164,7 +164,7 @@
                         <div class="list-company">
                             <a href="{{ url('company/get', $item->id) }}">
                                 <div class="company-preview-image">
-                                    <img src="{{ $package->logo == 1 && $item->logo ? url('picCompany/' . $item->logo) : url('picCompany/' . 'default.webp') }}"
+                                    <img src="{{ $package->logo == 1 && $item->logo ? url('public/picCompany/' . $item->logo) : url('public/picCompany/' . 'default.webp') }}"
                                         alt="{{ $item->site_name }}">
                                 </div>
                             </a>
@@ -188,7 +188,7 @@
         @if ($articaleSites->articale == null || $package->articale != 1)
         @else
         
-    <section class="info-company   edit-info">
+    <section class="info-company   edit-info"   style="margin-bottom:10px">
             <div class="container"  >
                
                                       
@@ -211,13 +211,9 @@
         </section>
         @endif
     @endisset
-
-    <div class="container addss text-center mt-3" style="width:70%">
-        @isset($adds->atRight)
-            <p class="text-center w-100">{!! $adds->atRight !!}</p>
-        @endisset
-    </div>
-
+    <div style="margin-bottom: 75px;">
+</div>
+    
 </div>
 
 @endsection 

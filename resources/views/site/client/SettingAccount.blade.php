@@ -1,9 +1,6 @@
 @extends('site.layouts.layout')
 
-@section('content')
-
-
-    
+@section('content')    
     <div class="container mt-2 box-category" style="margin-bottom: 100px;">
         <section class="section mt-5"
             style="  background-color: #fff; padding-top:30px;padding-left:20px;padding-right:20px;padding-bottom:20px;">

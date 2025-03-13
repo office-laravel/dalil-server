@@ -1,237 +1,99 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
-
+<?php 
+use App\Models\sitting;
+  $Settings = sitting::first();
+  ?>
+    
 <head>
-    <!-- Required meta tags -->
     <meta charset="UTF-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @if (isset($Settings))
-<meta name="description" content="@isset($Settings){{$Settings->Description}}@endisset">
-    @endif
-<meta property="og:url" content="https://link.orasweb.com/">
-    @if (isset($Settings))
-<meta name="keywords" content="@isset($Settings){{ $Settings->Keywords }}@endisset">
-    @endif
-
-
-    @isset($Settings->socialMidialinkden)<meta property="og:url" content="{{ $Settings->socialMidialinkden }}" />@endisset
-    @isset($Settings->socialMidiaYoutube)<meta property="og:url" content="{{ $Settings->socialMidiaYoutube }}" />@endisset
-    @isset($Settings->socialMidiaInstagram)<meta property="og:url" content="{{ $Settings->socialMidiaInstagram }}" />@endisset
-    @isset($Settings->socialMidiaFacebook)<meta property="og:url" content="{{ $Settings->socialMidiaFacebook }}" />@endisset
-    @isset($Settings->socialMidiaTelegram)<meta property="og:url" content="{{ $Settings->socialMidiaTelegram }}" />@endisset
-    <link rel="icon" type="image/x-icon" href="{{ url('../public/uploading/logozooozaaa.png') }}">
-    <meta property="og:image" content="{{ url('../public/uploading/logozooozaaa.png') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}"/> 
+    {{-- @foreach ( $mainarr['headerlist'] as $headrow )
+    {{ Str::of($headrow['value1'])->toHtmlString()}}    
+  @endforeach --}}
+  <link href="{{ url('/public/uploading/' . $Settings->favicon) }}" rel="icon">  
+  <title>
+    {{$Settings->nameWebsite}} @yield('page-title')
+  </title> 
+   
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.rtl.min.css"
-        integrity="sha384-+qdLaIRZfNu4cVPK/PxJJEy0B0f3Ugv8i482AKY7gwXwhaCroABd086ybrVKTa0q" crossorigin="anonymous">
-    <!--{{-- <link rel="stylesheet" type="text/css" href="style.css"> --}}-->
-    {{-- <link rel="stylesheet" href="{{ asset('css/asw.css') }}"> --}}
-    <link rel="stylesheet" href="{{ url('../public/FrontStyle/css/styleMainIndex.css') }}">
-    <link rel="stylesheet" href="{{ url('../public/FrontStyle/css/dalil_style.css') }}">
-
-    <title>
-@if(isset($Settings) && empty($country) && empty($getMeta) && empty($getTagTitle) && empty($getTitle_About) && empty($tagSam->name))
-        {{ $Settings->nameWebsite }}
-@elseif (isset($country) && isset($Settings))
-         وصلات {{ $country->country_name }}..{{ $country->title }}
-@elseif(isset($getMeta) && isset($Settings))
-        @if ($getMeta->parent_id == 0)
-        {{$Settings->nameWebsite}}-{{$getMeta->category_name}}
-        @endif
-@elseif (isset($getTagTitle))
-        {{$getTagTitle->site_name}}
-@elseif (isset($getTitle_About))
-        {{$getTitle_About->title}}
-@elseif (isset($tagSam))
-        {{$tagSam->name}}
-
-@endif
-    </title>
-</head>
-
-<body>
-    <img class="bar-img" src="{{ url('../public/upload/bgnav.png') }}" alt="">
-    <div class="bar-top"><i class="fa-solid fa-house bar-title"></i><span class="bar-title">عزيزي المستخدم </span>
-        <span class="bar-text">لجعل تصفح الانترنت أسهل وأكثر أمانا ، اجعل وصلات .. الانترنت في صفحة واحدة صفحتك الرئيسية
-            !</span><a hidefocus="true" data-val="close" data-sort="topbar" id="addFavClose" class="bar-addfav_close"
-            target="_self" href="javascript:void(0)"></a>
-    </div>
-    <?php 
-        use App\Models\PinnedPages;
-        use App\Models\Countries;
-        use App\Models\Adds;
-        
-        $all_pinned_page = PinnedPages::get();
-        $country_names = Countries::get();
-        $adds = Adds::first();
-    ?>
+  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Custom styles -->
+   
+        <!-- Map -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
     
+        <link rel="stylesheet" href="{{ url('/public/assets/site/css/map.css') }}">
+        <link rel="stylesheet" href="{{ url('/public/assets/site/css/style_product.css') }}" />
+            @yield('map-css')
+    <link rel="stylesheet" href="{{ url('/public/assets/site/css/styles.css') }}" />
     
-    <nav class="navbar navbar-expand-sm navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
-                {{-- <h1 class="logo">دليل</h1> --}}
-                <img src="{{ url('../public/upload/logo_waslat.png') }}" alt="لوغو" style="margin-right: 4rem;width:150px;height:50px;">
-            </a>
-            <button class="navbar-toggler" type="button" aria-label="button menu" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse edit" id="mynavbar">
-                <ul class="navbar-nav me-auto">
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)">Link</a>
-                    </li> --}}
-                </ul>
-                <div class="main-nav" style="width: 12rem">
-                    <div class="btn-group">
+    @yield('css')
+  </head>
+  <body>
 
-                        <button class="btn btn-sm dropdown-toggle" id="bbb" type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+    <!-- قائمة الأعلى -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-style">
+      <div class="container">
+     
+        <a  class="navbar-brand"  href="{{ url('/') }}"><img src="{{ url('/public/upload/logo_waslat.png') }}" width="50px" height="50px" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            @if (Auth::check())
+            <li  class="nav-item dropdown " >
+                <a  class="nav-link dropdown-toggle nav-link-pad" href="#" id="accountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span> مرحبا بك يا {{ Auth::guard()->user()->name }}</span></a>
+                <div class="dropdown-menu" aria-labelledby="accountDropdown">
+                    <a class="dropdown-item" href="{{ route('mainPageSetting.userr',Auth::guard()->user()->name) }}">حسابي</a>
+                    <a class="dropdown-item" href="{{ route('pageme.user',Auth::guard()->user()->name) }}">مواقعي</a>
+                    <a class="dropdown-item" href="{{ route('logoutu') }}"    >تسجيل خروج</a>
+            
+                  </div>
+            </li>
+          
+            @else
+            <li class="nav-item  ">
+                <a class="nav-link  nav-link-pad" href="{{ url('/package/all') }}">اشتراك </a>
+            </li>
+               <li class="nav-item">
+                <a class="nav-link  nav-link-pad" href="{{ route('loginu') }}">تسجيل دخول</a>
+              </li>
 
-                            @if (isset($is_SetCountry))
-                                <img src="{{ url('../public/uploading/' . $is_SetCountry->country_flag) }}" alt="{{$is_SetCountry->country_name}}"
-                                    style="margin-left:5px;width:16px;height:11px;" loading="lazy">
-                                {{ $is_SetCountry->country_name }}
-                            @elseif (isset($selectCountry->country))
-                                <img src="{{ url('../public/uploading/' . $selectCountry->country->country_flag) }}"
-                                    alt="{{$selectCountry->country->country_name}}" style="margin-left:5px;width:16px;height:11px;" loading="lazy">
-                                {{ $selectCountry->country->country_name }}
-                            @else
-                                اختر الدولة
-                            @endif
-
-                        </button>
-
-                        <div class="dropdown-menu" style="z-index:999999;">
-                            <ul class="list" id="drop_list">
-                                @foreach ($country_names as $get_country)
-                                    <li id="eee">
-                                        <img src="{{ url('../public/uploading/' . $get_country->country_flag) }}"
-                                            alt="{{$get_country->country_name}}" style="margin-left:5px" loading="lazy">
-                                        <a class="text-decoration-none text-dark mb-1"
-                                            href="{{ route('reload', [$get_country->href]) }}">
-                                            {{ $get_country->country_name }}</a>
-
-                                    </li>
-                                @endforeach
-
-                            </ul>
-
-                        </div>
-
-                    </div>
-                    <div class="span">
-                        <span class="text-white" style="font-size: 13px">دليل المواقع السهولة والامان </span>
-                    </div>
+              
+              {{-- <li class="nav-item">
+                <a class="nav-link nav-link-pad" href="/auth/google">
+                  التسجيل عن طريق البريد الإلكتروني
+                </a>
+              </li> --}}
+                          @endif
+         
+                {{-- start lang--}}
+             
+                  
+             
+          
+          
+           {{-- end lang--}}
 
 
-
-
-
-                </div>
-                <div class="container datee">
-                  <!-- #region -->
-
-                    {{-- <div class="icon-barr">
-                        <span class="icon-home">
-                            @isset($get_about_waslat)
-                                <a
-                                    href="{{ route('about-dalil', [$get_about_waslat->href, $get_about_waslat->id]) }}">
-                                    <i class="fa-solid fa-house"></i>
-                                    اجعلنا صفحتك الرئيسية
-                                </a>
-                            @endisset
-                        </span>
-                    </div> --}}
-                    <div class="icon-barr">
-                        <span class="icon-home">
-                            <a href="{{ route('create-sites.user') }}">
-                                <i class="fa-solid fa-house"></i>
-                                اضف موقعك
-                            </a>
-                        </span>
-                        @if (Auth::check())
-                            <div class="profile" id="clicked_pro" onclick="myFunction()">
-                                <img src="{{ url('../public/upload/icon-person.png') }}" width="20" alt="">
-                            </div>
-                        @else
-                            <span class="icon-home">
-                                <a href="{{ route('login') }}">
-                                    <i class="fa-solid fa-right-to-bracket"></i>
-                                    حسابي
-                                </a>
-                            </span>
-                        @endif
-
-                        <ul class="list-unstyled listli d-none" id="ul-list" >
-                            <li class="li"><a href="{{route('mainPageSetting.userr', Auth::check() ? Auth::user()->en_name : '')}}"
-                                    class="dropdown-item text-decoration-none"><span><i
-                                        class="fa-solid fa-gear"
-                                        style="margin-left:.5rem; margin-right:-0.5rem;"></i>إعدادات الحساب</span></a></li>
-                            <hr style="margin:0;padding:0;">
-                            <li class="li"><a href="{{route('pageme.user', Auth::check() ? Auth::user()->en_name : '')}}"
-                                class="dropdown-item text-decoration-none"><span>
-                                    <i class="fa-solid fa-file" style="margin-left:.5rem; margin-right:-0.5rem;"></i>
-                                    صفحتي</span></a></li>
-                                    <li class="li"><a href="{{ route('logout') }}"
-                                            class="dropdown-item text-decoration-none"><span><i
-                                                class="fa-solid fa-right-from-bracket"
-                                                style="margin-left:.5rem; margin-right:-0.5rem;"></i>خروج</span></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+          </ul>
         </div>
-
-
+      </div>
     </nav>
-<div class="container w-100 addss mt-5 mb-5">
-        @isset($adds)
-            <p class="text-center">{!! $adds->atTop !!}</p>
-        @endisset
-    </div>
+
+
 
     <div class="container text-center mt-5 mb-4" style="width:50%;background: #fff;
     padding: 35px;">
         <h1>404</h1>
-        <p>الصفحة التي تبحث عنها غير موجودة</p>
-        <a href="{{url('/')}}" class="btn btn-success">الرجوع الى الصفحة الرئيسية</a>
-    </div>
-
-<div class="container w-100 addss mt-5 mb-5">
-            @isset($adds)
-                <p class="text-center">{!! $adds->atRight !!}</p>
-            @endisset
-        </div>
-    <div class="mt-1 p-4 bg text-white text-center footer">
-        <div class="container l-wrap t-c d-inline-flex justify-content-center edit-footer">
-            @isset($all_pinned_page)
-
-                <ul class="box-fot no-hover">
-                    <li><a href="{{ route('news.all') }}">المقالات</a><b
-                                class="space"></b></li>
-                    @foreach ($all_pinned_page as $get_pinned)
-                        <li><a
-                                href="{{ route('about-dalil', [$get_pinned->href]) }}">{{ $get_pinned->page_name }}</a><b
-                                class="space"></b></li>
-                    @endforeach
-                </ul>
-                <br>
-
-
-
-            @endisset
-
-        </div>
-        
-        <div style="color: #595959">
-            {{ 'كل المعلومات المقدمة في موقع وصلات من روابط مواقع ، صور ، فيديو ، لوجوهات ، وأيقونات الخ ، بانها ملكاً للغير ولا تنتمى بأي شكل من الأشكال لملكية شركة السورية لخدمات الانترنت وموقع وصلات بإستثناء لوجو وأيقون وصلات.' }}
-        </div>
+        <p>الصفحة التي تبحث عنها غير موجودة...</p>
+        <a href="{{url('/')}}" class="btn  " style="background-color: #fdc93a">الرجوع الى الصفحة الرئيسية</a>
     </div>
 
 
@@ -239,30 +101,75 @@
 
 
 
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
-        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
-        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  <!-- قائمة سفلية -->
+  <div class="fixed-bottom">
+    <div class="bottom-nav-container ">
+      <nav class="navbar navbar-light">
+        <ul class="navbar-nav d-flex flex-row justify-content-between w-100">
+          <li class="nav-item text-center flex-fill">
+            <a class="nav-link nav-link-pad" href="{{ url('/') }}"><i class="fas fa-home icon-style"></i><br><span>الرئيسية</span></a>
+          </li>        
+          <li class="nav-item text-center flex-fill">
+            <a class="nav-link nav-link-pad" href="{{ url('/package/all') }}"><i class="fa fa-sitemap icon-style"></i><br><span>الباقات</span></a>
+          </li>         
+          @if (Auth::check())
+          <li class="nav-item text-center flex-fill">
+            <a class="nav-link nav-link-pad" href="{{ route('mainPageSetting.userr',Auth::guard()->user()->name) }}"><i class="fas fa-user icon-style"></i><br><span>حسابي</span></a>
+          </li>
+          @endif
+        </ul>
+      </nav>
+    </div>
+  </div>
+  
+  <!-- Bootstrap core JavaScript و JQuery-->
+  <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+ 
+  <script src="{{ url('/public/assets/site/js/jquery-3.7.1.min.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+
+  
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="{{ url('/public/ckeditor/ckeditor.js') }}"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+
+
+  @if (session('success'))
     <script>
-        // let theBtn = document.querySelector("#bbb"),
-        //         countries = document.querySelectorAll("#eee a");
-
-        //         countries.forEach(country =>
-        //             country.addEventListener("click", (targetCountry) =>
-        //                 theBtn.innerHTML = country.innerHTML))
+        swal("{{ session('success') }}");
     </script>
-    @yield('script')
+    @endif
+    @if (session('pass'))
+    <script>
+        swal("تمت العملية بنجاح", "بامكانك الدخول الى حسابك", "success");
+    </script>
+    @endif
+  
+  @yield('js')
+  <script>
+        //Map
+        var token = '{{ csrf_token() }}';
+        //Map end
+    </script>
+    <!--  Map -->
+    @yield('map-js')
+    <!--  Map end -->
+  </body>
+  </html>
+  
 
-</body>
-
-</html>
+  

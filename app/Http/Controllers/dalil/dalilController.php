@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\dalil;
 // session_start();
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\dashboard\SubscribeController;
 use App\Models\Adds;
 use App\Models\Category;
 use App\Models\Product;
@@ -370,6 +371,7 @@ class dalilController extends Controller
 
     public function createSites()
     {
+
       //  $adds = Adds::first();
         $category = Category::with('sites', 'country')->where('parent_id', 0)->where('show_status', 1)->get();
       //  $country_names = Countries::select('id', 'country_name', 'href', 'country_flag')->get();
@@ -379,31 +381,38 @@ class dalilController extends Controller
      //   $all_pinned_page = PinnedPages::all();
         $Settings = sitting::first();
         $cities = City::select('id', 'name')->get();
-        return view('site.company.pageCreateSites', compact(['Settings',  'categories',   'category',   'cities']));
+        //current package 
+        $subscribectrlr=new SubscribeController();
+        $subscribe=  $subscribectrlr->get_current_package(Auth::user()->id);
+        return view('site.company.pageCreateSites', compact(['Settings',  'categories',   'category',   'cities','subscribe']));
     }
     public function editSites($id)
     {
         $site = Sites::find($id);
-        $adds = Adds::first();
+       // $adds = Adds::first();
         $category = Category::with('sites', 'country')->where('parent_id', 0)->where('show_status', 1)->get();
-        $country_names = Countries::select('id', 'country_name', 'href', 'country_flag')->get();
+      //  $country_names = Countries::select('id', 'country_name', 'href', 'country_flag')->get();
         $tags = Tag::all();
         $categories = Category::select('id', 'category_name')->where('parent_id', 0)->get();
-        $countries = Countries::all();
-        $all_pinned_page = PinnedPages::all();
+       // $countries = Countries::all();
+       // $all_pinned_page = PinnedPages::all();
+           //current package 
+           $subscribectrlr=new SubscribeController();
+           $subscribe=  $subscribectrlr->get_current_package(Auth::user()->id);
         $Settings = sitting::first();
         $cities = City::select('id', 'name')->get();
-        return view('dalil.pageEditSites', compact([
+        return view('site.company.pageEditSites', compact([
             'Settings',
-            'all_pinned_page',
-            'adds',
+          //  'all_pinned_page',
+         //   'adds',
             'tags',
             'categories',
-            'countries',
+          //  'countries',
             'category',
-            'country_names',
+           // 'country_names',
             'cities',
-            'site'
+            'site',
+            'subscribe'
         ]));
     }
     public function supCate(Request $request)
@@ -421,12 +430,12 @@ class dalilController extends Controller
         $valid = $request->validate(
             [
                 'site_name' => 'required',
-                'href' => 'required|unique:sites,href',
+                'href' => 'nullable|unique:sites,href',
                 // 'title'         => 'required',
                 // 'name'          => 'required',
                 // 'description'   => 'required',
                 'countries_id' => 'nullable',
-                'category' => 'required',
+                'category' => 'nullable',
                 //  'subcategory' => 'required',
                 // 'keyword'       => 'required'
                 // 'tags'          => 'required'
@@ -586,7 +595,7 @@ class dalilController extends Controller
         $sites = Sites::find($id);
         $request->validate([
             'site_name' => 'required',
-            'href' => 'required',
+            'href' => 'nullable',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
         ]);
@@ -669,8 +678,8 @@ class dalilController extends Controller
         $sites->phone_number = $request->phone_number;
         $sites->video = $request->video;
         // $sites->countries_id = $request->countries_id;
-        // $sites->subcategories = $request->subcategory ? $request->subcategory : 0 ;
-        // $sites->category_id   = $request->category ? $request->category : 0 ;
+        $sites->subcategories = $request->subcategory ? $request->subcategory : 0 ;
+      $sites->category_id   = $request->category ? $request->category : 0 ;
         $sites->keyword = $request->keyword;
         $sites->facebook = $request->facebook;
         $sites->twitter = $request->twitter;

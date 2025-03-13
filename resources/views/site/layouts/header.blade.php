@@ -17,6 +17,7 @@
                 <div class="dropdown-menu" aria-labelledby="accountDropdown">
                     <a class="dropdown-item" href="{{ route('mainPageSetting.userr',Auth::guard()->user()->name) }}">حسابي</a>
                     <a class="dropdown-item" href="{{ route('pageme.user',Auth::guard()->user()->name) }}">مواقعي</a>
+                    <a class="dropdown-item" href="{{ url('user/mysubscribe')}}">باقتي</a>
                     <a class="dropdown-item" href="{{ route('logoutu') }}"    >تسجيل خروج</a>
             
                   </div>

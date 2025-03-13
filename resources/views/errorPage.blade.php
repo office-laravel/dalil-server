@@ -168,7 +168,7 @@
             <h1 class="display-1 fw-bold" style="color: #00AC73;">404</h1>
             <p class="fs-3"> <span class="text-danger">خطأ!</span>.الصفحة غير موجودة</p>
             <p class="lead">
-                .الصفحة التي تبحث عنها غير موجودة
+                ...الصفحة التي تبحث عنها غير موجودة
             </p>
             <a href="{{ url('/')}}" class="btn btn-success">رجوع للصفحة الرئيسية</a>
         </div>

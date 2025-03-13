@@ -1,9 +1,5 @@
 @extends('site.layouts.layout')
 @section('content')
- 
- 
-
-
 <div class="container" style="height: auto !important; margin-bottom:10px ;">
     <div   >
         <div class="title-breadcrumb m sec" style=" padding:10px;margin-bottom:15px; display: flex;    justify-content: space-between;">
@@ -16,22 +12,13 @@
         </div>
     </div>
     </div>
-
-
-
 <div class="container" style="height: auto !important; margin-bottom:100px ;">
     <section class="info-company mt-5">
-
-
     <div  style="text-align: right ;margin-top:25px;">
         <div id="success_store"></div>
-
         <div class="div-sites">
             {{-- for show table to Edit Modal of data --}}
-            <div class="contentEdit" style="text-align: right;">
-              
-
-
+            <div class="contentEdit" style="text-align: right;">  
                 <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel"
                     style="z-index: 99999;">
                     <div class="offcanvas-header">
@@ -58,8 +45,6 @@
                         <div class="container mt-2">
                             <ul id="div_err"></ul>
                         </div>
-
-
                         <div class="formr-store">
                             <div class="modal-body">
                                 <div class="mb-3">
@@ -82,7 +67,6 @@
                 </div>
             </div>
             {{-- End Modal Store --}}
-
             {{-- edit Modal Sites --}}
             <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
                 style="z-index:999999;">
@@ -95,8 +79,6 @@
                         <div class="container mt-2">
                             <ul id="edit_div_err"></ul>
                         </div>
-
-
                         <form>
                             <input type="hidden" id="edit_site_id">
                             <div class="modal-body">
@@ -146,9 +128,7 @@
                     </div>
                 </div>
             </div>
-            {{-- end- delete Modal Sites --}}
-        
-          
+            {{-- end- delete Modal Sites --}}          
               
                 @if ($sites->count()>0)
                 <div class="fetchD" style="display: contents; ">

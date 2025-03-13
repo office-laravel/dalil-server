@@ -26,6 +26,7 @@
             <!--    {{ $message }}-->
             <!--</div>-->
         @endif
+  
     </div>
 
     <div class="container" style="height: auto !important; margin-bottom:100px ;">
@@ -47,14 +48,15 @@
                     @csrf
 
                     <h4   style="margin:20px 0px;border-bottom: 1px solid #dee2e6;"> بيانات الشركة:</h4>
-                    <select style="width: 200px; appearance: auto;"   class="form-control mb-2  " id="city_id" name="city_id">
+                   
+                    <select style="width: 200px; appearance: auto;"   class="form-control mb-2  " id="city_id" name="city_id" {{ $subscribe->city==1?'':'disabled' }} >
                         <option value="">أختر المحافظة</option>
                         @foreach ($cities as $city)
                             <option value="{{ $city->id }}">{{ $city->name }}</option>
                         @endforeach
                     </select>
                  
-                    <select style="width: 200px ;appearance: auto;" class="form-control mb-2 form-content" id="subcity" name="subcity">
+                    <select style="width: 200px ;appearance: auto;" class="form-control mb-2 form-content" id="subcity" name="subcity" {{ $subscribe->city==1?'':'disabled' }} >
                         <option value="">أختر المدينة</option>
                     </select>
                     <!-- Map -->
@@ -64,22 +66,22 @@
                     </div>
                     <div class="form-group form-content" style="width: 200px">
                         <label>خط العرض / Latitude</label>
-                        <input type="text" id="latitude" name="latitude" class="form-control">
+                        <input type="text" id="latitude" name="latitude" class="form-control" {{ $subscribe->maploc==1?'':'disabled' }} >
                     </div>
                     <div class="form-group form-content" style="width: 200px">
                         <label>خط الطول / Longitude</label>
-                        <input type="text" id="longitude" name="longitude" class="form-control">
+                        <input type="text" id="longitude" name="longitude" class="form-control" {{ $subscribe->maploc==1?'':'disabled' }}>
                     </div>
                     <!-- Map end -->
                     <h4 class="form-content">التصنيفات:</h4>
-                    <select style="width: 200px;appearance: auto;" class="form-control mb-2" id="category" name="category">
+                    <select style="width: 200px;appearance: auto;" class="form-control mb-2" id="category" name="category" {{ $subscribe->category==1?'':'disabled' }}>
                         <option value=" ">أختر التصنيف</option>
                         @foreach ($categories as $item)
                             <option value="{{ $item->id }}">{{ $item->category_name }}</option>
                         @endforeach
                     </select>
                     <h4 class="form-content">التصنيفات الفرعية:</h4>
-                    <select style="width:200px; appearance: auto;" class="form-control" name="subcategory" id="subcategory">
+                    <select style="width:200px; appearance: auto;" class="form-control" name="subcategory" id="subcategory"  {{ $subscribe->subcategories==1?'':'disabled' }}>
                         <option value=" ">--بدون الاب--</option>
                     </select>
 
@@ -95,25 +97,25 @@
 
                         <div class="col mb-3 form-content">
                             <label for="exampleFormControlInput1">رابط الشركة</label>
-                            <input type="text" class="form-control mt-2" name="href"
+                            <input type="text" class="form-control mt-2" name="href" {{ $subscribe->href==1?'':'disabled' }}
                                 placeholder="https://example.com">
                         </div>
                         <div class="col mb-3 form-content">
                             <label for="exampleFormControlInput1">عنوان</label>
-                            <input type="text" class="form-control mt-2" name="title">
+                            <input type="text" class="form-control mt-2" name="title"  {{ $subscribe->title==1?'':'disabled' }}>
                         </div>
 
                         <div class="col-md-12 mb-3 form-content">
                             <label><strong>نبذة :</strong></label>
-                            <textarea class="ckeditor form-control" name="description"></textarea>
+                            <textarea class="ckeditor form-control" name="description" {{ $subscribe->description==1?'':'disabled' }}></textarea>
                         </div>
                         <div class="col-md-12 mb-3 form-content">
                             <label><strong>مقال ذو صلة :</strong></label>
-                            <textarea class="ckeditor form-control" name="articale"></textarea>
+                            <textarea class="ckeditor form-control" name="articale"  {{ $subscribe->articale==1?'':'disabled' }}></textarea>
                         </div>
                         <div class="col-md-12 mb-3 form-content">
                             <label><strong>كود الفيديو:</strong></label>
-                            <textarea class="form-control" name="video"></textarea>
+                            <textarea class="form-control" name="video"  {{ $subscribe->video==1?'':'disabled' }}></textarea>
                         </div>
                     </div>
 
@@ -121,37 +123,37 @@
                         <div class="col form-content">
                             <label for="exampleFormControlInput1">كلمات المفتاحية</label>
                             <input type="text" class="form-control mt-2" name="keyword"
-                                placeholder="مثل:رياضة,ترفيه,اخبار">
+                                placeholder="مثل:رياضة,ترفيه,اخبار" {{ $subscribe->keyword==1?'':'disabled' }}>
                         </div>
                         <div class="col-md-12 mb-3 form-content">
                             <label for="Description" class="form-labell ">شعار الشركة</label>
-                            <input type="file" name="logo" class="form-control mt-2">
+                            <input type="file" name="logo" class="form-control mt-2" {{ $subscribe->logo==1?'':'disabled' }}>
                         </div>
                     </div>
 
                     <div class="form-row mb-3">
                         <div class="col form-content">
                             <label for="">رقم الجوال</label>
-                            <input type="text" class="form-control mt-2" name="mobile_number">
+                            <input type="text" class="form-control mt-2" name="mobile_number" {{ $subscribe->mobile_number==1?'':'disabled' }}>
                         </div>
                         <div class="col form-content">
                             <label for="">رقم الهاتف</label>
-                            <input type="text" class="form-control mt-2" name="phone_number">
+                            <input type="text" class="form-control mt-2" name="phone_number" {{ $subscribe->phone_number==1?'':'disabled' }}>
                         </div>
                         <div class="col form-content">
                             <label for="exampleFormControlInput1">facebook</label>
                             <input type="text" class="form-control" name="facebook"
-                                placeholder="https://facebook.com">
+                                placeholder="https://facebook.com"  {{ $subscribe->social==1?'':'disabled' }}>
                         </div>
                         <div class="col form-content">
                             <label for="exampleFormControlInput1">twitter</label>
                             <input type="text" class="form-control mt-2" name="twitter"
-                                placeholder="https://twitter.com">
+                                placeholder="https://twitter.com" {{ $subscribe->social==1?'':'disabled' }}>
                         </div>
                         <div class="col form-content">
                             <label for="exampleFormControlInput1">instagram</label>
                             <input type="text" class="form-control mt-2" name="instagram" name="instagram"
-                                placeholder="https://instagram.com">
+                                placeholder="https://instagram.com" {{ $subscribe->social==1?'':'disabled' }}>
                         </div>
                     </div>
 
@@ -159,29 +161,29 @@
                         <div class="col form-content">
                             <label for="exampleFormControlInput1">snapchat</label>
                             <input type="text" class="form-control mt-2" name="snapchat"
-                                placeholder="https://snapchat.com">
+                                placeholder="https://snapchat.com" {{ $subscribe->social==1?'':'disabled' }}>
                         </div>
                         <div class="col form-content">
                             <label for="exampleFormControlInput1">youtube</label>
                             <input type="text" class="form-control mt-2" name="youtube"
-                                placeholder="https://youtube.com">
+                                placeholder="https://youtube.com" {{ $subscribe->social==1?'':'disabled' }}>
                         </div>
                         <div class="col form-content">
                             <label for="exampleFormControlInput1">telegram</label>
                             <input type="text" class="form-control mt-2" name="telegram"
-                                placeholder="https://telegram.com">
+                                placeholder="https://telegram.com" {{ $subscribe->social==1?'':'disabled' }}>
                         </div>
                     </div>
 
                     <div class="form-row mb-2">
                         <div class="col form-content">
                             <label for="exampleFormControlInput1">android_link</label>
-                            <input type="text" class="form-control" name="android"
+                            <input type="text" class="form-control" name="android" {{ $subscribe->android==1 ?'':'disabled' }}
                                 placeholder="https://playstore.example..">
                         </div>
                         <div class="col form-content">
                             <label for="exampleFormControlInput1">ios_link</label>
-                            <input type="text" class="form-control mt-2" name="ios"
+                            <input type="text" class="form-control mt-2" name="ios"  {{ $subscribe->ios==1 ?'':'disabled' }}
                                 placeholder="https://appstore.example..">
                         </div>
 

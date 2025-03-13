@@ -8,6 +8,8 @@ use App\Models\PackageUser;
 use App\Models\Sites;
 use Illuminate\Http\Request;
 use App\Models\Package;
+use App\Models\sitting;
+
 use App\Models\User;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
@@ -520,5 +522,82 @@ class SubscribeController extends Controller
     }
   }
 
- 
+  public function get_current_package($user_id)
+  {
+
+      //check count of sites
+    //  $site_id = $this->id;
+      $now = Carbon::now();
+    //  $site = Sites::find($site_id);
+       $package = new Package();
+   
+          $packusr = PackageUser::where('user_id',$user_id)->where('status','a')->whereNot('is_free',1)->whereDate('expire_date', '>=', $now)->orderByDesc('created_at')->first();
+          if ($packusr ) {
+          $package->name = $packusr->name;
+          $package->href = $packusr->href;
+          $package->category = $packusr->category;
+          $package->title = $packusr->title;
+          $package->logo = $packusr->logo;
+          $package->mobile_number = $packusr->mobile_number;
+          $package->phone_number = $packusr->phone_number;
+          $package->video = $packusr->video;
+          $package->description = $packusr->description;
+          $package->articale = $packusr->articale;
+          $package->subcategories = $packusr->subcategories;
+          $package->keyword = $packusr->keyword;
+          $package->social = $packusr->social;
+          $package->android = $packusr->android;
+          $package->ios = $packusr->ios;
+          //  $package->priority = isset($formdata['priority']) ? 1 : 0;
+          $package->maploc = $packusr->maploc;
+          $package->city = $packusr->city;
+
+          $package->sites_count = $packusr->sites_count;
+          $package->products_count = $packusr->products_count;
+          // $package->price = $formdata['price'];
+          $package->is_free = 0;
+          $package->expire_date= $packusr->expire_date;
+         
+
+      } else {
+          //free
+          $packusr = Package::where('is_free', 1)->orderByDesc('created_at')->first();
+          $package->name = $packusr->name;
+          $package->href = $packusr->href;
+          $package->category = $packusr->category;
+          $package->title = $packusr->title;
+          $package->logo = $packusr->logo;
+          $package->mobile_number = $packusr->mobile_number;
+          $package->phone_number = $packusr->phone_number;
+          $package->video = $packusr->video;
+          $package->description = $packusr->description;
+          $package->articale = $packusr->articale;
+          $package->subcategories = $packusr->subcategories;
+          $package->keyword = $packusr->keyword;
+          $package->social = $packusr->social;
+          $package->android = $packusr->android;
+          $package->ios = $packusr->ios;
+
+          //  $package->priority = isset($formdata['priority']) ? 1 : 0;
+          $package->maploc = $packusr->maploc;
+          $package->city = $packusr->city;
+
+          $package->sites_count = $packusr->sites_count;
+          $package->products_count = $packusr->products_count;
+          // $package->price = $formdata['price'];
+          $package->is_free = 1;
+          //  $isfree = 1;
+      }
+    //  $res = 0;
+      return $package;
+  }
+
+  public function my_package()
+  {
+    $Settings = sitting::first();
+    $package=$this->get_current_package(Auth::user()->id); 
+
+    $used_sites_count=User::find(Auth::user()->id)->used_sites_count ;
+    return view('site.package.my-package',compact('package','Settings','used_sites_count'));
+  }
 }
