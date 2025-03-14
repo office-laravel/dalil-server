@@ -188,6 +188,8 @@
      color: white;
      border-top-right-radius: 25px;
      border-top-left-radius: 25px;
+     display: flex;
+     justify-content: space-between;
  }
 
  .modal-body {
