@@ -217,6 +217,48 @@
 </div>
 
 @endsection 
+@section('page-title')
+| {{$articaleSites->site_name}}
+@endsection
+@section('keywords')
+,{{ $package->keyword==1?$articaleSites->keyword:''  }} 
+@endsection
+@section('site_og')
+@if ($articaleSites->description && $package->description==1)
+<meta property="og:description" content="{{ $articaleSites->description }} ">
+@endif
+@if ($articaleSites->href && $package->href==1)
+<meta property="og:url" content="{{ $articaleSites->href }} ">
+@endif
+@if ( $package->social==1)
+
+@isset($articaleSites->facebook)
+<meta property="og:url" content="{{ $articaleSites->facebook }}" />
+@endisset
+
+@isset($articaleSites->twitter)
+<meta property="og:url" content="{{ $articaleSites->twitter }}" />
+@endisset
+@isset($articaleSites->instagram)
+<meta property="og:url" content="{{ $articaleSites->instagram }}" />
+@endisset
+@isset($articaleSites->snapchat)
+<meta property="og:url" content="{{ $articaleSites->snapchat }}" />
+@endisset
+@isset($articaleSites->youtube)
+<meta property="og:url" content="{{ $articaleSites->youtube }}" />
+@endisset
+@isset($articaleSites->telegram)
+<meta property="og:url" content="{{ $articaleSites->telegram }}" />
+@endisset
+
+@isset($articaleSites->LinkedIn)
+<meta property="og:url" content="{{ $articaleSites->LinkedIn }}" />
+@endisset
+
+@endif
+ 
+@endsection
  
 @section('map-js')
 <script>
