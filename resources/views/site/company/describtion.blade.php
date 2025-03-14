@@ -262,7 +262,7 @@
  
 @section('map-js')
 <script>
-    var mainurl = "{{ url('PicCate/icon/') }}";
+    var mainurl = "{{ url('public/PicCate/icon/') }}";
     var token = '{{ csrf_token() }}';
     var comId = '{{ $articaleSites->id }}'
     var companyurl = "{{ url('company/get') }}";
