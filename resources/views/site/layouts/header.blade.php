@@ -1,5 +1,35 @@
   <body>
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <button class="close-btn" id="closeSidebar">&times;</button>
+      </div>
+      <ul class="sidebar-menu">
+        @if (Auth::check())
+        <li   > <span class="user-side"> مرحبا بك يا {{ Auth::guard()->user()->name }}</span></li>
+        @endif  
+        <li><a href="{{ url('/') }}">الرئيسية</a></li>
+        @if (Auth::check())
+        <li ><a   href="{{ route('mainPageSetting.userr',Auth::guard()->user()->name) }}">حسابي</a></li>
+        <li ><a   href="{{ route('pageme.user',Auth::guard()->user()->name) }}">مواقعي</a></li>
+        <li ><a    href="{{ url('user/mysubscribe')}}">باقتي</a></li>
+        <li ><a   href="{{ route('logoutu') }}"    >تسجيل خروج</a></li>     
+        @else
+        <li ><a href="{{ url('/package/all') }}">اشتراك </a></li>
+        <li ><a href="{{ route('loginu') }}">تسجيل دخول</a></li>         
+                      @endif
 
+        {{-- <li>
+
+          <a href="#" class="has-submenu">الخدمات <i class="fas fa-chevron-down toggle-submenu"></i></a>
+          <ul class="submenu">
+            <li><a href="/service1">خدمة 1</a></li>
+            <li><a href="/service2">خدمة 2</a></li>
+          </ul>
+        </li> --}}
+      
+      </ul>
+    </div>
+    
     <!-- قائمة الأعلى -->
     <nav class="navbar navbar-expand-lg navbar-light bg-style">
       <div class="container">

@@ -32,7 +32,21 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
 
-
+  <script>
+    $(document).ready(function() {    
+      $(".navbar-toggler").click(function() {
+        $("#sidebar").addClass("active");
+      });    
+      $("#closeSidebar").click(function() {
+        $("#sidebar").removeClass("active");
+      });      
+    $(".has-submenu").click(function(e) {
+      e.preventDefault();  
+      $(this).next(".submenu").slideToggle();  
+      $(this).find(".toggle-submenu").toggleClass("open");  
+    });
+    });
+  </script>  
   @if (session('success'))
     <script>
         swal("{{ session('success') }}");
