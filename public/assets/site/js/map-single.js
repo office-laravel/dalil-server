@@ -117,7 +117,7 @@ $(document).ready(function () {
 
 
 				var cat_title = '';
-				var cat_icon = '/default.png';
+				var cat_icon = 'default.png';
 				if (!((typeof company.category === 'undefined') || (company.category == null))) {
 					cat_title = company.category.title;
 					if (company.category.icon) {

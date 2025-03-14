@@ -67,13 +67,14 @@ $(document).ready(function () {
 			}
 		);
 	}
+
+ 
+	let userLocation = null;
+	let selectedCompany = null;
+/*
 	let navigateControl = L.control({
 		position: "topleft"
 	});
- 
-	let userLocation = null;
-
-	let selectedCompany = null;
 	navigateControl.onAdd = function () {
 		let div = L.DomUtil.create("div", "leaflet-bar leaflet-control leaflet-control-custom");
 		div.innerHTML =
@@ -96,21 +97,38 @@ $(document).ready(function () {
 
 		return div;
 	};
-
+	navigateControl.addTo(map);
+	*/
 	   // إضافة زر على اليمين
  // إضافة زر على اليمين باستخدام jQuery
  var $rightButton = $('<div>', {
 	class: 'map-btn right show-modal',
 	html: '<i class="fa fa-search fa-2x" aria-hidden="true"></i>',
- 
+
 	click: function() {
 		$("#myModal").css("display", "block");
 		
 	}
 }).appendTo(map.getContainer());
 	 
- 
-	navigateControl.addTo(map);
+ //
+ var $rightBtnDir = $('<div>', {
+	class: 'map-btn right2 ',
+	html: '<img src ='+mainurl+'/get-directions.png'+'>',
+	id:'nav-btn',
+	click: function (e) {
+		e.preventDefault();
+		if (userLocation && selectedCompany) {
+			let url =
+				`https://www.google.com/maps/dir/${userLocation.lat},${userLocation.lng}/${selectedCompany.latitude},${selectedCompany.longitude}`;
+			window.open(url, "_blank");
+		} else {
+			swal("لم يتم تحديد موقعك بعد أو لم تحدد الوجهة .");
+			//	alert("لم يتم تحديد موقعك بعد أو لا توجد شركات قريبة.");
+		}
+	}
+}).appendTo(map.getContainer());
+
 
 	// تحميل الشركات عند اكتمال تحميل الخريطة
 	map.on('load', function () {
@@ -154,7 +172,7 @@ $(document).ready(function () {
 				$.each(companies, function(key, company) {
 				 
 					var cat_title = '';
-					var cat_icon = '/default.png';
+					var cat_icon = 'default.png';
 					if (!((typeof company.category === 'undefined') || (company.category == null))) {
 						cat_title = company.category.title;
 						if (company.category.icon) {
@@ -189,9 +207,10 @@ $(document).ready(function () {
 						}
 
 						selectedCompany = company;
-						$("#navigate-btn").prop("disabled", false) ;
-						$("#navigate-btn > i").removeClass('no-color').addClass('main-color');
-						$('.leaflet-control-custom').attr('title',`الاتجاه إلى: ${company.title}`)
+					//	$("#navigate-btn").prop("disabled", false) ;
+						//$("#navigate-btn > i").removeClass('no-color').addClass('main-color');
+					//	$('.leaflet-control-custom').attr('title',`الاتجاه إلى: ${company.title}`)
+						$('#nav-btn').attr('title',`الاتجاه إلى: ${company.title}`)
 					});
 				});
 
