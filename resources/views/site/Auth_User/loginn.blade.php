@@ -58,7 +58,7 @@
                             </p>
                             <p>
                                 ليس لديك حساب؟
-                                <a href="{{ route('registerr') }}">سجل الأن</a>
+                                <a href="{{ url('/package/all') }}">سجل الأن</a>
                             </p>
                         </div>
                     </div>

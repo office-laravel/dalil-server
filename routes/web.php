@@ -375,8 +375,8 @@ Route::prefix('admin')->group(function () {
 // Login User System
 /******************** Users Route **********************/
 Route::prefix('users')->group(function () {
-    Route::get('/register', [App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])->name('registerr');
-    Route::post('/register', [App\Http\Controllers\Auth\RegisteredUserController::class, 'store'])->name('store.Users');
+  //  Route::get('/register', [App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])->name('registerr');
+   Route::post('/register', [App\Http\Controllers\Auth\RegisteredUserController::class, 'store'])->name('store.Users');
     Route::get('/loginu', [AuthenticatedSessionController::class, 'create'])->name('loginu');
     Route::post('/loginu', [AuthenticatedSessionController::class, 'store'])->name('setlogin');
     Route::get('/logoutu', [AuthenticatedSessionController::class, 'destroy'])->name('logoutu');

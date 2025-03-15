@@ -6,7 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
-
+use App\Models\sitting;
 trait SendsPasswordResetEmails
 {
     /**
@@ -16,7 +16,8 @@ trait SendsPasswordResetEmails
      */
     public function showLinkRequestForm()
     {
-        return view('auth.passwords.email');
+        $Settings = sitting::first();
+        return view('auth.passwords.email',compact('Settings'));
     }
 
     /**
