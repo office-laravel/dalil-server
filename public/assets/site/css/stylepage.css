@@ -215,16 +215,21 @@
     width: 100%;
     text-align: center;
 }
-.info-company {
-    background-color: #fff;
-    margin: 10px 30px;
+.info-company { 
     margin-right: 7rem;
-    width: 83%;
-    border-radius: 5px;
-    -webkit-box-shadow: 0px -2px 7px 0px #707070;
-    -moz-box-shadow: 0px -2px 7px 0px #707070;
-    box-shadow: 0px -2px 7px 0px #707070;
-    overflow: auto;
+    width: 100%;    
+    background:#ffffff;
+    border-radius: .75rem;
+  
+    margin: 1rem .75rem;
+    padding: .72rem;
+ 
+}
+.info-company-desc { 
+    
+    /* border: 1px solid  #c8d1d6 ; */
+    box-shadow: 0 1px 5px #1c1b1733;
+ 
 }
 .box-company, .boxinfo-company {
     display: flex;
@@ -345,7 +350,7 @@
 .title-breadcrumb {
     width: 100%;
     margin-top: 1rem;
-    
+    margin-bottom: 1rem;
     background-color: #fefefe;
     padding: 20px;
     align-items: center;

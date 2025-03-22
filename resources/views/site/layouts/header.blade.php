@@ -31,7 +31,7 @@
     </div>
     
     <!-- قائمة الأعلى -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-style">
+    <nav class="navbar nav-top navbar-expand-lg navbar-light bg-style">
       <div class="container">
      
         <a  class="navbar-brand"  href="{{ url('/') }}"><img src="{{ url('/public/upload/logo_waslat.png') }}" width="50px" height="50px" alt=""></a>

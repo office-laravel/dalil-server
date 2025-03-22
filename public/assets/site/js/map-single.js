@@ -126,6 +126,8 @@ $(document).ready(function () {
 				}
 				var fulliconPath = mainurl + "/" + cat_icon;
 				let latLng = L.latLng(company.latitude, company.longitude);
+				selectedCompany = company;
+				setDirection(latLng,company);
 				const marker = L.marker([company.latitude, company.longitude], {
 					icon: L.icon({
 						iconUrl: fulliconPath,
@@ -137,25 +139,8 @@ $(document).ready(function () {
 					);
 				//  companyMarkers.addLayer(marker);
 				marker.on("click", function () {
-					if (userLocation) {
-						let distance = map.distance([userLocation.lat,
-						userLocation.lng
-						], latLng) / 1000; // تحويل إلى كم
-						distance = distance.toFixed(
-							2); // تقريب الرقم إلى منزلتين عشريتين
-
-						marker.setPopupContent(`<div style="text-align:center;">
-			  <a style="color:#fdc93a" href="` + companyurl + '/' + `${company.id}">  <b>${company.title}</b></a>
-				<br>${cat_title}
-				<br>
-				🛣️ المسافة: <b>${distance} كم</b><br></div>`);
-					}
-
-					selectedCompany = company;
-					$("#navigate-btn").prop("disabled", false) ;
-					$("#navigate-btn > i").removeClass('no-color').addClass('main-color');
-					$('.leaflet-control-custom').attr('title',`الاتجاه إلى: ${company.title}`)
-				});
+					setDirection(latLng,company);
+			});
 				flyTOLoc([company.latitude, company.longitude]);
 
 				//   map.addLayer(companyMarkers);
@@ -169,6 +154,29 @@ $(document).ready(function () {
 
 			}
 		});
+	}
+	function setDirection(latLng,company) {
+
+		if (userLocation) {
+			let distance = map.distance([userLocation.lat,
+			userLocation.lng
+			], latLng) / 1000; // تحويل إلى كم
+			distance = distance.toFixed(
+				2); // تقريب الرقم إلى منزلتين عشريتين
+
+			marker.setPopupContent(`<div style="text-align:center;">
+  <a style="color:#fdc93a" href="` + companyurl + '/' + `${company.id}">  <b>${company.title}</b></a>
+	<br>${cat_title}
+	<br>
+	🛣️ المسافة: <b>${distance} كم</b><br></div>`);
+		}
+
+		selectedCompany = company;
+		$("#navigate-btn").prop("disabled", false) ;
+		$("#navigate-btn > i").removeClass('no-color').addClass('main-color');
+		$('.leaflet-control-custom').attr('title',`الاتجاه إلى: ${company.title}`)
+	
+
 	}
 	function flyTOLoc(cityLoc) {
 		map.flyTo(cityLoc, 13, {

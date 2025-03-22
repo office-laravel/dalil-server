@@ -1,37 +1,51 @@
 @extends('site.layouts.layout')
 @section('content')
-<div class="container">
-    @isset($articaleSites)
-        <section class="info-company mt-5">
 
+@isset($articaleSites)
+<div   >
+    <div class="title-breadcrumb m sec">
+      
+        <h3 >
+            {{ $articaleSites->site_name }}
+        </h3>
+   
+            @if($package->subcategories == 1 && $getNameSubCategory->category_name)
+        <div>
+        <span  >
+            {{ $getNameSubCategory->category_name}}
+        </span>
+    </div>
+            @elseif($package->category == 1 && $getNameCategory->category_name)
+            <div>
+                <span  >
+            {{ $getNameCategory->category_name  }}
+        </span>
+    </div>
+            @endif
+ 
+    </div>
+</div>
+@if ($package->maploc == 1)
+<div style="padding: 0;">
+    <div class="col col-md-12  text-center">
+        <div class="map-result ">
+            <div id="map" style="height: 400px; width: 100%;"></div>
+        </div>
+    </div>
+</div>
+@endif
+@endisset
+<div class="container">
+    @isset($articaleSites)  
+        <section class="info-company info-company-desc mt-5">
             <div class="box-company">
                 <div class="picture-company m">
-
-
                     <img src="{{ $package->logo == 1 && $articaleSites->logo ? url('public/picCompany/' . $articaleSites->logo) : url('public/picCompany/' . 'default.webp') }}"
                         alt="{{ $articaleSites->site_name }}">
-
 
                 </div>
                 <div class="title-company sizee">
                     <h3> {{ $articaleSites->site_name }}</h3>
-                    @if (isset($getNameSubCategory) && isset($getNameCategory) && isset($is_SetCountry))
-                        <div class="category-company mb-3">
-                            @if ($package->category == 1)
-                                <a href="#"
-                                    class="span-one delLink"><i title="تصنيف"
-                                        class="fas fa-folder-open mx-1 "></i>{{ $getNameCategory->category_name }}</a>
-                            @endif
-                            @if ($package->subcategories == 1)
-                                <a class="delLink span-one delLink"
-                                    href="#"><i
-                                        title="تصنيف فرعي"
-                                        class="fas fa-folder-open   mx-1"></i>{{ $getNameSubCategory->category_name }}</a>
-                            @endif
-                        </div>
-                    @endif
-
-
                     <p class="description">
                     </p>
                     @if ($package->description == 1)
@@ -41,15 +55,7 @@
                 </div>
 
             </div>
-            @if ($package->maploc == 1)
-                <div style="padding: 0;">
-                    <div class="col col-md-12  text-center">
-                        <div class="map-result ">
-                            <div id="map" style="height: 400px; width: 100%;"></div>
-                        </div>
-                    </div>
-                </div>
-            @endif
+       
             <div class="hrr">
                 <hr style="margin:12px 50px;">
             </div>
@@ -70,13 +76,13 @@
                             @endif
                         </li>
                     @endif
-                    @if ($package->phone_number == 1)
+                    @if ($package->phone_number == 1 &&  $articaleSites->phone_number)
                         <li> 
                             <a href="tel:{{ $articaleSites->phone_number }}"><i title="اتصال" class="fas fa-phone main-color"
                                     style="padding-left:2px"></i>{{ $articaleSites->phone_number }}</a>
                         </li>
                     @endif
-                    @if ($package->mobile_number == 1)
+                    @if ($package->mobile_number == 1 && $articaleSites->mobile_number )
                         <li>
                             <a href="tel:{{ $articaleSites->mobile_number }}"><i title="اتصال" class="fas   fa-mobile-alt"
                                     style="padding-left:5px"></i>{{ $articaleSites->mobile_number }}</a>
@@ -86,7 +92,7 @@
                         <li>
 
                             <i class="fas fa-share-alt fa-2x" style="font-size:20px;"></i>
-                            @isset($articaleSites->facebook)
+                            @isset($articaleSites->facebook ) 
                                 <a target="_blank" class="desc-social" href="{{ $articaleSites->facebook }}"><i
                                         class="fab fa-facebook fa-2x" style="color:#1877F2;"></i></a>
                             @endisset

@@ -36,7 +36,7 @@
                 </div>
             </div>
             {{-- end- delete Modal Sites --}}
-            <section class="u-clearfix u-container-align-center u-section-2  " id="sec-5d9c">
+            <section class="u-clearfix u-container-align-center u-section-2 info-company-desc " id="sec-5d9c">
                 <div class="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-xl u-sheet-1 ">
                     <h2 class="u-align-center u-text u-text-default u-text-1  " style=" font-size:50px;"> الاشتراكات</h2>
                     <div

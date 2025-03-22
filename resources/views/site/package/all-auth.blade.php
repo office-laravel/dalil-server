@@ -1,9 +1,14 @@
 @extends('site.layouts.layout')
 
 @section('content')
-
-
     <div class="container mt-2 box-category">
+        <div   >
+            <div class="title-breadcrumb m sec">              
+                <h2 >
+                 الاشتراكات
+                </h2>
+            </div>
+        </div>
         <div id="success_store"></div>
 
         <div class="div-sites" style="padding-bottom: 100px;">
@@ -33,9 +38,9 @@ border-bottom-left-radius: 25px;">
             </div>
         </div>
             {{-- end- delete Modal Sites --}}
-            <section class="u-clearfix u-container-align-center u-section-2  " id="sec-5d9c">
+            <section class="u-clearfix u-container-align-center u-section-2 info-company-desc  " id="sec-5d9c">
                 <div class="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-xl u-sheet-1 ">
-                    <h2 class="u-align-center u-text u-text-default u-text-1  " style=" font-size:50px;"> الاشتراكات</h2>
+                   
                     <div
                         class="u-container-style u-layout-cell u-size-32-xl u-size-60-lg u-size-60-md u-size-60-sm u-size-60-xs u-layout-cell-1">
                         <div class="u-container-layout u-container-layout-1">

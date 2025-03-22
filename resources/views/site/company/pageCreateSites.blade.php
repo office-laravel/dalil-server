@@ -30,7 +30,7 @@
     </div>
 
     <div class="container" style="height: auto !important; margin-bottom:100px ;">
-        <section class="info-company mt-5">
+        <section class="info-company info-company-desc mt-5">
             <div style="text-align: right">
 
                 @if (count($errors) > 0)

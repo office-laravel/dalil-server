@@ -3,9 +3,17 @@ body {
   direction: rtl; /* اتجاه النص من اليمين لليسار */
   font-family: 'NotoKufiArabic','Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* نوع الخط */
   background-color: #f7f9fa; /* لون الخلفية  */
+  padding-top:90px; 
 }
 
-
+.nav-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1001; /* تأكد من أن القائمة تظهر فوق العناصر الأخرى */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* إضافة ظل لتحسين المظهر */
+}
 /* قاءمة*/
 .sidebar {
   position: fixed;
